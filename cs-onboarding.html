@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Onboarding Flow — Yuvrajsinh Jadeja</title>
+  <meta name="description" content="Redesigning the compliance review interface for a regtech platform — reducing analyst errors by 41%.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E3DDD0;
+      --ink:#1A1208;--ink2:#3D3629;--muted:#8A7E6E;
+      --accent:#D94F1E;--border:rgba(26,18,8,.10);
+      --f-display:'Cormorant Garamond',Georgia,serif;
+      --f-body:'DM Sans',system-ui,sans-serif;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;cursor:none;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;max-width:100%;}
+
+    /* CURSOR */
+    #cur{position:fixed;width:9px;height:9px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s;}
+    #cur.big{width:44px;height:44px;background:transparent;border:1.5px solid var(--accent);}
+    #curf{position:fixed;width:32px;height:32px;border:1px solid rgba(217,79,30,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+
+    /* LOADER */
+    #loader{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;}
+    #loader.out{opacity:0;pointer-events:none;transition:opacity .7s var(--ease);}
+    .loader-word{font-family:var(--f-display);font-size:clamp(36px,7vw,80px);font-weight:300;font-style:italic;color:var(--bg);letter-spacing:-.04em;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s;}
+    nav.scrolled{background:rgba(245,240,232,.93);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.01em;color:var(--bg);transition:color .3s;}
+    nav.scrolled .nav-logo{color:var(--ink);}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(245,240,232,.65);transition:color .2s,gap .2s var(--ease);}
+    nav.scrolled .nav-back{color:var(--muted);}
+    .nav-back::before{content:'←';}
+    .nav-back:hover{color:var(--accent);gap:14px;}
+
+    /* HERO */
+    .hero{min-height:100svh;background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 72px;position:relative;overflow:hidden;}
+    .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(245,240,232,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,240,232,.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+    .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 80% 20%,rgba(217,79,30,.12) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(217,79,30,.06) 0%,transparent 50%);}
+    .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;display:flex;align-items:center;gap:12px;}
+    .hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--accent);}
+    .hero-h1{font-family:var(--f-display);font-size:clamp(60px,9vw,136px);font-weight:300;line-height:.9;letter-spacing:-.04em;color:var(--bg);margin-bottom:48px;max-width:1100px;}
+    .hero-h1 em{font-style:italic;color:var(--accent);}
+    .hero-meta-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid rgba(245,240,232,.1);border-radius:4px;overflow:hidden;max-width:920px;}
+    .hm{padding:18px 22px;border-right:1px solid rgba(245,240,232,.08);}
+    .hm:last-child{border-right:none;}
+    .hm-l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.3);margin-bottom:5px;}
+    .hm-v{font-size:13.5px;font-weight:500;color:rgba(245,240,232,.8);}
+    .hero-cover{margin-top:56px;border-radius:6px;overflow:hidden;border:1px solid rgba(245,240,232,.08);}
+    .hero-cover img{width:100%;max-height:560px;object-fit:cover;object-position:top;}
+
+    /* SECTION SHELL */
+    .s{padding:96px 56px;}
+    .s-alt{background:var(--bg2);}
+    .s-dark{background:var(--ink);color:var(--bg);}
+    .s-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+    .s-label-inv{color:rgba(245,240,232,.38);}
+    .s-h2{font-family:var(--f-display);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:28px;}
+    .s-h2 em{font-style:italic;color:var(--accent);}
+    .s-h2-inv{color:var(--bg);}
+    .s-h2-inv em{color:#F5A87F;}
+    .s-body{font-size:16px;line-height:1.82;color:var(--ink2);max-width:640px;}
+    .s-body strong{color:var(--ink);font-weight:600;}
+    .s-body-inv{color:rgba(245,240,232,.6);}
+    .s-body-inv strong{color:var(--bg);}
+    .divider{width:36px;height:1px;background:var(--accent);margin:28px 0;}
+
+    /* LAYOUT */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .two-col-3-2{grid-template-columns:3fr 2fr;}
+
+    /* PROBLEM SIGNALS CARD */
+    .signals-card{background:var(--bg2);border-radius:6px;padding:36px;border:1px solid var(--border);}
+    .signals-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
+    .signal{margin-bottom:28px;}
+    .signal:last-child{margin-bottom:0;}
+    .signal-num{font-family:var(--f-display);font-size:44px;font-weight:300;color:var(--accent);line-height:1;}
+    .signal-desc{font-size:13px;color:var(--muted);margin-top:4px;}
+    .signal-sep{height:1px;background:var(--border);margin:20px 0;}
+
+    /* METHOD CARDS */
+    .methods-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:48px;}
+    .method-card{padding:36px 32px;background:var(--bg3);border-radius:3px;}
+    .method-num{font-family:var(--f-display);font-size:48px;font-weight:300;color:rgba(26,18,8,.1);line-height:1;margin-bottom:16px;}
+    .method-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px;}
+    .method-desc{font-size:13.5px;color:var(--muted);line-height:1.7;}
+
+    /* INSIGHT CARDS */
+    .insights-list{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
+    .insight{display:grid;grid-template-columns:52px 1fr;gap:24px;align-items:start;padding:32px;background:var(--bg2);border-radius:3px;border-left:3px solid transparent;transition:border-color .25s,background .25s;}
+    .insight:hover{border-left-color:var(--accent);background:rgba(217,79,30,.03);}
+    .insight-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.14);line-height:1;padding-top:4px;}
+    .insight-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
+    .insight-body{font-size:14px;color:var(--muted);line-height:1.68;}
+
+    /* PULL QUOTE */
+    .pullquote{padding:72px 56px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .pullquote blockquote{font-family:var(--f-display);font-size:clamp(24px,3.5vw,48px);font-weight:300;line-height:1.25;letter-spacing:-.025em;max-width:920px;}
+    .pullquote blockquote em{font-style:italic;color:var(--accent);}
+    .pullquote cite{display:block;margin-top:24px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+
+    /* HMW */
+    .hmw-list{display:flex;flex-direction:column;gap:12px;margin-top:40px;}
+    .hmw{padding:24px 32px;border:1px solid var(--border);border-radius:4px;display:flex;gap:20px;align-items:flex-start;transition:border-color .25s,background .25s;}
+    .hmw:hover{border-color:var(--accent);background:rgba(217,79,30,.03);}
+    .hmw-q{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);flex-shrink:0;padding-top:5px;white-space:nowrap;}
+    .hmw-text{font-family:var(--f-display);font-size:21px;font-weight:400;line-height:1.35;letter-spacing:-.01em;}
+
+    /* IDEATION */
+    .ideation-list{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+    .ideo-row{display:flex;align-items:center;gap:12px;font-size:14px;}
+    .ideo-x{color:var(--accent);font-weight:700;font-size:16px;flex-shrink:0;}
+    .ideo-check{color:#4CAF50;font-weight:700;font-size:16px;flex-shrink:0;}
+    .ideo-pass{color:var(--muted);}
+    .ideo-pass strong{color:var(--ink);font-weight:600;}
+    .sketch-box{background:var(--bg3);border-radius:4px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed rgba(26,18,8,.14);gap:12px;margin-bottom:3px;}
+    .sketch-box svg{opacity:.22;}
+    .sketch-box p{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);}
+
+    /* PROCESS FLOW */
+    .process-flow{display:flex;gap:3px;margin-top:48px;overflow-x:auto;}
+    .pf-step{flex:1;min-width:160px;padding:32px 26px;background:var(--bg2);border-radius:3px;position:relative;}
+    .pf-step::after{content:'→';position:absolute;right:-16px;top:32px;font-size:16px;color:var(--muted);z-index:2;}
+    .pf-step:last-child::after{display:none;}
+    .pf-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.1);line-height:1;margin-bottom:14px;}
+    .pf-title{font-size:14px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
+    .pf-desc{font-size:12.5px;color:var(--muted);line-height:1.65;}
+
+    /* DECISIONS */
+    .decisions{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
+    .decision{display:grid;grid-template-columns:1fr 1fr;border-radius:4px;overflow:hidden;}
+    .dec-l{padding:40px;background:var(--bg2);}
+    .dec-r{padding:40px;background:var(--bg3);}
+    .dec-num{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+    .dec-q{font-family:var(--f-display);font-size:25px;font-weight:400;line-height:1.2;letter-spacing:-.015em;margin-bottom:16px;}
+    .dec-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    .dec-why{font-size:14.5px;line-height:1.72;color:var(--muted);}
+    .dec-why strong{color:var(--ink);font-weight:600;}
+
+    /* SCREENS */
+    .screens-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:48px;}
+    .screen-item{background:var(--bg3);border-radius:4px;overflow:hidden;}
+    .screen-item img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;}
+    .screen-cap{padding:20px 24px;background:var(--bg2);}
+    .screen-cap-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+    .screen-cap-desc{font-size:12.5px;color:var(--muted);line-height:1.55;}
+    .screen-placeholder{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-bottom:1px solid var(--border);}
+    .screen-placeholder svg{opacity:.2;}
+    .screen-placeholder p{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+
+    /* OUTCOMES */
+    .outcomes-row{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
+    .outcome-card{padding:40px 32px;background:rgba(245,240,232,.07);border-radius:4px;text-align:center;}
+    .outcome-n{font-family:var(--f-display);font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1;letter-spacing:-.04em;color:var(--accent);margin-bottom:10px;}
+    .outcome-l{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,232,.4);}
+
+    /* REFLECTION */
+    .refl-list{display:flex;flex-direction:column;margin-top:48px;}
+    .refl{padding:28px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:200px 1fr;gap:40px;}
+    .refl:first-child{border-top:1px solid var(--border);}
+    .refl-label{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px;}
+    .refl-text{font-size:15.5px;line-height:1.8;color:var(--muted);}
+    .refl-text strong{color:var(--ink);font-weight:600;}
+
+    /* NEXT PROJECT */
+    .next-section{padding:96px 56px;background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .next-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+    .next-title{font-family:var(--f-display);font-size:clamp(32px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-.03em;margin-bottom:28px;}
+    .next-title em{font-style:italic;color:var(--accent);}
+    .next-sub{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:32px;}
+    .next-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s,gap .25s var(--ease);}
+    .next-btn:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);gap:16px;}
+    .next-img{border-radius:6px;overflow:hidden;}
+    .next-img img{width:100%;aspect-ratio:3/2;object-fit:cover;filter:saturate(.85);}
+
+    /* GRAIN */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      nav,.hero,.s,.pullquote,.next-section{padding-left:28px;padding-right:28px;}
+      .hero-meta-grid{grid-template-columns:repeat(3,1fr);}
+      .two-col,.two-col-3-2{grid-template-columns:1fr;gap:48px;}
+      .methods-grid,.screens-grid,.outcomes-row{grid-template-columns:1fr;}
+      .decision{grid-template-columns:1fr;}
+      .refl{grid-template-columns:1fr;gap:8px;}
+      .next-section{grid-template-columns:1fr;}
+      .process-flow{gap:3px;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="curf"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <span class="loader-word">Loading…</span>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Yuvrajsinh Jadeja</a>
+  <a href="/#work" class="nav-back">All Work</a>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow" id="h-eye">Compliance UX &nbsp;·&nbsp; Regtech</div>
+  <h1 class="hero-h1" id="h-title">
+    Customer<br>
+    <em>Onboarding</em><br>
+    Flow
+  </h1>
+  <div class="hero-meta-grid" id="h-meta">
+    <div class="hm"><div class="hm-l">My Role</div><div class="hm-v">Lead Designer</div></div>
+    <div class="hm"><div class="hm-l">Duration</div><div class="hm-v">2025–Present</div></div>
+    <div class="hm"><div class="hm-l">Platform</div><div class="hm-v">Web App</div></div>
+    <div class="hm"><div class="hm-l">Team</div><div class="hm-v">1 Designer · 3 Eng · 1 PM</div></div>
+    <div class="hm"><div class="hm-l">Tools</div><div class="hm-v">Figma · Maze</div></div>
+  </div>
+  <div class="hero-cover" id="h-cover">
+    <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Customer Onboarding Flow">
+  </div>
+</section>
+
+<!-- ═══════════════ THE BRIEF ═══════════════ -->
+<section class="s">
+  <div class="two-col two-col-3-2">
+    <div>
+      <p class="s-label">The Brief</p>
+      <h2 class="s-h2">The compliance review interface was breaking the people meant to use it.</h2>
+      <div class="divider"></div>
+      <p class="s-body">A regtech startup had built a <strong>customer onboarding platform</strong> used by KYC/AML compliance teams at financial institutions. The platform handled the full onboarding submission pipeline — document intake, risk scoring, analyst review, and approval or rejection.</p>
+      <br>
+      <p class="s-body">The product worked. But the experience of using it daily was exhausting analysts. <strong>Error rates were rising. Review throughput was falling.</strong> And the compliance managers knew an audit was coming.</p>
+      <br>
+      <p class="s-body">I was brought in to <strong>redesign the core review interface</strong> — the part analysts spend 6–8 hours inside every day.</p>
+    </div>
+    <div>
+      <div class="signals-card">
+        <p class="signals-label">Problem signals</p>
+        <div class="signal">
+          <div class="signal-num">↑ 31%</div>
+          <div class="signal-desc">increase in review errors over 6 months</div>
+        </div>
+        <div class="signal-sep"></div>
+        <div class="signal">
+          <div class="signal-num">↓ 22%</div>
+          <div class="signal-desc">drop in daily case throughput per analyst</div>
+        </div>
+        <div class="signal-sep"></div>
+        <div class="signal" style="margin-bottom:0;">
+          <div class="signal-num">4.2</div>
+          <div class="signal-desc">avg. tools open simultaneously per analyst</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DISCOVERY ═══════════════ -->
+<section class="s s-alt">
+  <p class="s-label">01 · Discovery</p>
+  <h2 class="s-h2" style="max-width:700px;">I spent two weeks not designing anything. Just watching.</h2>
+  <p class="s-body">Before touching Figma, I needed to understand the actual work — what decisions analysts make, in what order, with what information, and where they fail. Desk research on KYC regulation was table stakes. The real insight came from sitting next to analysts while they worked.</p>
+  <div class="methods-grid">
+    <div class="method-card">
+      <div class="method-num">01</div>
+      <div class="method-title">Contextual Inquiry</div>
+      <div class="method-desc">Shadowed 6 KYC analysts across 3 client organisations over 8 working days. Watched how they navigated the existing tool, what they ignored, where they paused, what made them curse under their breath.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">02</div>
+      <div class="method-title">Stakeholder Interviews</div>
+      <div class="method-desc">14 interviews — 8 analysts, 3 compliance managers, 2 team leads, 1 auditor. The auditor interview was the most revealing: I needed to understand what evidence they'd look for if something went wrong.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">03</div>
+      <div class="method-title">Workflow Audit</div>
+      <div class="method-desc">Mapped every step of the existing review workflow — from case assignment to final decision — including all the workarounds analysts had invented. Each workaround was a signal of an unmet need.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">04</div>
+      <div class="method-title">Regulatory Research</div>
+      <div class="method-desc">Read the relevant FATF guidelines, PML Act requirements, and client-specific compliance policies. Designers who build compliance products without reading the regulation are guessing. I didn't want to guess.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SYNTHESIS ═══════════════ -->
+<section class="s">
+  <p class="s-label">02 · Synthesis</p>
+  <h2 class="s-h2">Five things that changed everything.</h2>
+  <p class="s-body">The research produced 60+ observations. After affinity mapping and two rounds of synthesis, these five insights kept surfacing — and each one had direct design consequences.</p>
+  <div class="insights-list">
+    <div class="insight">
+      <div class="insight-n">01</div>
+      <div>
+        <div class="insight-title">The queue is the wrong unit of organisation.</div>
+        <div class="insight-body">Analysts received cases in chronological order — first in, first reviewed. But risk doesn't respect chronology. A low-risk case filed an hour ago shouldn't be reviewed before a high-risk case filed yesterday. The queue created a false sense of urgency around the wrong cases.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">02</div>
+      <div>
+        <div class="insight-title">The most dangerous moment is when you think you're done.</div>
+        <div class="insight-body">Analysts made most errors not when confused, but when confident. After reviewing 40 cases, pattern recognition kicks in — and anomalies get glossed over. There was no mechanism in the UI to slow down decision-making when data was incomplete or contradictory.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">03</div>
+      <div>
+        <div class="insight-title">Context about the customer was being stored in people's heads.</div>
+        <div class="insight-body">If an analyst had reviewed the same customer's earlier application, that knowledge lived in their memory — not the system. Analysts were using personal spreadsheets to track "known names." This was both an efficiency problem and a compliance risk.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">04</div>
+      <div>
+        <div class="insight-title">The audit trail was retrospective, not concurrent.</div>
+        <div class="insight-body">Analysts completed a review, then logged their reasoning separately. This meant reasoning was reconstructed post-hoc, not captured in the moment. The audit trail was technically present but evidentially weak — a problem auditors had flagged.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">05</div>
+      <div>
+        <div class="insight-title">Tool-switching was the biggest invisible cost.</div>
+        <div class="insight-body">Analysts averaged 4.2 browser tabs open simultaneously — the platform, a sanctions list tool, a risk policy doc, a team chat, and often a spreadsheet. Each switch was a cognitive reset. Integrating these touchpoints wasn't feasible, but reducing the need to leave was.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PULL QUOTE ═══════════════ -->
+<div class="pullquote">
+  <blockquote>
+    "After 50 cases you stop seeing the customer. You start seeing a <em>pattern</em>. The UI was making that worse."
+  </blockquote>
+  <cite>— KYC Analyst, observed during shadowing session</cite>
+</div>
+
+<!-- ═══════════════ DEFINE / HMW ═══════════════ -->
+<section class="s s-alt">
+  <p class="s-label">03 · Define</p>
+  <h2 class="s-h2">Reframing the problem as opportunity.</h2>
+  <p class="s-body">Once I had the insights, I needed design opportunities — not solutions. These HMW statements became the filter every design decision was tested against throughout the project.</p>
+  <div class="hmw-list">
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">surface the highest-risk cases before an analyst even starts their day — without adding a separate triage step?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">create natural friction at the moment of decision — not as obstruction, but as a signal that more attention is needed?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">make the customer's full history visible at the point of review without adding a navigation step?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">capture the analyst's reasoning during the review — not after — so the audit trail is a byproduct of good workflow, not an additional task?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">reduce context switching without requiring costly third-party integrations?</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ IDEATION ═══════════════ -->
+<section class="s">
+  <p class="s-label">04 · Ideation</p>
+  <h2 class="s-h2">The concepts I explored — and why most of them were wrong.</h2>
+  <div class="two-col">
+    <div>
+      <p class="s-body">I ran two ideation sprints. The first generated 30+ concepts, some of which were technically interesting but behaviourally naive — they assumed analysts would change habits they'd spent years building.</p>
+      <br>
+      <p class="s-body">The second sprint was more constrained: <strong>every concept had to work within 3 clicks</strong> of the existing mental model. The breakthrough ideas came from that constraint.</p>
+      <br>
+      <p class="s-body">I tested lo-fi prototypes with 4 analysts in 45-minute sessions. The sessions were as much about watching hesitation and confusion as they were about collecting verbal feedback.</p>
+      <div class="divider" style="margin-top:32px;"></div>
+      <div class="ideation-list">
+        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Gamification layer (added cognitive load, felt patronising)</span></div>
+        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Mandatory pause-and-confirm dialogs (analysts closed them immediately)</span></div>
+        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Fully AI-driven case routing (compliance managers wouldn't trust it)</span></div>
+        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Risk-tiered queue with visual weight differentiation</strong></span></div>
+        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Persistent context panel (always-on, never a modal)</strong></span></div>
+        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Inline decision annotation (reasoning captured mid-flow)</strong></span></div>
+      </div>
+    </div>
+    <div>
+      <div class="sketch-box">
+        <svg width="72" height="72" viewBox="0 0 80 80" fill="none"><rect x="8" y="8" width="28" height="20" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="44" y="8" width="28" height="20" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="8" y="36" width="64" height="12" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="8" y="56" width="28" height="16" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="44" y="56" width="28" height="16" rx="2" stroke="#1A1208" stroke-width="1.5"/><line x1="16" y1="43" x2="36" y2="43" stroke="#D94F1E" stroke-width="1"/><line x1="44" y1="43" x2="64" y2="43" stroke="#D94F1E" stroke-width="1"/></svg>
+        <p>Wireframe exploration</p>
+      </div>
+      <div class="sketch-box">
+        <svg width="72" height="56" viewBox="0 0 80 60" fill="none"><rect x="4" y="4" width="72" height="10" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="4" y="20" width="46" height="36" rx="2" stroke="#1A1208" stroke-width="1.5"/><rect x="56" y="20" width="20" height="36" rx="2" stroke="#1A1208" stroke-width="1.5"/><circle cx="20" cy="38" r="6" stroke="#D94F1E" stroke-width="1.5"/></svg>
+        <p>Concept sketches</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROCESS FLOW ═══════════════ -->
+<section class="s s-alt">
+  <p class="s-label">04b · Design Flow</p>
+  <h2 class="s-h2">The redesigned analyst workflow.</h2>
+  <p class="s-body" style="max-width:600px;">The new workflow reduced the number of decision points per case from 7 to 4, without removing any compliance-required checks. Fewer steps, same regulatory rigour.</p>
+  <div class="process-flow">
+    <div class="pf-step">
+      <div class="pf-n">01</div>
+      <div class="pf-title">Triage View</div>
+      <div class="pf-desc">Cases sorted by risk tier automatically. High-risk cases surfaced at the top. Analysts start the day with clarity, not chronology.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">02</div>
+      <div class="pf-title">Case Open</div>
+      <div class="pf-desc">Split-pane layout: documents left, decision tools right. Customer history always visible. Zero navigation needed.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">03</div>
+      <div class="pf-title">Review + Annotate</div>
+      <div class="pf-desc">Inline annotation tied to each document section. Reasoning captured as the analyst reviews — not after. Completeness indicator live.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">04</div>
+      <div class="pf-title">Decision</div>
+      <div class="pf-desc">Approve, reject, or escalate — with a required reason code. Soft warning if data completeness is below threshold. A signal, not a blocker.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ KEY DECISIONS ═══════════════ -->
+<section class="s">
+  <p class="s-label">05 · Design Decisions</p>
+  <h2 class="s-h2">Four decisions that defined the product.</h2>
+  <p class="s-body">Every design has a hundred small decisions. These four had the most argument, the most testing, and the most impact.</p>
+  <div class="decisions">
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 01</div>
+        <div class="dec-q">Risk tiers, not priority scores</div>
+        <div class="dec-label">The tension</div>
+        <div class="dec-why">Engineering wanted a single numerical risk score (0–100). Compliance managers wanted tiered categories. I sided with compliance — <strong>numbers create false precision in a domain where context matters</strong>. A case that scores 72 is not inherently safer than one that scores 74.</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
+        <div class="dec-why">Tiers (High / Medium / Low / Pending) created clear mental buckets for analysts. They could make a quick judgement about how much attention to bring to a case before opening it. The numerical score remained accessible, but it wasn't the primary signal.</div>
+      </div>
+    </div>
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 02</div>
+        <div class="dec-q">Persistent sidebar vs. expandable panel</div>
+        <div class="dec-label">The tension</div>
+        <div class="dec-why">Early testing showed analysts wanted customer history available but not always visible. An expandable panel felt right. But testing with real cases revealed: <strong>analysts who had to open the panel, didn't</strong>. Out of sight meant out of mind.</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
+        <div class="dec-why">I kept the sidebar persistent but collapsible to a thin rail. The rail showed just the customer's risk history as coloured dots — enough context to prompt expansion when needed, without eating screen real estate when it wasn't.</div>
+      </div>
+    </div>
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 03</div>
+        <div class="dec-q">Soft warning on incomplete decisions</div>
+        <div class="dec-label">The tension</div>
+        <div class="dec-why">There was pressure to block decision submission if the completeness score was below 80%. Compliance managers liked the idea. Analysts hated it. <strong>Hard blocks breed workarounds</strong> — analysts would start marking fields arbitrarily just to unlock the button.</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
+        <div class="dec-why">Instead: a soft warning that names exactly which data points are incomplete, with a prompt to add a justification note. The decision can still be submitted — but the act of writing the justification makes the incompleteness explicit in the audit trail.</div>
+      </div>
+    </div>
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 04</div>
+        <div class="dec-q">Audit trail as workflow, not task</div>
+        <div class="dec-label">The tension</div>
+        <div class="dec-why">The existing system required analysts to write a review summary after each case. It was done badly or not at all. I wanted to eliminate this step — but compliance managers couldn't operate without the audit log. <strong>The audit trail had to exist. It just couldn't feel like admin.</strong></div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
+        <div class="dec-why">Every annotation made during review — each flag, each comment, each reason code — was automatically compiled into the audit log. By the time the analyst submitted, the trail was already written. The summary existed; the analyst just didn't have to write it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FINAL DESIGN ═══════════════ -->
+<section class="s s-alt">
+  <p class="s-label">06 · The Design</p>
+  <h2 class="s-h2">What shipped.</h2>
+  <p class="s-body">The redesigned platform shipped in phases — the triage view and split-pane layout first, followed by the context sidebar and decision annotation in the second release.</p>
+  <div class="screens-grid">
+    <div class="screen-item">
+      <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Triage View">
+      <div class="screen-cap">
+        <div class="screen-cap-title">Triage View</div>
+        <div class="screen-cap-desc">Risk-tiered case queue. Colour, typography weight, and positioning all signal priority. No numerical scores visible at the list level.</div>
+      </div>
+    </div>
+    <div class="screen-item">
+      <div class="screen-placeholder">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><rect x="4" y="4" width="34" height="56" rx="2" stroke="#8A7E6E" stroke-width="1.5"/><rect x="42" y="4" width="18" height="56" rx="2" stroke="#8A7E6E" stroke-width="1.5"/><line x1="10" y1="14" x2="30" y2="14" stroke="#D94F1E" stroke-width="1"/><line x1="10" y1="22" x2="26" y2="22" stroke="#8A7E6E" stroke-width="1"/><circle cx="51" cy="20" r="8" stroke="#8A7E6E" stroke-width="1.5"/></svg>
+        <p>Add split-pane review screen</p>
+      </div>
+      <div class="screen-cap">
+        <div class="screen-cap-title">Review Interface</div>
+        <div class="screen-cap-desc">Split-pane layout: document viewer left, decision tools and customer context right. Everything needed for a decision, visible simultaneously.</div>
+      </div>
+    </div>
+    <div class="screen-item">
+      <div class="screen-placeholder">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><rect x="4" y="4" width="56" height="40" rx="2" stroke="#8A7E6E" stroke-width="1.5"/><line x1="4" y1="16" x2="60" y2="16" stroke="#8A7E6E" stroke-width="1"/><circle cx="20" cy="52" r="6" stroke="#D94F1E" stroke-width="1.5"/><line x1="30" y1="50" x2="56" y2="50" stroke="#8A7E6E" stroke-width="1"/></svg>
+        <p>Add customer history sidebar</p>
+      </div>
+      <div class="screen-cap">
+        <div class="screen-cap-title">Customer Context Sidebar</div>
+        <div class="screen-cap-desc">Persistent sidebar showing prior submissions, risk history, and flagged patterns. Collapsible to a data rail. Never hidden.</div>
+      </div>
+    </div>
+    <div class="screen-item">
+      <div class="screen-placeholder">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><rect x="4" y="4" width="56" height="48" rx="2" stroke="#8A7E6E" stroke-width="1.5"/><rect x="12" y="36" width="40" height="8" rx="1" stroke="#D94F1E" stroke-width="1.5"/><line x1="12" y1="16" x2="52" y2="16" stroke="#8A7E6E" stroke-width="1"/><circle cx="48" cy="16" r="4" fill="#D94F1E" opacity=".4"/></svg>
+        <p>Add decision + annotation screen</p>
+      </div>
+      <div class="screen-cap">
+        <div class="screen-cap-title">Decision & Annotation</div>
+        <div class="screen-cap-desc">Inline annotations captured mid-review. Completeness indicator visible before submission. Soft warning triggers if reasoning is absent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ OUTCOMES ═══════════════ -->
+<section class="s s-dark">
+  <p class="s-label s-label-inv">07 · Outcomes</p>
+  <h2 class="s-h2 s-h2-inv" style="max-width:680px;">Three months after launch — the numbers that came back.</h2>
+  <div class="outcomes-row">
+    <div class="outcome-card">
+      <div class="outcome-n">↓ 41%</div>
+      <div class="outcome-l">Review errors</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">+34%</div>
+      <div class="outcome-l">Daily case throughput</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">100%</div>
+      <div class="outcome-l">Audit trail completeness</div>
+    </div>
+  </div>
+  <p class="s-body s-body-inv" style="margin-top:48px;"><strong>The audit passed.</strong> The compliance manager called it "the first time we felt confident walking into an audit instead of nervous."</p>
+</section>
+
+<!-- ═══════════════ REFLECTION ═══════════════ -->
+<section class="s">
+  <p class="s-label">08 · Reflection</p>
+  <h2 class="s-h2">What I learned. What I'd do differently.</h2>
+  <div class="refl-list">
+    <div class="refl">
+      <div class="refl-label">What worked</div>
+      <div class="refl-text">The decision to frame the audit trail as a workflow output rather than a task was the single most impactful design move on the project. It took the longest to convince stakeholders but had the most measurable effect. <strong>When friction reduction and compliance rigour pointed in the same direction, that's the right design.</strong></div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">What I'd do differently</div>
+      <div class="refl-text">I would involve the compliance auditor earlier — ideally in the research phase. I only interviewed one auditor, late in discovery. Their perspective on what "good evidence" looks like would have shaped some decisions I made by assumption rather than research.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">The uncomfortable truth</div>
+      <div class="refl-text"><strong>The biggest design challenge was not the interface.</strong> It was analyst fatigue — a structural, organisational problem that no UI can fix. The redesign improved the tool. It didn't solve the problem of asking people to make high-stakes decisions 60+ times a day. I made that observation in my handoff documentation.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">Domain lesson</div>
+      <div class="refl-text">In regulated industries, <strong>design is evidence</strong>. The choices you make in the interface become part of the compliance record. This changes how you think about defaults, warnings, confirmations. Every "is this really necessary?" question has a different answer when the answer could end up in a regulator's report.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ NEXT PROJECT ═══════════════ -->
+<div class="next-section">
+  <div>
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title"><em>Nishaba</em> Dynamis</h2>
+    <p class="next-sub">Brand identity for a homeopathy practitioner — built on the philosophy of the practice itself. Naming, mark, palette, type, and full visual language.</p>
+    <a href="/case-study/nishaba-dynamis" class="next-btn">View Case Study →</a>
+  </div>
+  <div class="next-img">
+    <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/N1.png?raw=true" alt="Nishaba Dynamis">
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── CURSOR ── */
+const cur = document.getElementById('cur'), curf = document.getElementById('curf');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function loop(){ fx+=(mx-fx)*.11; fy+=(my-fy)*.11; curf.style.left=fx+'px'; curf.style.top=fy+'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+/* ── LOADER ── */
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  setTimeout(() => {
+    loader.classList.add('out');
+    setTimeout(() => loader.remove(), 700);
+
+    /* HERO ENTRANCE */
+    gsap.from('#h-eye', { y:30, opacity:0, duration:.9, ease:'expo.out', delay:.1 });
+    gsap.from('#h-title', { y:50, opacity:0, duration:1.1, ease:'expo.out', delay:.2 });
+    gsap.from('#h-meta', { y:30, opacity:0, duration:.9, ease:'expo.out', delay:.45 });
+    gsap.from('#h-cover', { y:40, opacity:0, duration:1, ease:'expo.out', delay:.6 });
+  }, 600);
+});
+
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+ScrollTrigger.create({
+  start: 80,
+  onEnter: () => nav.classList.add('scrolled'),
+  onLeaveBack: () => nav.classList.remove('scrolled')
+});
+
+/* ── SCROLL REVEALS ── */
+const revealItems = gsap.utils.toArray('.s-label, .s-h2, .s-body, .divider, .pullquote blockquote, .pullquote cite, .next-label, .next-title, .next-sub, .next-btn, .next-img, .signals-card, .pf-step');
+revealItems.forEach(el => {
+  gsap.from(el, {
+    y: 28, opacity: 0, duration: .85, ease: 'expo.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+  });
+});
+
+/* ── STAGGER: METHOD CARDS ── */
+gsap.utils.toArray('.methods-grid').forEach(grid => {
+  gsap.from(grid.querySelectorAll('.method-card'), {
+    y: 36, opacity: 0, duration: .8, stagger: .1, ease: 'expo.out',
+    scrollTrigger: { trigger: grid, start: 'top 85%' }
+  });
+});
+
+/* ── STAGGER: INSIGHT CARDS ── */
+gsap.utils.toArray('.insights-list').forEach(list => {
+  gsap.from(list.querySelectorAll('.insight'), {
+    y: 30, opacity: 0, duration: .75, stagger: .1, ease: 'expo.out',
+    scrollTrigger: { trigger: list, start: 'top 85%' }
+  });
+});
+
+/* ── STAGGER: HMW ── */
+gsap.utils.toArray('.hmw-list').forEach(list => {
+  gsap.from(list.querySelectorAll('.hmw'), {
+    y: 24, opacity: 0, duration: .7, stagger: .09, ease: 'expo.out',
+    scrollTrigger: { trigger: list, start: 'top 85%' }
+  });
+});
+
+/* ── STAGGER: DECISIONS ── */
+gsap.utils.toArray('.decisions').forEach(el => {
+  gsap.from(el.querySelectorAll('.decision'), {
+    y: 32, opacity: 0, duration: .8, stagger: .12, ease: 'expo.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
+
+/* ── STAGGER: SCREENS ── */
+gsap.utils.toArray('.screens-grid').forEach(grid => {
+  gsap.from(grid.querySelectorAll('.screen-item'), {
+    y: 36, opacity: 0, duration: .8, stagger: .1, ease: 'expo.out',
+    scrollTrigger: { trigger: grid, start: 'top 85%' }
+  });
+});
+
+/* ── OUTCOME COUNTER ANIMATION ── */
+gsap.utils.toArray('.outcomes-row').forEach(row => {
+  gsap.from(row.querySelectorAll('.outcome-card'), {
+    y: 40, opacity: 0, scale: .96, duration: .9, stagger: .12, ease: 'expo.out',
+    scrollTrigger: { trigger: row, start: 'top 80%' }
+  });
+});
+
+/* ── REFLECTION ── */
+gsap.utils.toArray('.refl-list').forEach(list => {
+  gsap.from(list.querySelectorAll('.refl'), {
+    y: 24, opacity: 0, duration: .75, stagger: .1, ease: 'expo.out',
+    scrollTrigger: { trigger: list, start: 'top 85%' }
+  });
+});
+</script>
+</body>
+</html>

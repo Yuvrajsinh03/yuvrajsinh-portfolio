@@ -1,6 +1,8 @@
 {
   "rewrites": [
-    { "source": "/case-study/:slug", "destination": "/case-study.html" },
-    { "source": "/blog/:slug",        "destination": "/blog.html" }
+    { "source": "/case-study/customer-onboarding-flow", "destination": "/cs-onboarding.html" },
+    { "source": "/case-study/nishaba-dynamis",          "destination": "/cs-nishaba.html" },
+    { "source": "/case-study/:slug",                    "destination": "/case-study.html" },
+    { "source": "/blog/:slug",                          "destination": "/blog.html" }
   ]
 }
