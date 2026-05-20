@@ -123,9 +123,8 @@
     .ideo-check{color:#4CAF50;font-weight:700;font-size:16px;flex-shrink:0;}
     .ideo-pass{color:var(--muted);}
     .ideo-pass strong{color:var(--ink);font-weight:600;}
-    .sketch-box{background:var(--bg3);border-radius:4px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed rgba(26,18,8,.14);gap:12px;margin-bottom:3px;}
-    .sketch-box svg{opacity:.22;}
-    .sketch-box p{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);}
+    figure img{transition:transform .5s var(--ease);}
+    figure:hover img{transform:scale(1.01);}
 
     /* PROCESS FLOW */
     .process-flow{display:flex;gap:3px;margin-top:48px;overflow-x:auto;}
@@ -404,6 +403,10 @@
       </div>
     </div>
     <div>
+      <figure style="margin:0 0 3px;">
+        <img src="ideation-wireframes.svg" alt="Wireframe exploration — three mobile layout variants (Linear, Progress-Led, Accordion) with annotations" style="width:100%;border-radius:4px;display:block;border:1px solid rgba(26,18,8,.08);">
+        <figcaption style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:10px 4px 0;font-family:var(--f-body);">Wireframe exploration — V1 / V2 / V3 layout variants</figcaption>
+      </figure>
       <figure style="margin:0;">
         <img src="ideation-sketches.svg" alt="Concept sketch — user journey flow map from sign-up to approval with sticky-note annotations on drop-off risks" style="width:100%;border-radius:4px;display:block;border:1px solid rgba(26,18,8,.08);">
         <figcaption style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:10px 4px 0;font-family:var(--f-body);">Concept sketches — user journey flow with pain-point mapping</figcaption>
