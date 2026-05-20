@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/case-study/customer-onboarding-flow", "destination": "/cs-onboarding.html" },
+    { "source": "/case-study/nishaba-dynamis",          "destination": "/cs-nishaba.html" },
+    { "source": "/case-study/yntro-brand-identity",     "destination": "/cs-yntro-brand.html" },
+    { "source": "/case-study/ciso-dashboard",           "destination": "/cs-ciso-dashboard.html" },
+    { "source": "/case-study/:slug",                    "destination": "/case-study.html" },
+    { "source": "/blog/:slug",                          "destination": "/blog.html" }
+  ]
+}

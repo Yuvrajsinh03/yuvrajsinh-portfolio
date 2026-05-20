@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CISO Dashboard — Yuvrajsinh Jadeja</title>
+  <meta name="description" content="Designing a security operations dashboard for enterprise CISOs at Crest Data Systems — turning thousands of signals into decisions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      /* Portfolio tokens */
+      --bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E3DDD0;
+      --ink:#1A1208;--ink2:#3D3629;--muted:#8A7E6E;
+      --border:rgba(26,18,8,.10);
+      --f-display:'Cormorant Garamond',Georgia,serif;
+      --f-body:'DM Sans',system-ui,sans-serif;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+      /* CISO tokens */
+      --c-bg:#0A1628;--c-bg2:#0F1E35;--c-bg3:#162540;
+      --c-accent:#2D6CDF;--c-accent2:#4F87F0;--c-glow:#1A4DB8;
+      --c-success:#34C17B;--c-warn:#F5A623;--c-danger:#E84545;
+      --c-soft:#EEF3FF;--c-muted:#6B86B0;
+      --c-rule:rgba(255,255,255,.06);
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;cursor:none;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;max-width:100%;}
+
+    /* CURSOR */
+    #cur{position:fixed;width:9px;height:9px;background:var(--c-accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s;}
+    #cur.big{width:44px;height:44px;background:transparent;border:1.5px solid var(--c-accent);}
+    #curf{position:fixed;width:32px;height:32px;border:1px solid rgba(45,108,223,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+
+    /* LOADER */
+    #loader{position:fixed;inset:0;background:var(--c-bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
+    #loader.out{opacity:0;pointer-events:none;transition:opacity .7s var(--ease);}
+    .loader-word{font-family:var(--f-display);font-size:clamp(28px,5vw,56px);font-weight:300;font-style:italic;color:var(--c-soft);letter-spacing:-.03em;opacity:.7;}
+    .loader-bar{width:120px;height:1px;background:var(--c-rule);position:relative;overflow:hidden;}
+    .loader-bar::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:var(--c-accent);animation:lbar 1.2s var(--ease) forwards;}
+    @keyframes lbar{to{left:0;}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s;}
+    nav.scrolled{background:rgba(10,22,40,.92);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--c-rule);}
+    .nav-logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.01em;color:rgba(238,243,255,.7);transition:color .3s;}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .2s,gap .2s var(--ease);}
+    .nav-back::before{content:'←';}
+    .nav-back:hover{color:var(--c-accent2);gap:14px;}
+
+    /* HERO */
+    .hero{min-height:100svh;background:var(--c-bg);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 72px;position:relative;overflow:hidden;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+    .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 70% 20%,rgba(45,108,223,.14) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(26,77,184,.10) 0%,transparent 50%);}
+    .hero-scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(45,108,223,.012) 3px,rgba(45,108,223,.012) 4px);}
+    .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-accent2);margin-bottom:24px;display:flex;align-items:center;gap:12px;}
+    .hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--c-accent);}
+    .hero-h1{font-family:var(--f-display);font-size:clamp(60px,9vw,136px);font-weight:300;line-height:.9;letter-spacing:-.04em;color:var(--c-soft);margin-bottom:48px;max-width:1100px;}
+    .hero-h1 em{font-style:italic;color:var(--c-accent2);}
+    .hero-meta-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--c-rule);border-radius:4px;overflow:hidden;max-width:920px;}
+    .hm{padding:18px 22px;border-right:1px solid var(--c-rule);}
+    .hm:last-child{border-right:none;}
+    .hm-l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:5px;}
+    .hm-v{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.65);}
+
+    /* SECTION SHELL */
+    .s{padding:96px 56px;}
+    .s-alt{background:var(--bg2);}
+    .s-dark{background:var(--c-bg);color:var(--c-soft);}
+    .s-dark2{background:var(--c-bg2);color:var(--c-soft);}
+    .s-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+    .s-label-blue{color:var(--c-accent2);}
+    .s-label-inv{color:rgba(255,255,255,.32);}
+    .s-h2{font-family:var(--f-display);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:28px;}
+    .s-h2 em{font-style:italic;color:var(--c-accent);}
+    .s-h2-inv{color:var(--c-soft);}
+    .s-h2-inv em{color:var(--c-accent2);}
+    .s-body{font-size:16px;line-height:1.82;color:var(--ink2);max-width:640px;}
+    .s-body strong{color:var(--ink);font-weight:600;}
+    .s-body-inv{color:rgba(255,255,255,.5);}
+    .s-body-inv strong{color:var(--c-soft);}
+    .divider{width:36px;height:1px;background:var(--c-accent);margin:28px 0;}
+    .divider-muted{background:var(--border);}
+
+    /* LAYOUT */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .two-col-3-2{grid-template-columns:3fr 2fr;}
+
+    /* PROBLEM SIGNALS */
+    .signals-card{background:var(--bg2);border-radius:6px;padding:36px;border:1px solid var(--border);}
+    .signal{margin-bottom:28px;}
+    .signal:last-child{margin-bottom:0;}
+    .signal-num{font-family:var(--f-display);font-size:44px;font-weight:300;color:var(--c-accent);line-height:1;}
+    .signal-desc{font-size:13px;color:var(--muted);margin-top:4px;}
+    .signal-sep{height:1px;background:var(--border);margin:20px 0;}
+
+    /* METHOD CARDS */
+    .methods-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:48px;}
+    .method-card{padding:36px 32px;background:var(--bg3);border-radius:3px;}
+    .method-num{font-family:var(--f-display);font-size:48px;font-weight:300;color:rgba(26,18,8,.08);line-height:1;margin-bottom:16px;}
+    .method-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px;}
+    .method-desc{font-size:13.5px;color:var(--muted);line-height:1.7;}
+
+    /* INSIGHT CARDS */
+    .insights-list{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
+    .insight{display:grid;grid-template-columns:52px 1fr;gap:24px;align-items:start;padding:32px;background:var(--bg2);border-radius:3px;border-left:3px solid transparent;transition:border-color .25s,background .25s;}
+    .insight:hover{border-left-color:var(--c-accent);background:rgba(45,108,223,.03);}
+    .insight-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.12);line-height:1;padding-top:4px;}
+    .insight-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
+    .insight-body{font-size:14px;color:var(--muted);line-height:1.68;}
+
+    /* PULL QUOTE */
+    .pullquote{padding:72px 56px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .pullquote blockquote{font-family:var(--f-display);font-size:clamp(24px,3.5vw,48px);font-weight:300;line-height:1.25;letter-spacing:-.025em;max-width:920px;}
+    .pullquote blockquote em{font-style:italic;color:var(--c-accent);}
+    .pullquote cite{display:block;margin-top:24px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+
+    /* HMW */
+    .hmw-list{display:flex;flex-direction:column;gap:12px;margin-top:40px;}
+    .hmw{padding:24px 32px;border:1px solid var(--border);border-radius:4px;display:flex;gap:20px;align-items:flex-start;transition:border-color .25s,background .25s;}
+    .hmw:hover{border-color:var(--c-accent);background:rgba(45,108,223,.03);}
+    .hmw-q{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent);flex-shrink:0;padding-top:5px;white-space:nowrap;}
+    .hmw-text{font-family:var(--f-display);font-size:21px;font-weight:400;line-height:1.35;letter-spacing:-.01em;}
+
+    /* PROCESS FLOW */
+    .process-flow{display:flex;gap:3px;margin-top:48px;overflow-x:auto;}
+    .pf-step{flex:1;min-width:160px;padding:32px 26px;background:var(--bg2);border-radius:3px;position:relative;}
+    .pf-step::after{content:'→';position:absolute;right:-16px;top:32px;font-size:16px;color:var(--muted);z-index:2;}
+    .pf-step:last-child::after{display:none;}
+    .pf-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.1);line-height:1;margin-bottom:14px;}
+    .pf-title{font-size:14px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
+    .pf-desc{font-size:12.5px;color:var(--muted);line-height:1.65;}
+
+    /* DECISIONS */
+    .decisions{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
+    .decision{display:grid;grid-template-columns:1fr 1fr;border-radius:4px;overflow:hidden;}
+    .dec-l{padding:40px;background:var(--bg2);}
+    .dec-r{padding:40px;background:var(--bg3);}
+    .dec-num{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent);margin-bottom:12px;}
+    .dec-q{font-family:var(--f-display);font-size:25px;font-weight:400;line-height:1.2;letter-spacing:-.015em;margin-bottom:16px;}
+    .dec-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    .dec-why{font-size:14.5px;line-height:1.72;color:var(--muted);}
+    .dec-why strong{color:var(--ink);font-weight:600;}
+
+    /* DASHBOARD MOCK */
+    .dash-mock{background:var(--c-bg);border-radius:6px;overflow:hidden;border:1px solid var(--c-rule);padding:0;}
+    .dash-topbar{background:var(--c-bg2);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--c-rule);}
+    .dash-logo-area{display:flex;align-items:center;gap:10px;}
+    .dash-dot{width:8px;height:8px;border-radius:50%;}
+    .dash-title-text{font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(238,243,255,.5);text-transform:uppercase;}
+    .dash-status{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-success);}
+    .dash-body{display:grid;grid-template-columns:200px 1fr;min-height:360px;}
+    .dash-sidebar{background:var(--c-bg2);border-right:1px solid var(--c-rule);padding:16px 0;}
+    .dash-nav-item{padding:9px 20px;font-size:11.5px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:10px;transition:color .2s,background .2s;}
+    .dash-nav-item.active{color:var(--c-soft);background:rgba(45,108,223,.12);border-right:2px solid var(--c-accent);}
+    .dash-nav-item svg{flex-shrink:0;opacity:.5;}
+    .dash-nav-item.active svg{opacity:1;}
+    .dash-content{padding:20px;display:flex;flex-direction:column;gap:12px;}
+    .dash-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+    .dash-stat{background:var(--c-bg2);border-radius:4px;padding:14px 16px;border:1px solid var(--c-rule);}
+    .dash-stat-val{font-family:var(--f-display);font-size:28px;font-weight:300;line-height:1;margin-bottom:4px;}
+    .dash-stat-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);font-weight:600;}
+    .dash-stat-delta{font-size:10.5px;font-weight:600;margin-top:6px;}
+    .dash-chart-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .dash-chart-box{background:var(--c-bg2);border-radius:4px;padding:14px 16px;border:1px solid var(--c-rule);}
+    .dash-chart-title{font-size:10.5px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.05em;margin-bottom:12px;}
+    .dash-alert-row{background:var(--c-bg2);border-radius:4px;border:1px solid var(--c-rule);}
+    .dash-alert-header{padding:10px 16px;border-bottom:1px solid var(--c-rule);font-size:10.5px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.05em;display:flex;justify-content:space-between;}
+    .dash-alert-item{padding:9px 16px;border-bottom:1px solid var(--c-rule);display:flex;align-items:center;gap:10px;font-size:11px;color:rgba(255,255,255,.6);}
+    .dash-alert-item:last-child{border-bottom:none;}
+    .dash-badge{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+    /* OUTCOMES */
+    .outcomes-row{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
+    .outcome-card{padding:40px 32px;background:rgba(255,255,255,.04);border-radius:4px;text-align:center;}
+    .outcome-n{font-family:var(--f-display);font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1;letter-spacing:-.04em;color:var(--c-accent2);margin-bottom:10px;}
+    .outcome-l{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+
+    /* REFLECTION */
+    .refl-list{display:flex;flex-direction:column;margin-top:48px;}
+    .refl{padding:28px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:200px 1fr;gap:40px;}
+    .refl:first-child{border-top:1px solid var(--border);}
+    .refl-label{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px;}
+    .refl-text{font-size:15.5px;line-height:1.8;color:var(--muted);}
+    .refl-text strong{color:var(--ink);font-weight:600;}
+
+    /* NEXT */
+    .next-section{padding:96px 56px;background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .next-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+    .next-title{font-family:var(--f-display);font-size:clamp(32px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-.03em;margin-bottom:28px;}
+    .next-title em{font-style:italic;color:var(--accent,#D94F1E);}
+    .next-sub{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:32px;}
+    .next-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s,gap .25s var(--ease);}
+    .next-btn:hover{background:var(--c-accent);color:#fff;border-color:var(--c-accent);gap:16px;}
+    .next-img{border-radius:6px;overflow:hidden;}
+
+    /* GRAIN */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(28px);}
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      nav,.hero,.s,.pullquote,.next-section{padding-left:24px;padding-right:24px;}
+      .hero-meta-grid{grid-template-columns:repeat(3,1fr);}
+      .hm:nth-child(4),.hm:nth-child(5){display:none;}
+      .two-col,.two-col-3-2{grid-template-columns:1fr;gap:48px;}
+      .methods-grid,.outcomes-row{grid-template-columns:1fr;}
+      .decision{grid-template-columns:1fr;}
+      .refl{grid-template-columns:1fr;gap:8px;}
+      .next-section{grid-template-columns:1fr;}
+      .dash-body{grid-template-columns:1fr;}
+      .dash-sidebar{display:none;}
+      .dash-stat-row{grid-template-columns:repeat(2,1fr);}
+      .dash-chart-row{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="curf"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <span class="loader-word">Loading…</span>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Yuvrajsinh Jadeja</a>
+  <a href="/#work" class="nav-back">All Work</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-scan"></div>
+
+  <div class="hero-eyebrow">Security UX · 2022–2025</div>
+  <h1 class="hero-h1">Making <em>sense</em> of the<br>noise in the room.</h1>
+
+  <div class="hero-meta-grid">
+    <div class="hm"><div class="hm-l">Company</div><div class="hm-v">Crest Data Systems</div></div>
+    <div class="hm"><div class="hm-l">My Role</div><div class="hm-v">Lead Product Designer</div></div>
+    <div class="hm"><div class="hm-l">Platforms</div><div class="hm-v">ServiceNow · Netskope · Polaris</div></div>
+    <div class="hm"><div class="hm-l">Duration</div><div class="hm-v">3 years</div></div>
+    <div class="hm"><div class="hm-l">Outcome</div><div class="hm-v">41% faster threat triage</div></div>
+  </div>
+</section>
+
+<!-- ═══ BRIEF ═══ -->
+<section class="s reveal">
+  <div class="two-col two-col-3-2">
+    <div>
+      <div class="s-label">01 — The Brief</div>
+      <h2 class="s-h2">Enterprise security data is a <em>fire hose.</em> CISOs need a glass of water.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Crest Data Systems builds security integrations and dashboards for enterprise clients running ServiceNow, Netskope, and Polaris environments. Their customers — Chief Information Security Officers and their teams — were drowning in alert noise.</p>
+      <p class="s-body" style="margin-top:20px;">The brief: design a CISO-level dashboard that surfaces what actually matters, enables fast triage, and gives leadership the confidence to act — not just observe. The product had to work for a CISO skimming in five minutes and a SOC analyst investigating for five hours. <strong>Same interface, two very different modes of use.</strong></p>
+    </div>
+    <div class="signals-card">
+      <div class="signals-label" style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;">Problem signals from user interviews</div>
+      <div class="signal">
+        <div class="signal-num">340+</div>
+        <div class="signal-desc">Average daily alerts a security team received before the dashboard. Most were ignored.</div>
+      </div>
+      <div class="signal-sep"></div>
+      <div class="signal">
+        <div class="signal-num">4 tools</div>
+        <div class="signal-desc">Number of separate consoles a CISO had to check for a single threat's full picture. Context lived nowhere.</div>
+      </div>
+      <div class="signal-sep"></div>
+      <div class="signal">
+        <div class="signal-num">12 min</div>
+        <div class="signal-desc">Average time to answer "what is our current risk posture?" — a question that should take 30 seconds.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DISCOVERY ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">02 — Discovery</div>
+  <div class="two-col">
+    <div>
+      <h2 class="s-h2">The problem wasn't <em>missing data.</em> It was too much, organised wrong.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Security tools don't suffer from data poverty. They suffer from <strong>information architecture poverty</strong>. Every system logs everything — but logs are not decisions. We needed to understand not just what data existed, but what mental models CISOs used to interpret it.</p>
+      <p class="s-body" style="margin-top:20px;">Eight weeks of discovery across three customer organisations revealed a consistent pattern: security leaders had developed workarounds — spreadsheets, Slack threads, email chains — to bridge the gap between what their tools showed and what they actually needed to know.</p>
+    </div>
+    <div>
+      <p class="s-body"><strong>The core insight:</strong> CISOs weren't asking "what happened?" They were asking "do I need to act?" — and none of the existing tools answered that question in under a minute.</p>
+      <p class="s-body" style="margin-top:16px;">Every design decision in the dashboard flows from this: <strong>primacy of action over information.</strong></p>
+    </div>
+  </div>
+
+  <div class="methods-grid">
+    <div class="method-card">
+      <div class="method-num">01</div>
+      <div class="method-title">Contextual Inquiry</div>
+      <div class="method-desc">Observed 6 security analysts and 3 CISOs in their actual working environments across Polaris and ServiceNow deployments. Recorded tool-switching behaviour, note-taking habits, and verbal expressions of confusion.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">02</div>
+      <div class="method-title">Cognitive Walkthrough</div>
+      <div class="method-desc">Mapped the mental models security leaders used to assess risk posture. Found 4 distinct interpretive frameworks — and the existing dashboard supported exactly zero of them structurally.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">03</div>
+      <div class="method-title">Alert Archaeology</div>
+      <div class="method-desc">Analysed 30 days of alert logs from two client environments. Categorised by severity, response time, and outcome. Found that 78% of "critical" alerts were routinely dismissed without investigation — indicating category inflation.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">04</div>
+      <div class="method-title">Competitive Benchmarking</div>
+      <div class="method-desc">Evaluated Splunk SIEM, Microsoft Sentinel, CrowdStrike Falcon, and Palo Alto XSOAR against the four decision frameworks. None handled the "executive view vs. analyst view" split cleanly. This became our primary differentiation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSIGHTS ═══ -->
+<section class="s reveal">
+  <div class="s-label">03 — Key Insights</div>
+  <h2 class="s-h2" style="max-width:680px;">What the research <em>actually</em> said about how security decisions get made.</h2>
+
+  <div class="insights-list">
+    <div class="insight">
+      <div class="insight-n">1</div>
+      <div>
+        <div class="insight-title">CISOs think in risk narratives, not data points</div>
+        <div class="insight-body">Every CISO interviewed described their mental model as a "story" — not a chart. "What is the threat, where did it come from, who was affected, what's the blast radius?" Dashboard design that breaks this narrative into disconnected widgets forces cognitive reconstruction under pressure. We needed to design for storytelling.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">2</div>
+      <div>
+        <div class="insight-title">Alert fatigue is a design failure, not a user failure</div>
+        <div class="insight-body">When 78% of "critical" alerts are dismissed, the problem isn't the analyst — it's the categorisation system. We introduced a severity model with four tiers (Critical, High, Monitor, Noise) that reflected how experienced analysts actually triaged, not how tools were configured out of the box. This alone reduced acknowledged-but-uninvestigated alerts by 60%.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">3</div>
+      <div>
+        <div class="insight-title">The "5-minute CISO view" must be a first-class feature</div>
+        <div class="insight-body">Leadership doesn't use dashboards the same way analysts do. CISOs check in briefly, multiple times per day. The dashboard needed a dedicated executive view that could answer "are we okay?" in a single glance — risk posture score, open criticals, trend direction. Not a simplified version; a genuinely different information architecture.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">4</div>
+      <div>
+        <div class="insight-title">Cross-platform correlation was the #1 unmet need</div>
+        <div class="insight-body">ServiceNow shows the ticket. Netskope shows the access event. Polaris shows the endpoint state. None talked to each other. The most valuable thing the dashboard could do was show the same incident across all three platforms in a single correlated timeline. CISOs called this "finally seeing the whole room."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PULL QUOTE ═══ -->
+<div class="pullquote reveal">
+  <blockquote>
+    "I don't want to read a report. I want the dashboard to tell me in thirty seconds whether I need to <em>make a call.</em>"
+  </blockquote>
+  <cite>CISO, enterprise financial services — research interview, Week 3</cite>
+</div>
+
+<!-- ═══ HMW ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">04 — How Might We</div>
+  <div class="two-col two-col-3-2">
+    <div>
+      <h2 class="s-h2">Reframing the problem as <em>design opportunities.</em></h2>
+      <div class="divider divider-muted"></div>
+      <p class="s-body">Research findings were translated into four HMW questions that became the brief for the design phase. Each question had a corresponding design principle that guided every subsequent decision.</p>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="hmw-list">
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">Make the risk posture immediately readable to a CISO who has thirty seconds?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">Reduce alert noise without hiding genuinely critical signals?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">Let an analyst trace a threat across ServiceNow, Netskope, and Polaris in a single view?</span>
+    </div>
+    <div class="hmw">
+      <span class="hmw-q">HMW</span>
+      <span class="hmw-text">Design one interface that serves both the 5-minute executive check-in and the 5-hour deep investigation?</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section class="s reveal">
+  <div class="s-label">05 — Design Process</div>
+  <h2 class="s-h2" style="max-width:640px;">Five phases from problem to <em>production.</em></h2>
+
+  <div class="process-flow">
+    <div class="pf-step">
+      <div class="pf-n">01</div>
+      <div class="pf-title">Information Architecture</div>
+      <div class="pf-desc">Card-sorted 60 data types with 8 security professionals. Produced a new 4-tier hierarchy: Posture Score → Active Threats → Platform Events → Historical Trends.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">02</div>
+      <div class="pf-title">Dual-Mode Framework</div>
+      <div class="pf-desc">Designed the executive/analyst split as a mode toggle, not separate products. Same data — different information density and interaction model depending on role.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">03</div>
+      <div class="pf-title">Alert Redesign</div>
+      <div class="pf-desc">Rebuilt the severity taxonomy with Crest's security engineers. Four tiers grounded in actual analyst behaviour, not tool defaults. New visual language for each tier.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">04</div>
+      <div class="pf-title">Correlation View</div>
+      <div class="pf-desc">Designed the cross-platform timeline — the most technically complex part. Took 3 rounds of prototyping to land the right balance of density and legibility.</div>
+    </div>
+    <div class="pf-step">
+      <div class="pf-n">05</div>
+      <div class="pf-title">Validation</div>
+      <div class="pf-desc">Unmoderated usability testing with 12 participants across CISO and analyst roles. Measured time-to-triage and confidence scores before shipping to production.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DASHBOARD MOCK ═══ -->
+<section class="s s-dark reveal">
+  <div class="s-label s-label-blue">06 — The Dashboard</div>
+  <div class="two-col two-col-3-2" style="margin-bottom:48px;">
+    <div>
+      <h2 class="s-h2 s-h2-inv">A complete security picture — at any <em>altitude.</em></h2>
+      <div class="divider"></div>
+      <p class="s-body s-body-inv">The final design uses a persistent sidebar for platform navigation, a top-level posture score that answers the CISO's primary question immediately, and a progressive disclosure model that expands detail on demand. Colour carries meaning at every level: green (nominal), amber (monitor), red (act now).</p>
+    </div>
+    <div>
+      <p class="s-body s-body-inv">The correlation timeline (bottom right) was the product's defining feature. <strong>For the first time, a security event could be traced from a Netskope access anomaly through the ServiceNow ticket to the Polaris endpoint investigation in a single scrollable view.</strong></p>
+    </div>
+  </div>
+
+  <!-- Live dashboard mock -->
+  <div class="dash-mock">
+    <div class="dash-topbar">
+      <div class="dash-logo-area">
+        <div class="dash-dot" style="background:#E84545;"></div>
+        <div class="dash-dot" style="background:#F5A623;margin-left:4px;"></div>
+        <div class="dash-dot" style="background:#34C17B;margin-left:4px;"></div>
+        <span class="dash-title-text" style="margin-left:12px;">CISO Dashboard · Enterprise View</span>
+      </div>
+      <span class="dash-status">● System Nominal</span>
+    </div>
+    <div class="dash-body">
+      <div class="dash-sidebar">
+        <div class="dash-nav-item active">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/></svg>
+          Overview
+        </div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Active Threats
+        </div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M2 12L6 7l3 3 2-4 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Trends
+        </div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Incidents
+        </div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M8 2v2M8 12v2M2 8h2M12 8h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+          Platforms
+        </div>
+        <div style="height:1px;background:var(--c-rule);margin:12px 0;"></div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M11 11.5a3 3 0 00-10 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 7l1.5 1.5L13 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reports
+        </div>
+        <div class="dash-nav-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM8 6v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Settings
+        </div>
+      </div>
+      <div class="dash-content">
+        <!-- stat row -->
+        <div class="dash-stat-row">
+          <div class="dash-stat">
+            <div class="dash-stat-val" style="color:#34C17B;">84</div>
+            <div class="dash-stat-label">Risk Score</div>
+            <div class="dash-stat-delta" style="color:#34C17B;">↑ 3 from yesterday</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val" style="color:#E84545;">2</div>
+            <div class="dash-stat-label">Critical Open</div>
+            <div class="dash-stat-delta" style="color:#E84545;">↓ from 5</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val" style="color:#F5A623;">14</div>
+            <div class="dash-stat-label">Monitoring</div>
+            <div class="dash-stat-delta" style="color:rgba(255,255,255,.3);">No change</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val" style="color:rgba(255,255,255,.7);">247</div>
+            <div class="dash-stat-label">Resolved (30d)</div>
+            <div class="dash-stat-delta" style="color:#34C17B;">↑ 18% MoM</div>
+          </div>
+        </div>
+        <!-- charts -->
+        <div class="dash-chart-row">
+          <div class="dash-chart-box">
+            <div class="dash-chart-title">Threat Activity — 30 days</div>
+            <svg width="100%" height="80" viewBox="0 0 300 80" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2D6CDF" stop-opacity=".35"/>
+                  <stop offset="100%" stop-color="#2D6CDF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,70 L20,60 L40,65 L60,45 L80,50 L100,35 L120,42 L140,30 L160,38 L180,25 L200,32 L220,20 L240,28 L260,18 L280,22 L300,15 L300,80 L0,80 Z" fill="url(#chartFill)"/>
+              <path d="M0,70 L20,60 L40,65 L60,45 L80,50 L100,35 L120,42 L140,30 L160,38 L180,25 L200,32 L220,20 L240,28 L260,18 L280,22 L300,15" stroke="#2D6CDF" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="dash-chart-box">
+            <div class="dash-chart-title">By Platform</div>
+            <svg width="100%" height="80" viewBox="0 0 200 80">
+              <rect x="10" y="20" width="50" height="12" rx="2" fill="#2D6CDF"/>
+              <rect x="10" y="36" width="32" height="12" rx="2" fill="#4F87F0"/>
+              <rect x="10" y="52" width="44" height="12" rx="2" fill="#E84545"/>
+              <text x="68" y="30" fill="rgba(255,255,255,.5)" font-size="10" font-family="sans-serif">ServiceNow</text>
+              <text x="50" y="46" fill="rgba(255,255,255,.5)" font-size="10" font-family="sans-serif">Netskope</text>
+              <text x="62" y="62" fill="rgba(255,255,255,.5)" font-size="10" font-family="sans-serif">Polaris</text>
+              <text x="130" y="30" fill="rgba(255,255,255,.7)" font-size="11" font-family="sans-serif" font-weight="600">142</text>
+              <text x="130" y="46" fill="rgba(255,255,255,.7)" font-size="11" font-family="sans-serif" font-weight="600">89</text>
+              <text x="130" y="62" fill="rgba(255,255,255,.7)" font-size="11" font-family="sans-serif" font-weight="600">116</text>
+            </svg>
+          </div>
+        </div>
+        <!-- alert list -->
+        <div class="dash-alert-row">
+          <div class="dash-alert-header">
+            <span>Active Threats</span>
+            <span style="color:var(--c-accent2);cursor:pointer;">View all →</span>
+          </div>
+          <div class="dash-alert-item">
+            <div class="dash-badge" style="background:#E84545;"></div>
+            <span style="color:rgba(255,255,255,.8);font-weight:600;min-width:64px;">CRITICAL</span>
+            <span>Anomalous data exfiltration — Netskope CASB · User: j.smith@acme.com</span>
+            <span style="margin-left:auto;color:rgba(255,255,255,.25);font-size:10px;">4 min ago</span>
+          </div>
+          <div class="dash-alert-item">
+            <div class="dash-badge" style="background:#E84545;"></div>
+            <span style="color:rgba(255,255,255,.8);font-weight:600;min-width:64px;">CRITICAL</span>
+            <span>Privilege escalation attempt — Polaris endpoint · Device: WKSTN-0042</span>
+            <span style="margin-left:auto;color:rgba(255,255,255,.25);font-size:10px;">18 min ago</span>
+          </div>
+          <div class="dash-alert-item">
+            <div class="dash-badge" style="background:#F5A623;"></div>
+            <span style="color:rgba(255,255,255,.6);font-weight:600;min-width:64px;">HIGH</span>
+            <span>ServiceNow ticket SN-4481 — Unresolved access control gap · IT Infra</span>
+            <span style="margin-left:auto;color:rgba(255,255,255,.25);font-size:10px;">2 hr ago</span>
+          </div>
+          <div class="dash-alert-item">
+            <div class="dash-badge" style="background:#F5A623;"></div>
+            <span style="color:rgba(255,255,255,.6);font-weight:600;min-width:64px;">HIGH</span>
+            <span>Failed MFA attempts (×14) — Netskope ZTNA · Source: 185.220.101.x</span>
+            <span style="margin-left:auto;color:rgba(255,255,255,.25);font-size:10px;">3 hr ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KEY DECISIONS ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">07 — Key Design Decisions</div>
+  <h2 class="s-h2" style="max-width:640px;">The choices that <em>defined</em> the product.</h2>
+
+  <div class="decisions">
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 01</div>
+        <div class="dec-q">Posture score as the hero — not alerts.</div>
+        <div class="dec-label">The question we were answering</div>
+        <div class="dec-why">Should the top of the dashboard lead with the alert count or with a synthesised risk score?</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label">Why we chose the risk score</div>
+        <div class="dec-why">Alert counts are noise. A CISO seeing "247 alerts" doesn't know if that's good or catastrophic. <strong>A risk score of 84/100 with a green trend arrow answers the real question in one second.</strong> Alert detail is one click away — but the answer to "are we okay?" is always immediately visible.</div>
+      </div>
+    </div>
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 02</div>
+        <div class="dec-q">Colour as system language, not decoration.</div>
+        <div class="dec-label">The question we were answering</div>
+        <div class="dec-why">How do we use colour in a dashboard that already lives in a dark, dense data environment?</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label">Why we built a strict semantic system</div>
+        <div class="dec-why"><strong>Green always means nominal. Amber always means monitor. Red always means act.</strong> No exceptions, no decorative use of these colours anywhere in the interface. When a red element appears, it can only mean one thing. We enforced this as a strict design rule throughout the component library.</div>
+      </div>
+    </div>
+    <div class="decision">
+      <div class="dec-l">
+        <div class="dec-num">Decision 03</div>
+        <div class="dec-q">One interface with a mode switch, not two products.</div>
+        <div class="dec-label">The question we were answering</div>
+        <div class="dec-why">Build separate CISO and analyst views, or a single adaptive view?</div>
+      </div>
+      <div class="dec-r">
+        <div class="dec-label">Why we chose the single adaptive interface</div>
+        <div class="dec-why">Two products means two places to update, two codebases, two places where bugs live. More importantly: <strong>CISOs sometimes need analyst depth</strong> — especially during an active incident. The mode toggle keeps both users in the same mental model, with progressive disclosure handling the density difference.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OUTCOME ═══ -->
+<section class="s s-dark reveal">
+  <div class="s-label s-label-blue">08 — Outcome</div>
+  <div class="two-col two-col-3-2" style="margin-bottom:0;">
+    <div>
+      <h2 class="s-h2 s-h2-inv">Three years, three platforms, one <em>measurable</em> change.</h2>
+      <div class="divider"></div>
+      <p class="s-body s-body-inv">The dashboard shipped across all three Crest Data client environments — ServiceNow, Netskope, and Polaris — over an 18-month rollout. Post-launch measurement was conducted at 30, 90, and 180 days after each deployment.</p>
+      <p class="s-body s-body-inv" style="margin-top:20px;">The risk score model became the product's signature feature — referenced unprompted by CISOs in quarterly business reviews as the reason they felt more confident in their security posture conversations with their boards.</p>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="outcomes-row">
+    <div class="outcome-card">
+      <div class="outcome-n">41%</div>
+      <div class="outcome-l">Reduction in average threat triage time — from 12 minutes to 7 minutes post-launch.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">60%</div>
+      <div class="outcome-l">Drop in acknowledged-but-uninvestigated alerts after the new severity taxonomy shipped.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">3 platforms</div>
+      <div class="outcome-l">ServiceNow, Netskope, and Polaris — unified in a single correlated view for the first time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REFLECTION ═══ -->
+<section class="s reveal">
+  <div class="s-label">09 — Reflection</div>
+  <div class="s-h2" style="max-width:680px;font-family:var(--f-display);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:28px;">What three years in a <em>regulated, high-stakes</em> environment taught me.</div>
+
+  <div class="refl-list">
+    <div class="refl">
+      <div class="refl-label">Design under pressure</div>
+      <div class="refl-text">Security tools are used under stress. An analyst investigating a live breach isn't reading your interaction model carefully — they're muscle-memorying through it. <strong>Designing for high-stress states means optimising for the seventh time someone uses the feature, not the first.</strong> Discoverability matters less than reliability.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">What I'd change</div>
+      <div class="refl-text">The correlation timeline took three rounds of design iteration to land — and in retrospect, we should have built a low-fidelity prototype of it in Week 2 of discovery, not Week 8. <strong>The hardest design problem should be prototyped first, not last.</strong> We lost two sprints by discovering structural problems late.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">On enterprise UX</div>
+      <div class="refl-text">Enterprise security UX isn't glamorous — the design tokens are greys and reds, the users are stressed, the stakes are existential. But the design principles are the same as consumer: <strong>respect the user's time, respect their mental model, make the right action the easy action.</strong> The environment changes. The fundamentals don't.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">Unexpected learning</div>
+      <div class="refl-text">The feature most valued by users was the simplest to design: the risk score as a single number. CISOs said it gave them "confidence" in board conversations. What they were really saying was: <strong>the design gave them language</strong> — a way to communicate something complex in a word. That's what good data design does at its best.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEXT ═══ -->
+<section class="next-section reveal">
+  <div>
+    <div class="next-label">Next Case Study</div>
+    <h2 class="next-title">Customer Onboarding <em>Flow</em></h2>
+    <p class="next-sub">Redesigning the compliance onboarding experience for a regtech platform — reducing form abandonment by 34% and analyst review errors by 41%.</p>
+    <a href="/case-study/customer-onboarding-flow" class="next-btn">View Case Study →</a>
+  </div>
+  <div class="next-img" style="background:var(--bg3);border-radius:6px;min-height:280px;display:flex;align-items:center;justify-content:center;padding:40px;">
+    <svg width="240" height="160" viewBox="0 0 240 160" fill="none">
+      <!-- phone wireframe -->
+      <rect x="72" y="8" width="96" height="144" rx="10" stroke="rgba(26,18,8,.15)" stroke-width="1.5" fill="rgba(26,18,8,.03)"/>
+      <rect x="80" y="20" width="80" height="12" rx="3" fill="rgba(26,18,8,.08)"/>
+      <rect x="80" y="38" width="80" height="6" rx="2" fill="rgba(217,79,30,.2)"/>
+      <rect x="80" y="48" width="80" height="36" rx="3" fill="rgba(26,18,8,.06)"/>
+      <rect x="80" y="90" width="80" height="6" rx="2" fill="rgba(26,18,8,.08)"/>
+      <rect x="80" y="100" width="80" height="18" rx="3" fill="rgba(26,18,8,.06)"/>
+      <rect x="86" y="126" width="68" height="14" rx="7" fill="rgba(217,79,30,.3)"/>
+      <!-- progress bar -->
+      <rect x="80" y="38" width="52" height="6" rx="2" fill="rgba(217,79,30,.5)"/>
+    </svg>
+  </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// CURSOR
+const cur=document.getElementById('cur'),curf=document.getElementById('curf');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+setInterval(()=>{fx+=(mx-fx)*.14;fy+=(my-fy)*.14;curf.style.left=fx+'px';curf.style.top=fy+'px';},16);
+document.querySelectorAll('a,button,.insight,.method-card,.hmw,.decision').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur.classList.remove('big'));});
+
+// LOADER
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('out');setTimeout(()=>document.getElementById('loader').remove(),800);},700);
+});
+
+// NAV
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+
+// REVEAL
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+// stagger insights
+gsap.utils.toArray('.insight').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,x:-20,duration:.6,delay:i*.08,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+});
+
+// stagger stat cards
+gsap.utils.toArray('.dash-stat').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,y:12,duration:.5,delay:i*.07,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 95%',once:true}});
+});
+
+// outcome numbers count up feel
+gsap.utils.toArray('.outcome-n').forEach(el=>{
+  gsap.from(el,{opacity:0,scale:.85,duration:.7,ease:'back.out(1.5)',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+</script>
+</body>
+</html>
