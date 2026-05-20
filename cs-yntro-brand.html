@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yntro — Brand Identity · Yuvrajsinh Jadeja</title>
+  <meta name="description" content="Designing the visual identity for Yntro — a professional introduction-tracking SaaS. Mark, colour, type, and voice from zero.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      /* Portfolio tokens */
+      --bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E3DDD0;
+      --ink:#1A1208;--ink2:#3D3629;--muted:#8A7E6E;
+      --accent:#D94F1E;--border:rgba(26,18,8,.10);
+      --f-display:'Cormorant Garamond',Georgia,serif;
+      --f-body:'DM Sans',system-ui,sans-serif;
+      --f-mono:'DM Mono',monospace;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+      /* Yntro brand tokens */
+      --y-dark:#080910;--y-dark2:#161820;--y-dark3:#1e2130;
+      --y-navy:#41456D;--y-mid:#2661AA;--y-blue:#0088FF;
+      --y-soft:#F4F6FA;--y-muted:#6B7194;
+      --y-grad:linear-gradient(90deg,#41456D 0%,#394D7E 29%,#2661AA 48%,#0682F1 74%,#0088FF 100%);
+      --y-rule:rgba(255,255,255,.07);
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;cursor:none;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;max-width:100%;}
+
+    /* CURSOR */
+    #cur{position:fixed;width:9px;height:9px;background:var(--y-blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s;}
+    #cur.big{width:44px;height:44px;background:transparent;border:1.5px solid var(--y-blue);}
+    #curf{position:fixed;width:32px;height:32px;border:1px solid rgba(0,136,255,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+
+    /* LOADER */
+    #loader{position:fixed;inset:0;background:var(--y-dark);z-index:9999;display:flex;align-items:center;justify-content:center;}
+    #loader.out{opacity:0;pointer-events:none;transition:opacity .7s var(--ease);}
+    .loader-mark{opacity:.15;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s;}
+    nav.scrolled{background:rgba(8,9,16,.92);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--y-rule);}
+    .nav-logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.75);transition:color .3s;}
+    nav.scrolled .nav-logo{color:rgba(255,255,255,.75);}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color .2s,gap .2s var(--ease);}
+    .nav-back::before{content:'←';}
+    .nav-back:hover{color:var(--y-blue);gap:14px;}
+
+    /* HERO */
+    .hero{min-height:100svh;background:var(--y-dark);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 72px;position:relative;overflow:hidden;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+    .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 75% 15%,rgba(0,136,255,.10) 0%,transparent 55%),radial-gradient(ellipse at 15% 85%,rgba(65,69,109,.18) 0%,transparent 50%);}
+    .hero-mark-bg{position:absolute;right:-8%;top:50%;transform:translateY(-50%);opacity:.055;pointer-events:none;}
+    .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--y-blue);margin-bottom:24px;display:flex;align-items:center;gap:12px;}
+    .hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--y-blue);}
+    .hero-h1{font-family:var(--f-display);font-size:clamp(60px,9vw,136px);font-weight:300;line-height:.9;letter-spacing:-.04em;color:var(--y-soft);margin-bottom:48px;max-width:1100px;}
+    .hero-h1 em{font-style:italic;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-meta-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;max-width:920px;}
+    .hm{padding:18px 22px;border-right:1px solid rgba(255,255,255,.06);}
+    .hm:last-child{border-right:none;}
+    .hm-l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:5px;}
+    .hm-v{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.7);}
+
+    /* SECTION SHELL */
+    .s{padding:96px 56px;}
+    .s-alt{background:var(--bg2);}
+    .s-dark{background:var(--y-dark);color:var(--y-soft);}
+    .s-dark2{background:var(--y-dark2);color:var(--y-soft);}
+    .s-navy{background:var(--y-navy);color:var(--y-soft);}
+    .s-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-family:var(--f-mono);}
+    .s-label-blue{color:var(--y-blue);}
+    .s-label-inv{color:rgba(255,255,255,.35);}
+    .s-h2{font-family:var(--f-display);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:28px;}
+    .s-h2 em{font-style:italic;}
+    .s-h2-grad em{font-style:italic;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .s-h2-inv{color:var(--y-soft);}
+    .s-body{font-size:16px;line-height:1.82;color:var(--ink2);max-width:640px;}
+    .s-body strong{color:var(--ink);font-weight:600;}
+    .s-body-inv{color:rgba(255,255,255,.55);}
+    .s-body-inv strong{color:var(--y-soft);}
+    .divider{width:36px;height:1px;background:var(--y-blue);margin:28px 0;}
+    .divider-muted{background:var(--border);}
+
+    /* LAYOUT */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .two-col-3-2{grid-template-columns:3fr 2fr;}
+
+    /* BRIEF STATS */
+    .brief-stats{display:flex;flex-direction:column;gap:3px;}
+    .brief-stat{padding:28px 32px;background:var(--bg3);border-radius:3px;}
+    .bs-val{font-family:var(--f-display);font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1;letter-spacing:-.03em;color:var(--y-navy);}
+    .bs-label{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+    /* METHOD CARDS */
+    .methods-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:48px;}
+    .method-card{padding:36px 32px;background:var(--bg3);border-radius:3px;}
+    .method-num{font-family:var(--f-display);font-size:48px;font-weight:300;color:rgba(26,18,8,.08);line-height:1;margin-bottom:16px;}
+    .method-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px;}
+    .method-desc{font-size:13.5px;color:var(--muted);line-height:1.7;}
+
+    /* INSIGHT CARDS */
+    .insights-list{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
+    .insight{display:grid;grid-template-columns:52px 1fr;gap:24px;align-items:start;padding:32px;background:var(--bg2);border-radius:3px;border-left:3px solid transparent;transition:border-color .25s,background .25s;}
+    .insight:hover{border-left-color:var(--y-blue);background:rgba(0,136,255,.03);}
+    .insight-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.12);line-height:1;padding-top:4px;}
+    .insight-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
+    .insight-body{font-size:14px;color:var(--muted);line-height:1.68;}
+
+    /* PULL QUOTE */
+    .pullquote{padding:72px 56px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .pullquote blockquote{font-family:var(--f-display);font-size:clamp(24px,3.5vw,48px);font-weight:300;line-height:1.25;letter-spacing:-.025em;max-width:920px;}
+    .pullquote blockquote em{font-style:italic;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .pullquote cite{display:block;margin-top:24px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+
+    /* MARK CONCEPTION — naming etymology */
+    .etym-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:48px;}
+    .etym-card{padding:40px 36px;background:var(--y-dark2);border-radius:3px;}
+    .etym-word{font-family:var(--f-display);font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:-.02em;color:var(--y-soft);margin-bottom:12px;}
+    .etym-word span{background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .etym-origin{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--y-muted);margin-bottom:16px;}
+    .etym-def{font-size:14px;color:rgba(255,255,255,.5);line-height:1.75;}
+
+    /* LOGO SHOWCASE — dark section */
+    .logo-showcase{padding:96px 56px;background:var(--y-dark);}
+    .logo-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:48px;}
+    .logo-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 40px;gap:24px;min-height:260px;}
+    .logo-cell-bg1{background:var(--y-dark2);}
+    .logo-cell-bg2{background:var(--y-grad);}
+    .logo-cell-bg3{background:var(--y-soft);}
+    .logo-cap{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);}
+    .logo-cap-dark{color:rgba(26,18,8,.35);}
+
+    /* MARK ANATOMY */
+    .anatomy-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .anatomy-svg-bg{display:flex;align-items:center;justify-content:center;padding:56px;background:var(--y-dark2);border-radius:4px;}
+    .anatomy-notes{display:flex;flex-direction:column;gap:32px;}
+    .anatomy-note{display:flex;gap:20px;align-items:flex-start;}
+    .anote-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+    .anote-title{font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:5px;}
+    .anote-body{font-size:13.5px;color:var(--muted);line-height:1.7;}
+
+    /* COLOUR SYSTEM */
+    .palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:48px;}
+    .swatch{display:flex;flex-direction:column;}
+    .swatch-block{height:140px;border-radius:3px 3px 0 0;}
+    .swatch-body{padding:18px;background:var(--bg2);border:1px solid var(--border);border-top:none;border-radius:0 0 3px 3px;}
+    .swatch-name{font-family:var(--f-display);font-size:1rem;font-weight:400;color:var(--ink);margin-bottom:4px;}
+    .swatch-hex{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);letter-spacing:.1em;}
+    .swatch-role{font-size:.72rem;color:var(--muted);margin-top:4px;line-height:1.4;}
+    .grad-bar{height:64px;border-radius:3px;margin-top:8px;display:flex;align-items:center;justify-content:center;}
+    .grad-bar-label{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+
+    /* TYPOGRAPHY */
+    .type-blocks{display:flex;flex-direction:column;gap:0;margin-top:48px;}
+    .type-block{padding:48px 0;border-bottom:1px solid var(--border);}
+    .type-block:first-child{border-top:1px solid var(--border);}
+    .type-meta-label{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+    .type-eg-display{font-family:var(--f-display);font-size:clamp(56px,8vw,96px);font-weight:300;color:var(--ink);line-height:1;letter-spacing:-.02em;}
+    .type-eg-ui{font-family:var(--f-body);font-size:clamp(24px,3vw,40px);font-weight:500;color:var(--ink);}
+    .type-eg-body{font-family:var(--f-body);font-size:1rem;font-weight:300;color:var(--ink2);line-height:1.75;max-width:560px;}
+    .type-eg-mono{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);letter-spacing:.12em;}
+
+    /* TAGLINES */
+    .tagline-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;}
+    .tagline-cell{padding:48px 44px;background:var(--y-dark2);border-radius:3px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;min-height:200px;}
+    .tagline-quote{font-family:var(--f-display);font-size:clamp(20px,2.2vw,28px);font-weight:300;color:var(--y-soft);line-height:1.35;}
+    .tagline-quote strong{font-weight:600;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .tagline-use{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+
+    /* APP ICONS */
+    .icon-row{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-top:48px;}
+    .app-icon{display:flex;flex-direction:column;align-items:center;gap:14px;}
+    .icon-bg{border-radius:22.4%;display:flex;align-items:center;justify-content:center;background:var(--y-grad);flex-shrink:0;}
+    .icon-size-label{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+
+    /* OUTCOMES */
+    .outcomes-row{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
+    .outcome-card{padding:40px 32px;background:rgba(255,255,255,.04);border-radius:4px;text-align:center;}
+    .outcome-n{font-family:var(--f-display);font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1;letter-spacing:-.04em;margin-bottom:10px;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .outcome-l{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+
+    /* REFLECTION */
+    .refl-list{display:flex;flex-direction:column;margin-top:48px;}
+    .refl{padding:28px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:200px 1fr;gap:40px;}
+    .refl:first-child{border-top:1px solid var(--border);}
+    .refl-label{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px;}
+    .refl-text{font-size:15.5px;line-height:1.8;color:var(--muted);}
+    .refl-text strong{color:var(--ink);font-weight:600;}
+
+    /* NEXT */
+    .next-section{padding:96px 56px;background:var(--y-dark);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .next-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;}
+    .next-title{font-family:var(--f-display);font-size:clamp(32px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-.03em;margin-bottom:28px;color:var(--y-soft);}
+    .next-title em{font-style:italic;background:var(--y-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .next-sub{font-size:15px;color:rgba(255,255,255,.4);line-height:1.65;margin-bottom:32px;}
+    .next-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1.5px solid rgba(255,255,255,.15);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);transition:background .25s,color .25s,border-color .25s,gap .25s var(--ease);}
+    .next-btn:hover{background:var(--y-blue);color:#fff;border-color:var(--y-blue);gap:16px;}
+    .next-preview{background:var(--y-dark2);border-radius:6px;overflow:hidden;padding:48px;display:flex;align-items:center;justify-content:center;min-height:280px;}
+
+    /* GRAIN */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
+
+    /* SCROLL REVEAL */
+    .reveal{opacity:0;transform:translateY(28px);}
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      nav,.hero,.s,.pullquote,.logo-showcase,.next-section{padding-left:24px;padding-right:24px;}
+      .hero-meta-grid{grid-template-columns:repeat(3,1fr);}
+      .hm:nth-child(4),.hm:nth-child(5){display:none;}
+      .two-col,.two-col-3-2{grid-template-columns:1fr;gap:48px;}
+      .methods-grid,.etym-grid,.outcomes-row,.tagline-grid{grid-template-columns:1fr;}
+      .logo-grid-3{grid-template-columns:1fr;}
+      .palette-grid{grid-template-columns:repeat(3,1fr);}
+      .palette-grid .swatch:nth-child(4),.palette-grid .swatch:nth-child(5){display:none;}
+      .anatomy-wrap{grid-template-columns:1fr;gap:40px;}
+      .refl{grid-template-columns:1fr;gap:8px;}
+      .next-section{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="curf"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-mark">
+    <svg width="80" height="80" viewBox="0 0 146 145" fill="none">
+      <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="#41456D"/>
+      <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="#0088FF"/>
+      <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="url(#gl0)"/>
+      <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="#41456D"/>
+      <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="#0088FF"/>
+      <defs><linearGradient id="gl0" x1="0" y1="90" x2="146" y2="90" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="#41456D"/><stop offset=".48" stop-color="#2661AA"/><stop offset=".79" stop-color="#0088FF"/></linearGradient></defs>
+    </svg>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Yuvrajsinh Jadeja</a>
+  <a href="/#work" class="nav-back">All Work</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <!-- ghosted mark in background -->
+  <div class="hero-mark-bg">
+    <svg width="520" height="520" viewBox="0 0 146 145" fill="none">
+      <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="#41456D"/>
+      <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="#0088FF"/>
+      <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="url(#gl1)"/>
+      <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="#41456D"/>
+      <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="#0088FF"/>
+      <defs><linearGradient id="gl1" x1="0" y1="90" x2="146" y2="90" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="#41456D"/><stop offset=".48" stop-color="#2661AA"/><stop offset=".79" stop-color="#0088FF"/></linearGradient></defs>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">Brand Identity · 2022</div>
+  <h1 class="hero-h1">Where every <em>introduction</em><br>becomes a relationship.</h1>
+
+  <div class="hero-meta-grid">
+    <div class="hm"><div class="hm-l">Company</div><div class="hm-v">Yntro</div></div>
+    <div class="hm"><div class="hm-l">My Role</div><div class="hm-v">Lead Designer</div></div>
+    <div class="hm"><div class="hm-l">Scope</div><div class="hm-v">Brand Identity</div></div>
+    <div class="hm"><div class="hm-l">Year</div><div class="hm-v">2022</div></div>
+    <div class="hm"><div class="hm-l">Deliverables</div><div class="hm-v">Mark · Colour · Type · Voice</div></div>
+  </div>
+</section>
+
+<!-- ═══ BRIEF ═══ -->
+<section class="s reveal">
+  <div class="two-col two-col-3-2">
+    <div>
+      <div class="s-label">01 — The Brief</div>
+      <h2 class="s-h2">A platform for <em>professional introductions</em> needed a mark as precise as the act itself.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Yntro is a SaaS tool for high-volume connectors — people who make dozens of professional introductions a week — to track every one they've ever made. Who was introduced, when, what happened next. Your network, finally visible.</p>
+      <p class="s-body" style="margin-top:20px;">The brand brief was simple in words, hard in execution: <strong>feel like LinkedIn grew up and went independent.</strong> Trustworthy without being corporate. Warm without being casual. The product is about human connection, and the visual identity had to carry that weight from the first pixel.</p>
+    </div>
+    <div class="brief-stats">
+      <div class="brief-stat">
+        <div class="bs-val">0 → 1</div>
+        <div class="bs-label">Built the entire identity system from a blank canvas — no prior brand, no design system, no moodboard.</div>
+      </div>
+      <div class="brief-stat">
+        <div class="bs-val">3 wks</div>
+        <div class="bs-label">From first sketch to final brand guidelines document shipped to engineering.</div>
+      </div>
+      <div class="brief-stat">
+        <div class="bs-val">5 sizes</div>
+        <div class="bs-label">App icon scales from 1024 × 1024 App Store down to 24 × 24 favicon — all in SVG.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DISCOVERY ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">02 — Discovery</div>
+  <div class="two-col">
+    <div>
+      <h2 class="s-h2">Understanding what <em>trust</em> looks like in a professional context.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Before touching a single design tool, I needed to understand the space. Professional networking tools tend toward two failure modes: <strong>cold corporate blue that says nothing</strong>, or <strong>warm startup orange that says too much.</strong> Yntro had to thread the needle.</p>
+      <p class="s-body" style="margin-top:20px;">I audited 20+ identity systems across professional tools, networking apps, and B2B SaaS. The pattern that emerged: the most trusted brands use colour with restraint and let <strong>form carry the meaning.</strong></p>
+    </div>
+    <div>
+      <p class="s-body" style="margin-bottom:24px;">Four discovery lenses shaped the brief:</p>
+    </div>
+  </div>
+
+  <div class="methods-grid">
+    <div class="method-card">
+      <div class="method-num">01</div>
+      <div class="method-title">Competitive Audit</div>
+      <div class="method-desc">Mapped 20 professional tools across identity traits — colour temperature, mark complexity, typeface personality, icon style. Found a clear gap: nothing in the space communicated "relationship" — they all communicated "network."</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">02</div>
+      <div class="method-title">Semantic Mapping</div>
+      <div class="method-desc">Workshopped brand words with the founding team: "introduction," "bridge," "trust," "visible," "connector." These became the semantic anchors that every visual decision was measured against.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">03</div>
+      <div class="method-title">Symbol Research</div>
+      <div class="method-desc">Explored how the concept of "two people connected" has been represented historically — handshakes, bridges, arcs, nodes. Sought a form that felt instantly readable at 24px but meaningful at 300px.</div>
+    </div>
+    <div class="method-card">
+      <div class="method-num">04</div>
+      <div class="method-title">Typeface Audition</div>
+      <div class="method-desc">Tested 40+ typeface pairings against the brand words. Cormorant Garamond for display (editorial authority, warmth) and DM Sans for UI (modern, readable, non-corporate) emerged as the winning pair within the first day.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSIGHTS ═══ -->
+<section class="s reveal">
+  <div class="s-label">03 — Design Principles</div>
+  <h2 class="s-h2" style="max-width:680px;">Four principles that <em>governed</em> every decision in the system.</h2>
+
+  <div class="insights-list">
+    <div class="insight">
+      <div class="insight-n">1</div>
+      <div>
+        <div class="insight-title">The mark must tell the story without the wordmark</div>
+        <div class="insight-body">Any icon that requires text to explain itself has failed. The Yntro mark — two dots connected by an arc with reaching arms — needed to communicate "two people being introduced" at 28px without a label. The test: could someone describe it as a handshake or bridge without prompting? After 30 iterations, yes.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">2</div>
+      <div>
+        <div class="insight-title">Colour carries relationship, not brand</div>
+        <div class="insight-body">Navy-to-blue gradient wasn't chosen because it looks like a tech company. It was chosen because the gradient literally is the introduction: Person A (navy, depth, initiator) flows into Person B (blue, energy, recipient). The brand story lives inside the colour system itself.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">3</div>
+      <div>
+        <div class="insight-title">Cormorant earns its seat at the table</div>
+        <div class="insight-body">Most SaaS tools default to geometric sans-serifs that feel clean but lifeless. Cormorant Garamond brings editorial warmth — the kind of type you'd find in a quality business publication. It signals that Yntro takes relationships seriously, not as data points but as stories worth telling.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">4</div>
+      <div>
+        <div class="insight-title">Scale gracefully — or don't scale at all</div>
+        <div class="insight-body">A brand identity that breaks at notification-icon size (28×28px) is not a brand identity — it's a large-format illustration. Every element of the Yntro system was tested at every size from the beginning, not as an afterthought. The simplified favicon mark was designed in parallel with the full wordmark.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PULL QUOTE ═══ -->
+<div class="pullquote reveal">
+  <blockquote>
+    "An introduction is a relationship. <em>Treat it like one.</em>"
+  </blockquote>
+  <cite>Brand manifesto — written as a design constraint before the first mark sketch</cite>
+</div>
+
+<!-- ═══ MARK CONCEPTION ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">04 — Mark Conception</div>
+  <div class="two-col two-col-3-2">
+    <div>
+      <h2 class="s-h2">The name <em>yntro</em> — etymology as identity.</h2>
+      <div class="divider"></div>
+      <p class="s-body">The brand name is a phonetic compression of "introduction" — stripping it to its kinetic core. <em>Yntro</em> sounds like an action, not a product. It says: something is about to happen. Someone is about to meet someone.</p>
+      <p class="s-body" style="margin-top:20px;">The mark follows the same logic. It compresses the entire concept of a professional introduction into six elements: two people (the dots), the path between them (the arc gradient), and the moment of meeting (the two arms reaching inward). Every element has a semantic job.</p>
+    </div>
+    <div>
+      <p class="s-body"><strong>30+ mark sketches</strong> were explored across four directions — nodes and edges, bridge forms, handshake abstractions, and person-silhouette marks. The winning direction was the only one that worked at 24px, read instantly as "two people," and contained the gradient as meaning rather than decoration.</p>
+    </div>
+  </div>
+
+  <div class="etym-grid">
+    <div class="etym-card">
+      <div class="etym-word"><span>intro</span>duction</div>
+      <div class="etym-origin">Latin · introductio · "a leading in"</div>
+      <div class="etym-def">From <em>intro-</em> (inward) + <em>ducere</em> (to lead). The act of bringing two people across a threshold to meet. The brand name collapses this to its essential form — an action, not a noun.</div>
+    </div>
+    <div class="etym-card">
+      <div class="etym-word">the <span>mark</span></div>
+      <div class="etym-origin">Visual etymology — six semantic elements</div>
+      <div class="etym-def">Navy dot → Person A (initiator). Blue dot → Person B (recipient). Gradient arc → the introduction in motion. Two arms → the handshake. The form is the story. Remove any element and the meaning collapses.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARK SHOWCASE ═══ -->
+<section class="logo-showcase reveal">
+  <div class="s-label s-label-blue">05 — Logo Variations</div>
+  <h2 class="s-h2 s-h2-inv" style="max-width:680px;">The wordmark and mark — tested across every context.</h2>
+
+  <div class="logo-grid-3">
+    <!-- Full wordmark on dark -->
+    <div class="logo-cell logo-cell-bg1">
+      <svg width="220" height="53" viewBox="0 0 604 145" fill="none">
+        <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="#41456D"/>
+        <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="#0088FF"/>
+        <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="url(#glv1)"/>
+        <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="#41456D"/>
+        <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="#0088FF"/>
+        <path d="M203.832 23.5036H226.486L249.303 82.3749H249.644L269.943 23.4634H291.282L252.551 121.874C251.217 125.284 249.621 128.586 247.776 131.753C246.168 134.498 244.091 136.945 241.638 138.988C239.144 141.008 236.275 142.526 233.193 143.457C229.401 144.544 225.464 145.056 221.517 144.976C219.812 144.976 218.077 144.893 216.312 144.727C214.502 144.549 212.708 144.237 210.945 143.794L212.65 126.239C213.951 126.676 215.292 126.988 216.653 127.171C217.87 127.333 219.096 127.416 220.323 127.421C222.172 127.466 224.015 127.211 225.78 126.665C227.205 126.189 228.492 125.378 229.531 124.302C230.628 123.115 231.547 121.777 232.259 120.331C233.044 118.756 233.897 116.899 234.817 114.761L238.877 104.464L203.832 23.5036Z" fill="#0088FF"/>
+        <path d="M303.551 23.5034H322.99V36.5011H323.331C325.149 32.4499 328.305 28.8783 332.798 25.7862C337.486 22.6117 343.06 20.9701 348.738 21.092C353.47 20.9667 358.168 21.921 362.468 23.8812C366.108 25.6044 369.312 28.1119 371.846 31.22C374.319 34.3155 376.144 37.868 377.214 41.6696C378.352 45.6222 378.926 49.7131 378.919 53.8233V104.464H358.457V59.5866C358.449 57.1026 358.278 54.6216 357.945 52.1594C357.648 49.7104 356.897 47.3368 355.729 45.1582C354.609 43.0923 353.002 41.3246 351.044 40.0057C349.057 38.6553 346.413 37.9801 343.111 37.9801C340.148 37.9034 337.214 38.5727 334.585 39.9253C332.285 41.1445 330.28 42.8419 328.706 44.9009C327.127 47.0126 325.942 49.3862 325.206 51.9102C324.415 54.5177 324.013 57.2257 324.013 59.9483V104.512H303.551V23.5034Z" fill="#0088FF"/>
+        <path d="M391.025 39.6682V23.5035H405.349V0H425.502V23.5035H445.964V39.7084H425.502V77.351C425.386 80.4484 426.059 83.5249 427.459 86.2975C428.769 88.6607 431.697 89.8423 436.245 89.8423C437.732 89.8323 439.215 89.6924 440.678 89.4243C442.147 89.1786 443.579 88.7519 444.941 88.1543L445.623 104.022C443.517 104.77 441.341 105.309 439.127 105.629C436.759 106.011 434.365 106.207 431.965 106.216C426.509 106.216 422.076 105.458 418.665 103.941C415.459 102.588 412.662 100.437 410.545 97.6956C408.539 94.9852 407.154 91.8746 406.486 88.5803C405.727 84.9419 405.357 81.2348 405.381 77.5198V39.7406L391.025 39.6682Z" fill="#0088FF"/>
+        <path d="M460.767 23.5033H480.376V37.0074H480.717C482.859 32.438 486.147 28.4868 490.266 25.529C494.432 22.5604 499.456 21.0041 504.589 21.0919C505.401 21.0919 506.213 21.0919 507.147 21.1803C507.958 21.2175 508.76 21.358 509.534 21.5983V40.1664C508.383 39.8695 507.214 39.644 506.035 39.4912C505.102 39.3806 504.164 39.3242 503.225 39.3224C498.564 39.3224 494.813 40.1664 491.971 41.8544C489.324 43.3633 487.052 45.4397 485.321 47.9312C483.8 50.1258 482.7 52.5778 482.073 55.1656C481.593 57.1011 481.32 59.0814 481.261 61.0736V104.48H460.799L460.767 23.5033Z" fill="#0088FF"/>
+        <path d="M514.991 63.6379C514.904 57.6369 516.097 51.6852 518.49 46.1711C520.694 41.109 523.912 36.5423 527.95 32.7474C532.037 28.9676 536.85 26.04 542.103 24.1385C553.337 20.0873 565.654 20.0873 576.888 24.1385C582.142 26.0097 586.95 28.9315 591.014 32.722C595.078 36.5125 598.31 41.0905 600.509 46.1711C602.892 51.6881 604.081 57.6382 604 63.6379C604.075 69.6658 602.886 75.6435 600.509 81.1932C598.299 86.3031 595.08 90.9244 591.041 94.7857C586.95 98.6178 582.143 101.621 576.888 103.628C565.695 107.904 553.295 107.904 542.103 103.628C536.848 101.621 532.04 98.6178 527.95 94.7857C523.908 90.9283 520.691 86.3059 518.49 81.1932C516.102 75.6464 514.91 69.667 514.991 63.6379ZM535.794 63.6379C535.8 66.843 536.289 70.0292 537.247 73.0908C538.158 76.1449 539.631 79.0062 541.591 81.5308C543.565 84.0455 546.056 86.1167 548.899 87.6077C552.197 89.1586 555.803 89.9632 559.455 89.9632C563.106 89.9632 566.712 89.1586 570.011 87.6077C572.853 86.1167 575.344 84.0455 577.318 81.5308C579.275 79.0028 580.75 76.1427 581.671 73.0908C582.618 70.0271 583.105 66.842 583.116 63.6379C583.109 60.4625 582.622 57.306 581.671 54.2735C580.738 51.2513 579.263 48.4198 577.318 45.9138C575.355 43.4114 572.861 41.367 570.011 39.9254C566.698 38.4263 563.097 37.6503 559.455 37.6503C555.812 37.6503 552.212 38.4263 548.899 39.9254C546.049 41.367 543.554 43.4114 541.591 45.9138C539.643 48.4164 538.171 51.2491 537.247 54.2735C536.285 57.3038 535.795 60.4615 535.794 63.6379Z" fill="#0088FF"/>
+        <defs><linearGradient id="glv1" x1="0" y1="90" x2="146" y2="90" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="#41456D"/><stop offset=".48" stop-color="#2661AA"/><stop offset=".79" stop-color="#0088FF"/></linearGradient></defs>
+      </svg>
+      <span class="logo-cap">Full colour · dark background</span>
+    </div>
+
+    <!-- White on gradient -->
+    <div class="logo-cell logo-cell-bg2">
+      <svg width="220" height="53" viewBox="0 0 604 145" fill="none">
+        <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="rgba(255,255,255,0.6)"/>
+        <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="white"/>
+        <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="rgba(255,255,255,0.9)"/>
+        <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="rgba(255,255,255,0.55)"/>
+        <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="white"/>
+        <path d="M203.832 23.5036H226.486L249.303 82.3749H249.644L269.943 23.4634H291.282L252.551 121.874C251.217 125.284 249.621 128.586 247.776 131.753C246.168 134.498 244.091 136.945 241.638 138.988C239.144 141.008 236.275 142.526 233.193 143.457C229.401 144.544 225.464 145.056 221.517 144.976C219.812 144.976 218.077 144.893 216.312 144.727C214.502 144.549 212.708 144.237 210.945 143.794L212.65 126.239C213.951 126.676 215.292 126.988 216.653 127.171C217.87 127.333 219.096 127.416 220.323 127.421C222.172 127.466 224.015 127.211 225.78 126.665C227.205 126.189 228.492 125.378 229.531 124.302C230.628 123.115 231.547 121.777 232.259 120.331C233.044 118.756 233.897 116.899 234.817 114.761L238.877 104.464L203.832 23.5036Z" fill="white"/>
+        <path d="M303.551 23.5034H322.99V36.5011H323.331C325.149 32.4499 328.305 28.8783 332.798 25.7862C337.486 22.6117 343.06 20.9701 348.738 21.092C353.47 20.9667 358.168 21.921 362.468 23.8812C366.108 25.6044 369.312 28.1119 371.846 31.22C374.319 34.3155 376.144 37.868 377.214 41.6696C378.352 45.6222 378.926 49.7131 378.919 53.8233V104.464H358.457V59.5866C358.449 57.1026 358.278 54.6216 357.945 52.1594C357.648 49.7104 356.897 47.3368 355.729 45.1582C354.609 43.0923 353.002 41.3246 351.044 40.0057C349.057 38.6553 346.413 37.9801 343.111 37.9801C340.148 37.9034 337.214 38.5727 334.585 39.9253C332.285 41.1445 330.28 42.8419 328.706 44.9009C327.127 47.0126 325.942 49.3862 325.206 51.9102C324.415 54.5177 324.013 57.2257 324.013 59.9483V104.512H303.551V23.5034Z" fill="white"/>
+        <path d="M391.025 39.6682V23.5035H405.349V0H425.502V23.5035H445.964V39.7084H425.502V77.351C425.386 80.4484 426.059 83.5249 427.459 86.2975C428.769 88.6607 431.697 89.8423 436.245 89.8423C437.732 89.8323 439.215 89.6924 440.678 89.4243C442.147 89.1786 443.579 88.7519 444.941 88.1543L445.623 104.022C443.517 104.77 441.341 105.309 439.127 105.629C436.759 106.011 434.365 106.207 431.965 106.216C426.509 106.216 422.076 105.458 418.665 103.941C415.459 102.588 412.662 100.437 410.545 97.6956C408.539 94.9852 407.154 91.8746 406.486 88.5803C405.727 84.9419 405.357 81.2348 405.381 77.5198V39.7406L391.025 39.6682Z" fill="white"/>
+        <path d="M460.767 23.5033H480.376V37.0074H480.717C482.859 32.438 486.147 28.4868 490.266 25.529C494.432 22.5604 499.456 21.0041 504.589 21.0919C505.401 21.0919 506.213 21.0919 507.147 21.1803C507.958 21.2175 508.76 21.358 509.534 21.5983V40.1664C508.383 39.8695 507.214 39.644 506.035 39.4912C505.102 39.3806 504.164 39.3242 503.225 39.3224C498.564 39.3224 494.813 40.1664 491.971 41.8544C489.324 43.3633 487.052 45.4397 485.321 47.9312C483.8 50.1258 482.7 52.5778 482.073 55.1656C481.593 57.1011 481.32 59.0814 481.261 61.0736V104.48H460.799L460.767 23.5033Z" fill="white"/>
+        <path d="M514.991 63.6379C514.904 57.6369 516.097 51.6852 518.49 46.1711C520.694 41.109 523.912 36.5423 527.95 32.7474C532.037 28.9676 536.85 26.04 542.103 24.1385C553.337 20.0873 565.654 20.0873 576.888 24.1385C582.142 26.0097 586.95 28.9315 591.014 32.722C595.078 36.5125 598.31 41.0905 600.509 46.1711C602.892 51.6881 604.081 57.6382 604 63.6379C604.075 69.6658 602.886 75.6435 600.509 81.1932C598.299 86.3031 595.08 90.9244 591.041 94.7857C586.95 98.6178 582.143 101.621 576.888 103.628C565.695 107.904 553.295 107.904 542.103 103.628C536.848 101.621 532.04 98.6178 527.95 94.7857C523.908 90.9283 520.691 86.3059 518.49 81.1932C516.102 75.6464 514.91 69.667 514.991 63.6379ZM535.794 63.6379C535.8 66.843 536.289 70.0292 537.247 73.0908C538.158 76.1449 539.631 79.0062 541.591 81.5308C543.565 84.0455 546.056 86.1167 548.899 87.6077C552.197 89.1586 555.803 89.9632 559.455 89.9632C563.106 89.9632 566.712 89.1586 570.011 87.6077C572.853 86.1167 575.344 84.0455 577.318 81.5308C579.275 79.0028 580.75 76.1427 581.671 73.0908C582.618 70.0271 583.105 66.842 583.116 63.6379C583.109 60.4625 582.622 57.306 581.671 54.2735C580.738 51.2513 579.263 48.4198 577.318 45.9138C575.355 43.4114 572.861 41.367 570.011 39.9254C566.698 38.4263 563.097 37.6503 559.455 37.6503C555.812 37.6503 552.212 38.4263 548.899 39.9254C546.049 41.367 543.554 43.4114 541.591 45.9138C539.643 48.4164 538.171 51.2491 537.247 54.2735C536.285 57.3038 535.795 60.4615 535.794 63.6379Z" fill="white"/>
+      </svg>
+      <span class="logo-cap">White · gradient background</span>
+    </div>
+
+    <!-- Mark only on soft -->
+    <div class="logo-cell logo-cell-bg3">
+      <svg width="90" height="110" viewBox="0 0 146 145" fill="none">
+        <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="#41456D"/>
+        <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="#0088FF"/>
+        <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="url(#glv3)"/>
+        <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="#41456D"/>
+        <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="#0088FF"/>
+        <defs><linearGradient id="glv3" x1="0" y1="90" x2="146" y2="90" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="#41456D"/><stop offset=".48" stop-color="#2661AA"/><stop offset=".79" stop-color="#0088FF"/></linearGradient></defs>
+      </svg>
+      <span class="logo-cap-dark logo-cap">Mark only · light background</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARK ANATOMY ═══ -->
+<section class="s reveal">
+  <div class="s-label">06 — Mark Anatomy</div>
+  <div class="anatomy-wrap">
+    <div class="anatomy-svg-bg">
+      <svg width="260" height="260" viewBox="-12 -12 170 169" fill="none">
+        <!-- annotation lines -->
+        <line x1="15.5" y1="25.7" x2="15.5" y2="-8" stroke="rgba(255,255,255,0.12)" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="-10" y="-10" fill="rgba(255,255,255,0.25)" font-size="6" font-family="monospace">Person A</text>
+        <line x1="130.6" y1="25.7" x2="130.6" y2="-8" stroke="rgba(255,255,255,0.12)" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="108" y="-10" fill="rgba(255,255,255,0.25)" font-size="6" font-family="monospace">Person B</text>
+        <line x1="73" y1="134" x2="73" y2="156" stroke="rgba(255,255,255,0.1)" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="34" y="162" fill="rgba(255,255,255,0.2)" font-size="6" font-family="monospace">Connection arc</text>
+        <line x1="26" y1="60" x2="-4" y2="118" stroke="rgba(255,255,255,0.1)" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="-14" y="124" fill="rgba(255,255,255,0.2)" font-size="6" font-family="monospace">Handshake arms</text>
+        <!-- mark -->
+        <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="#41456D"/>
+        <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="#0088FF"/>
+        <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="url(#glanat)"/>
+        <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="#41456D"/>
+        <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="#0088FF"/>
+        <defs><linearGradient id="glanat" x1="0" y1="90" x2="146" y2="90" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="#41456D"/><stop offset=".48" stop-color="#2661AA"/><stop offset=".79" stop-color="#0088FF"/></linearGradient></defs>
+      </svg>
+    </div>
+    <div class="anatomy-notes">
+      <div class="anatomy-note">
+        <div class="anote-dot" style="background:#41456D;"></div>
+        <div>
+          <div class="anote-title">Person A — Connector Navy</div>
+          <div class="anote-body">The initiator. Dark navy carries depth and trust — the connector's authority and history behind every introduction. The person doing the introducing.</div>
+        </div>
+      </div>
+      <div class="anatomy-note">
+        <div class="anote-dot" style="background:#0088FF;"></div>
+        <div>
+          <div class="anote-title">Person B — Yntro Blue</div>
+          <div class="anote-body">The recipient. Bright blue represents openness and possibility — the other side of the bridge, ready to be connected. The person being introduced to.</div>
+        </div>
+      </div>
+      <div class="anatomy-note">
+        <div class="anote-dot" style="background:linear-gradient(90deg,#41456D,#0088FF);"></div>
+        <div>
+          <div class="anote-title">The arc — Brand Gradient</div>
+          <div class="anote-body">The introduction in motion. Navy flows into blue — the journey from one person to another. The gradient is the connection itself, not decorative colour.</div>
+        </div>
+      </div>
+      <div class="anatomy-note">
+        <div class="anote-dot" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.15);"></div>
+        <div>
+          <div class="anote-title">The arms — handshake gesture</div>
+          <div class="anote-body">Two shapes reaching toward each other from each side. The physical act of introduction — one hand from each side, meeting across the arc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COLOUR SYSTEM ═══ -->
+<section class="s s-alt reveal">
+  <div class="s-label">07 — Colour System</div>
+  <div class="two-col">
+    <div>
+      <h2 class="s-h2">Five hues, one <em>gradient</em>, one complete story.</h2>
+      <div class="divider"></div>
+      <p class="s-body">The Yntro palette isn't arbitrary. Every hue is a stop along the gradient that is also the brand's core symbol. The five colours are the five points of the introduction journey — from deep trust on the left, to open connection on the right.</p>
+    </div>
+    <div>
+      <p class="s-body">Navy-to-blue wasn't chosen because it "looks tech." It was chosen because the gradient <strong>literally is the introduction</strong>: Person A flowing into Person B. The palette is the story, not just the aesthetic.</p>
+    </div>
+  </div>
+
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-block" style="background:#41456D;"></div>
+      <div class="swatch-body">
+        <div class="swatch-name">Connector Navy</div>
+        <div class="swatch-hex">#41456D</div>
+        <div class="swatch-role">Primary · Person A · Trust</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#394D7E;"></div>
+      <div class="swatch-body">
+        <div class="swatch-name">Bridge Deep</div>
+        <div class="swatch-hex">#394D7E</div>
+        <div class="swatch-role">Gradient stop 2</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#2661AA;"></div>
+      <div class="swatch-body">
+        <div class="swatch-name">Bridge Mid</div>
+        <div class="swatch-hex">#2661AA</div>
+        <div class="swatch-role">Gradient midpoint</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#0682F1;"></div>
+      <div class="swatch-body">
+        <div class="swatch-name">Connection Blue</div>
+        <div class="swatch-hex">#0682F1</div>
+        <div class="swatch-role">Gradient stop 4</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#0088FF;"></div>
+      <div class="swatch-body">
+        <div class="swatch-name">Yntro Blue</div>
+        <div class="swatch-hex">#0088FF</div>
+        <div class="swatch-role">Primary · Person B · Energy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grad-bar" style="background:linear-gradient(90deg,#41456D 0%,#394D7E 29%,#2661AA 48%,#0682F1 74%,#0088FF 100%);margin-top:3px;">
+    <span class="grad-bar-label">Brand Gradient — Connector Navy → Yntro Blue</span>
+  </div>
+</section>
+
+<!-- ═══ TYPOGRAPHY ═══ -->
+<section class="s reveal">
+  <div class="s-label">08 — Typography</div>
+  <div class="two-col two-col-3-2">
+    <div>
+      <h2 class="s-h2">Two typefaces, each with a <em>distinct job</em> to do.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Cormorant Garamond brings editorial gravity to display contexts — the kind of type you'd find in a quality financial publication. It signals that Yntro takes relationships seriously, not as data but as stories.</p>
+      <p class="s-body" style="margin-top:16px;">DM Sans handles everything the product needs to say clearly and quickly — navigation, labels, body copy, CTAs. At weight 300 it's warm; at weight 500 it's authoritative. DM Mono anchors metadata to a point in time.</p>
+    </div>
+    <div>
+      <p class="s-body">The pairing was tested against 40+ alternatives. This was the only combination that felt <strong>neither corporate nor startup</strong> — it sat in exactly the right middle ground that Yntro needed to occupy.</p>
+    </div>
+  </div>
+
+  <div class="type-blocks">
+    <div class="type-block">
+      <div class="type-meta-label">Cormorant Garamond · Display · Weight 300 — editorial headlines</div>
+      <div class="type-eg-display">Introduction.</div>
+    </div>
+    <div class="type-block">
+      <div class="type-meta-label">DM Sans · UI Heading · Weight 500 — wordmark &amp; product headings</div>
+      <div class="type-eg-ui">Make your next introduction.</div>
+    </div>
+    <div class="type-block">
+      <div class="type-meta-label">DM Sans · Body · Weight 300 · 16px / 1.75 — product copy</div>
+      <div class="type-eg-body">Yntro helps high-volume connectors track every introduction they've ever made — who was introduced, when, and what happened next. Your network, finally visible.</div>
+    </div>
+    <div class="type-block">
+      <div class="type-meta-label">DM Mono · Labels &amp; meta — status, dates, connection counts</div>
+      <div class="type-eg-mono">NEW CONNECTION · 07 FEB 2022 · INTRO SENT · ACKNOWLEDGED · PRO MEMBER</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VOICE & TAGLINES ═══ -->
+<section class="s s-dark reveal">
+  <div class="s-label s-label-blue">09 — Voice &amp; Taglines</div>
+  <div class="two-col two-col-3-2" style="margin-bottom:0;">
+    <div>
+      <h2 class="s-h2 s-h2-grad s-h2-inv">Four lines that say everything the brand needs to say.</h2>
+      <div class="divider"></div>
+      <p class="s-body s-body-inv">The voice of Yntro is precise, warm, and slightly literary — it treats the introduction as a serious human act, not a data transaction. Every tagline was written as a brand constraint before design work began.</p>
+    </div>
+    <div>
+      <p class="s-body s-body-inv">Each line has a specific job: login CTA, marketing surface, value prop, manifesto. Together they form a complete brand voice that could run on any touchpoint — app, email, billboard.</p>
+    </div>
+  </div>
+
+  <div class="tagline-grid">
+    <div class="tagline-cell">
+      <div class="tagline-quote">Sign in to make your next <strong>introduction.</strong></div>
+      <div class="tagline-use">Primary CTA · Login screen</div>
+    </div>
+    <div class="tagline-cell">
+      <div class="tagline-quote"><strong>1,000 introductions.</strong> Every one tracked.</div>
+      <div class="tagline-use">Headline · Marketing surface</div>
+    </div>
+    <div class="tagline-cell">
+      <div class="tagline-quote">Your network, <strong>finally visible.</strong></div>
+      <div class="tagline-use">Value prop · Onboarding</div>
+    </div>
+    <div class="tagline-cell">
+      <div class="tagline-quote">An introduction is a relationship. <strong>Treat it like one.</strong></div>
+      <div class="tagline-use">Brand manifesto</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ APP ICONS ═══ -->
+<section class="s reveal">
+  <div class="s-label">10 — App Icons</div>
+  <div class="two-col two-col-3-2">
+    <div>
+      <h2 class="s-h2">The mark at every <em>scale</em> — from App Store to favicon.</h2>
+      <div class="divider"></div>
+      <p class="s-body">Most marks are designed at 500px and scaled down as an afterthought. The Yntro icon was designed in parallel at all five scales from the start. The 28×28 favicon and the 1024×1024 App Store asset were drawn in the same session, testing the same decision simultaneously.</p>
+      <p class="s-body" style="margin-top:16px;">At small sizes the simplified mark (just two dots + arc curve) is used instead of the full mark — the arms become invisible below 32px and were removed rather than corrupted.</p>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="icon-row">
+    <div class="app-icon">
+      <div class="icon-bg" style="width:120px;height:120px;border-radius:27px;">
+        <svg width="68" height="68" viewBox="0 0 146 145" fill="none">
+          <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="rgba(255,255,255,0.65)"/>
+          <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="white"/>
+          <path d="M72.9721 134.02C54.1585 134.02 36.5061 127.71 23.2546 116.256C15.9797 109.987 10.1837 102.213 6.27603 93.4837C2.02451 83.7998 -0.114307 73.3365 -0.00057371 62.778C-0.0475248 60.7616 0.31313 58.7561 1.0602 56.8796C1.80727 55.003 2.92568 53.2932 4.34972 51.8507C5.77376 50.4081 7.47471 49.2618 9.3526 48.4792C11.2305 47.6966 13.2474 47.2935 15.285 47.2935C17.3225 47.2935 19.3394 47.6966 21.2173 48.4792C23.0952 49.2618 24.7962 50.4081 26.2202 51.8507C27.6442 53.2932 28.7627 55.003 29.5097 56.8796C30.2568 58.7561 30.6174 60.7616 30.5705 62.778C30.5705 75.7918 34.874 86.0886 43.3673 93.4596C50.935 100.003 61.7262 103.756 72.9721 103.756C84.2181 103.756 95.0255 100.003 102.577 93.4355C111.062 86.0967 115.366 75.7516 115.366 62.7539C115.366 58.7397 116.977 54.8898 119.844 52.0513C122.711 49.2128 126.6 47.6181 130.655 47.6181C134.71 47.6181 138.599 49.2128 141.467 52.0513C144.334 54.8898 145.945 58.7397 145.945 62.7539C146.059 73.3123 143.92 83.7756 139.668 93.4596C135.758 102.187 129.962 109.96 122.69 116.232C109.438 127.71 91.7776 134.02 72.9721 134.02Z" fill="rgba(255,255,255,0.9)"/>
+          <path d="M17.8876 47.8111C26.4459 48.3336 69.9518 58.0597 91.3232 53.9764C80.4832 65.286 48.2882 72.5123 27.7045 66.6605C18.3829 64.016 13.0238 56.8219 11.8302 52.2723C11.1238 49.475 15.1269 47.6182 17.8876 47.8111Z" fill="rgba(255,255,255,0.55)"/>
+          <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="icon-size-label">1024 × 1024 · App Store</span>
+    </div>
+    <div class="app-icon">
+      <div class="icon-bg" style="width:72px;height:72px;border-radius:16px;">
+        <svg width="40" height="40" viewBox="0 0 146 145" fill="none">
+          <path d="M15.5008 40.3996C23.7074 40.3996 30.3601 33.8138 30.3601 25.6898C30.3601 17.5658 23.7074 10.98 15.5008 10.98C7.29431 10.98 0.641602 17.5658 0.641602 25.6898C0.641602 33.8138 7.29431 40.3996 15.5008 40.3996Z" fill="rgba(255,255,255,0.65)"/>
+          <path d="M130.583 40.3996C138.789 40.3996 145.442 33.8138 145.442 25.6898C145.442 17.5658 138.789 10.98 130.583 10.98C122.376 10.98 115.724 17.5658 115.724 25.6898C115.724 33.8138 122.376 40.3996 130.583 40.3996Z" fill="white"/>
+          <path d="M123.169 49.579C117.128 52.9068 87.3852 74.6339 58.1377 76.9087C77.0974 84.8102 104.737 81.402 122.284 69.2001C130.209 63.6699 132.897 55.1414 132.523 50.4552C132.28 47.5534 126.758 47.6177 123.169 49.579Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="icon-size-label">64 × 64 · Desktop</span>
+    </div>
+    <div class="app-icon">
+      <div class="icon-bg" style="width:44px;height:44px;border-radius:10px;">
+        <svg width="24" height="24" viewBox="0 0 22 22" fill="none">
+          <circle cx="4" cy="4" r="2.5" fill="rgba(255,255,255,0.65)"/>
+          <circle cx="18" cy="4" r="2.5" fill="white"/>
+          <path d="M1.5 9C1.5 9 2 16.5 11 18C20 16.5 20.5 9 20.5 9" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="icon-size-label">40 × 40 · Notification</span>
+    </div>
+    <div class="app-icon">
+      <div class="icon-bg" style="width:28px;height:28px;border-radius:6px;">
+        <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
+          <circle cx="4" cy="4" r="2.8" fill="rgba(255,255,255,0.65)"/>
+          <circle cx="18" cy="4" r="2.8" fill="white"/>
+          <path d="M1.5 9C1.5 9 2 16.5 11 18C20 16.5 20.5 9 20.5 9" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="icon-size-label">24 × 24 · Favicon</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OUTCOME ═══ -->
+<section class="s s-dark reveal">
+  <div class="s-label s-label-blue">11 — Outcome</div>
+  <div class="two-col two-col-3-2" style="margin-bottom:0;">
+    <div>
+      <h2 class="s-h2 s-h2-inv">A complete identity system, shipped in <em>three weeks.</em></h2>
+      <div class="divider"></div>
+      <p class="s-body s-body-inv">The brand shipped into production for Yntro's beta launch and across all marketing surfaces. The colour system and mark became the foundation for the entire product design system — every component in the app uses the same semantic colour tokens defined in this document.</p>
+      <p class="s-body s-body-inv" style="margin-top:20px;">The wordmark and mark have been in continuous use since 2022 without modification — a signal that the system was designed with enough inherent logic that it didn't need constant revision.</p>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="outcomes-row">
+    <div class="outcome-card">
+      <div class="outcome-n">v1</div>
+      <div class="outcome-l">No revisions to the mark since initial ship — the form was right the first time.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">6 sizes</div>
+      <div class="outcome-l">Mark scaled and tested across App Store, desktop, notification, favicon, and marketing contexts.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-n">3 wks</div>
+      <div class="outcome-l">Discovery through final brand guidelines document — delivered to engineering in one sprint.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REFLECTION ═══ -->
+<section class="s reveal">
+  <div class="s-label">12 — Reflection</div>
+  <div class="s-h2" style="max-width:680px;font-family:var(--f-display);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:28px;">What I'd <em>do differently</em> — and what I wouldn't touch.</div>
+
+  <div class="refl-list">
+    <div class="refl">
+      <div class="refl-label">What worked</div>
+      <div class="refl-text">Starting with semantic constraints — "the gradient is the introduction" — before touching design tools forced every visual decision to have a reason. The mark didn't need a brief; <strong>it was the brief made visible.</strong> This approach is now how I start every identity project.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">What I'd change</div>
+      <div class="refl-text">The three-week timeline worked because the founder trusted the process completely. <strong>I'd build in a structured critique phase</strong> with a neutral external reviewer — not to change the work, but to stress-test whether the mark read across cultural contexts I hadn't considered.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">Unexpected learning</div>
+      <div class="refl-text">Cormorant Garamond was chosen as the display typeface partly on instinct and partly on competitive research. Unexpectedly, it became the most recognisable element of the brand to users in feedback sessions — <strong>more memorable than the mark itself</strong> in early testing. Typography is not secondary.</div>
+    </div>
+    <div class="refl">
+      <div class="refl-label">On brand identity</div>
+      <div class="refl-text">A brand identity is not a logo file and a colour hex. It's a set of decisions with reasons — reasons that survive the original designer leaving the project. <strong>The Yntro brand guidelines document exists so that anyone can design within this system without asking me.</strong> That's the actual deliverable.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEXT PROJECT ═══ -->
+<section class="next-section reveal">
+  <div>
+    <div class="next-label">Next Case Study</div>
+    <h2 class="next-title">CISO <em>Dashboard</em></h2>
+    <p class="next-sub">Designing a security operations dashboard for enterprise clients across ServiceNow, Netskope, and Polaris — making sense of thousands of signals in a single view.</p>
+    <a href="/case-study/ciso-dashboard" class="next-btn">View Case Study →</a>
+  </div>
+  <div class="next-preview">
+    <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- dashboard preview sketch -->
+      <rect x="0" y="0" width="200" height="120" fill="none"/>
+      <!-- top bar -->
+      <rect x="8" y="8" width="184" height="20" rx="3" fill="rgba(45,108,223,.15)"/>
+      <rect x="14" y="14" width="40" height="8" rx="2" fill="rgba(45,108,223,.35)"/>
+      <rect x="160" y="14" width="26" height="8" rx="2" fill="rgba(45,108,223,.2)"/>
+      <!-- stat cards row -->
+      <rect x="8" y="34" width="42" height="28" rx="3" fill="rgba(45,108,223,.12)"/>
+      <rect x="12" y="38" width="18" height="5" rx="1" fill="rgba(45,108,223,.3)"/>
+      <rect x="12" y="46" width="30" height="8" rx="1" fill="rgba(45,108,223,.5)"/>
+      <rect x="56" y="34" width="42" height="28" rx="3" fill="rgba(45,108,223,.12)"/>
+      <rect x="60" y="38" width="18" height="5" rx="1" fill="rgba(45,108,223,.3)"/>
+      <rect x="60" y="46" width="30" height="8" rx="1" fill="rgba(255,100,80,.5)"/>
+      <rect x="104" y="34" width="42" height="28" rx="3" fill="rgba(45,108,223,.12)"/>
+      <rect x="108" y="38" width="18" height="5" rx="1" fill="rgba(45,108,223,.3)"/>
+      <rect x="108" y="46" width="30" height="8" rx="1" fill="rgba(80,200,120,.5)"/>
+      <rect x="152" y="34" width="40" height="28" rx="3" fill="rgba(45,108,223,.12)"/>
+      <rect x="156" y="38" width="18" height="5" rx="1" fill="rgba(45,108,223,.3)"/>
+      <rect x="156" y="46" width="28" height="8" rx="1" fill="rgba(200,160,40,.5)"/>
+      <!-- chart area -->
+      <rect x="8" y="68" width="120" height="44" rx="3" fill="rgba(45,108,223,.08)"/>
+      <polyline points="16,104 32,90 48,96 64,78 80,82 96,70 112,75 120,72" stroke="rgba(45,108,223,.6)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- sidebar list -->
+      <rect x="134" y="68" width="58" height="44" rx="3" fill="rgba(45,108,223,.08)"/>
+      <rect x="140" y="74" width="30" height="5" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect x="140" y="83" width="45" height="4" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect x="140" y="91" width="38" height="4" rx="1" fill="rgba(255,100,80,.3)"/>
+      <rect x="140" y="99" width="42" height="4" rx="1" fill="rgba(255,255,255,.1)"/>
+    </svg>
+  </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// CURSOR
+const cur = document.getElementById('cur');
+const curf = document.getElementById('curf');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+setInterval(()=>{ fx+=(mx-fx)*.14; fy+=(my-fy)*.14; curf.style.left=fx+'px'; curf.style.top=fy+'px'; },16);
+document.querySelectorAll('a,button,.insight,.swatch,.tagline-cell,.method-card,.etym-card').forEach(el=>{ el.addEventListener('mouseenter',()=>cur.classList.add('big')); el.addEventListener('mouseleave',()=>cur.classList.remove('big')); });
+
+// LOADER
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('out');
+    setTimeout(()=>document.getElementById('loader').remove(),800);
+  },600);
+});
+
+// NAV SCROLL
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', window.scrollY > 60); }, {passive:true});
+
+// REVEAL ANIMATIONS
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+  });
+});
+
+// HERO mark slow rotate
+gsap.to('.hero-mark-bg', {
+  rotation: 8, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut', transformOrigin: 'center center'
+});
+
+// stagger insight cards
+gsap.utils.toArray('.insight').forEach((el, i) => {
+  gsap.from(el, {
+    opacity: 0, x: -20, duration: 0.6,
+    delay: i * 0.08,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+  });
+});
+
+// stagger palette swatches
+gsap.utils.toArray('.swatch').forEach((el, i) => {
+  gsap.from(el, {
+    opacity: 0, y: 20, duration: 0.5,
+    delay: i * 0.07,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 92%', once: true }
+  });
+});
+
+// stagger tagline cells
+gsap.utils.toArray('.tagline-cell').forEach((el, i) => {
+  gsap.from(el, {
+    opacity: 0, y: 16, duration: 0.55,
+    delay: i * 0.1,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+  });
+});
+</script>
+</body>
+</html>
