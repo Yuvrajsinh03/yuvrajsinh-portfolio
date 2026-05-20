@@ -1,0 +1,185 @@
+<svg viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="dots2" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="11" r="0.8" fill="#C2BDB6" opacity="0.5"/>
+    </pattern>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5 Z" fill="#2A2520" opacity="0.55"/>
+    </marker>
+    <marker id="arrRed" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5 Z" fill="#C94F1E" opacity="0.7"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5 Z" fill="#4A6B4E" opacity="0.8"/>
+    </marker>
+  </defs>
+
+  <!-- Background + dots -->
+  <rect width="840" height="520" fill="#F7F4EF"/>
+  <rect width="840" height="520" fill="url(#dots2)"/>
+
+  <!-- Top label -->
+  <text x="40" y="42" font-family="'Courier New', monospace" font-size="9" letter-spacing="2.5" fill="#AAA" font-weight="700">IDEATION — CONCEPT SKETCHES · USER JOURNEY</text>
+  <line x1="40" y1="50" x2="800" y2="50" stroke="#D8D4CE" stroke-width="0.6"/>
+
+  <!-- ─────────────────
+    FLOW NODES — horizontal journey
+    Stages: Landing → Credentials → Identity → Address → Documents → Selfie → Review → Approved
+  ───────────────────── -->
+
+  <!-- Node positions (center x): 82, 182, 282, 382, 482, 582, 682, 782 -->
+  <!-- y center: 200 -->
+
+  <!-- Connection lines between nodes -->
+  <line x1="105" y1="200" x2="155" y2="200" stroke="#2A2520" stroke-width="1.2" stroke-dasharray="0" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="205" y1="200" x2="255" y2="200" stroke="#2A2520" stroke-width="1.2" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="305" y1="200" x2="355" y2="200" stroke="#2A2520" stroke-width="1.2" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="405" y1="200" x2="455" y2="200" stroke="#2A2520" stroke-width="1.2" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="505" y1="200" x2="555" y2="200" stroke="#2A2520" stroke-width="1.2" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="605" y1="200" x2="648" y2="200" stroke="#2A2520" stroke-width="1.2" opacity="0.35" marker-end="url(#arr)"/>
+  <line x1="710" y1="200" x2="745" y2="200" stroke="#4A6B4E" stroke-width="1.5" opacity="0.7" marker-end="url(#arrGreen)"/>
+
+  <!-- ── NODE 1: Landing / Sign Up ── -->
+  <rect x="58" y="176" width="90" height="48" rx="3" fill="white" stroke="#2A2520" stroke-width="1.2" opacity="0.9"/>
+  <!-- tiny browser/screen sketch -->
+  <rect x="66" y="183" width="74" height="4" rx="1" fill="#DDD9D2"/>
+  <rect x="66" y="190" width="50" height="3" rx="1" fill="#E8E4DE"/>
+  <rect x="66" y="195" width="60" height="3" rx="1" fill="#E8E4DE"/>
+  <rect x="66" y="201" width="40" height="7" rx="1.5" fill="#2A2520" opacity="0.15"/>
+  <text x="103" y="233" font-family="'Courier New',monospace" font-size="6.5" fill="#555" text-anchor="middle">Landing</text>
+  <text x="103" y="243" font-family="'Courier New',monospace" font-size="6" fill="#AAA" text-anchor="middle">Sign Up CTA</text>
+
+  <!-- ── NODE 2: Credentials ── -->
+  <rect x="158" y="176" width="90" height="48" rx="3" fill="white" stroke="#2A2520" stroke-width="1.2"/>
+  <rect x="166" y="183" width="74" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <text x="203" y="189" font-family="'Courier New',monospace" font-size="5" fill="#AAA" text-anchor="middle">email</text>
+  <rect x="166" y="194" width="74" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <text x="203" y="200" font-family="'Courier New',monospace" font-size="5" fill="#AAA" text-anchor="middle">password ●●●●●</text>
+  <rect x="166" y="206" width="74" height="9" rx="1.5" fill="#2A2520"/>
+  <text x="203" y="213" font-family="'Courier New',monospace" font-size="5" fill="white" text-anchor="middle" font-weight="700">Create Account</text>
+  <text x="203" y="233" font-family="'Courier New',monospace" font-size="6.5" fill="#555" text-anchor="middle">Credentials</text>
+  <text x="203" y="243" font-family="'Courier New',monospace" font-size="6" fill="#AAA" text-anchor="middle">Email + Password</text>
+
+  <!-- ── NODE 3: Identity ── (highlighted — pain point) -->
+  <rect x="258" y="170" width="92" height="56" rx="3" fill="#FFF5F2" stroke="#C94F1E" stroke-width="1.5"/>
+  <rect x="266" y="177" width="76" height="5" rx="1" fill="#DDD9D2"/>
+  <!-- form fields rough -->
+  <rect x="266" y="185" width="76" height="8" rx="1.5" fill="white" stroke="#CCCCCC" stroke-width="0.6"/>
+  <text x="304" y="191" font-family="'Courier New',monospace" font-size="5" fill="#BBB" text-anchor="middle">Full name</text>
+  <rect x="266" y="196" width="36" height="8" rx="1.5" fill="white" stroke="#CCCCCC" stroke-width="0.6"/>
+  <text x="284" y="202" font-family="'Courier New',monospace" font-size="5" fill="#BBB" text-anchor="middle">DOB</text>
+  <rect x="305" y="196" width="37" height="8" rx="1.5" fill="white" stroke="#CCCCCC" stroke-width="0.6"/>
+  <text x="323" y="202" font-family="'Courier New',monospace" font-size="5" fill="#BBB" text-anchor="middle">National.</text>
+  <rect x="266" y="207" width="76" height="8" rx="1.5" fill="#2A2520"/>
+  <text x="304" y="213" font-family="'Courier New',monospace" font-size="5" fill="white" text-anchor="middle" font-weight="700">Continue</text>
+  <text x="304" y="237" font-family="'Courier New',monospace" font-size="6.5" fill="#2A2520" text-anchor="middle" font-weight="700">Identity</text>
+  <text x="304" y="247" font-family="'Courier New',monospace" font-size="6" fill="#C94F1E" text-anchor="middle">⚠ longest step</text>
+
+  <!-- ── NODE 4: Address ── -->
+  <rect x="358" y="176" width="90" height="48" rx="3" fill="white" stroke="#2A2520" stroke-width="1.2"/>
+  <rect x="366" y="183" width="74" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <text x="403" y="189" font-family="'Courier New',monospace" font-size="5" fill="#AAA" text-anchor="middle">street address</text>
+  <rect x="366" y="194" width="34" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <rect x="403" y="194" width="37" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <rect x="366" y="206" width="74" height="8" rx="1.5" fill="#E8E4DE" stroke="#C8C4BE" stroke-width="0.6"/>
+  <text x="403" y="233" font-family="'Courier New',monospace" font-size="6.5" fill="#555" text-anchor="middle">Address</text>
+  <text x="403" y="243" font-family="'Courier New',monospace" font-size="6" fill="#AAA" text-anchor="middle">UK / International</text>
+
+  <!-- ── NODE 5: Documents ── (pain point) -->
+  <rect x="458" y="170" width="92" height="56" rx="3" fill="#FFF5F2" stroke="#C94F1E" stroke-width="1.5"/>
+  <!-- document upload icon sketch -->
+  <rect x="484" y="178" width="40" height="28" rx="2" fill="#EDEBE6" stroke="#AAA" stroke-width="0.8"/>
+  <line x1="484" y1="186" x2="524" y2="186" stroke="#DDD" stroke-width="0.5"/>
+  <text x="504" y="199" font-family="'Courier New',monospace" font-size="9" fill="#CCC" text-anchor="middle">↑</text>
+  <text x="504" y="210" font-family="'Courier New',monospace" font-size="5" fill="#999" text-anchor="middle">ID / Passport</text>
+  <text x="504" y="237" font-family="'Courier New',monospace" font-size="6.5" fill="#2A2520" text-anchor="middle" font-weight="700">Documents</text>
+  <text x="504" y="247" font-family="'Courier New',monospace" font-size="6" fill="#C94F1E" text-anchor="middle">⚠ drop-off risk</text>
+
+  <!-- ── NODE 6: Selfie / Liveness ── -->
+  <rect x="558" y="176" width="90" height="48" rx="3" fill="white" stroke="#2A2520" stroke-width="1.2"/>
+  <!-- camera icon sketch -->
+  <rect x="576" y="183" width="54" height="34" rx="3" fill="#EDEBE6" stroke="#AAA" stroke-width="0.8"/>
+  <circle cx="603" cy="200" r="10" fill="none" stroke="#AAA" stroke-width="0.8"/>
+  <circle cx="603" cy="200" r="5" fill="#C8C4BE" opacity="0.5"/>
+  <rect x="588" y="183" width="8" height="4" rx="1" fill="#AAA"/>
+  <text x="603" y="233" font-family="'Courier New',monospace" font-size="6.5" fill="#555" text-anchor="middle">Selfie Check</text>
+  <text x="603" y="243" font-family="'Courier New',monospace" font-size="6" fill="#AAA" text-anchor="middle">Liveness detection</text>
+
+  <!-- ── NODE 7: Review ── -->
+  <rect x="655" y="176" width="90" height="48" rx="3" fill="white" stroke="#2A2520" stroke-width="1.2"/>
+  <rect x="663" y="183" width="74" height="5" rx="1" fill="#B8B3AC"/>
+  <rect x="663" y="191" width="55" height="3.5" rx="1" fill="#DDD9D2"/>
+  <rect x="663" y="197" width="65" height="3.5" rx="1" fill="#DDD9D2"/>
+  <rect x="663" y="203" width="50" height="3.5" rx="1" fill="#DDD9D2"/>
+  <rect x="663" y="210" width="74" height="9" rx="2" fill="#2A2520"/>
+  <text x="700" y="217" font-family="'Courier New',monospace" font-size="5" fill="white" text-anchor="middle" font-weight="700">Submit Application</text>
+  <text x="700" y="233" font-family="'Courier New',monospace" font-size="6.5" fill="#555" text-anchor="middle">Review</text>
+  <text x="700" y="243" font-family="'Courier New',monospace" font-size="6" fill="#AAA" text-anchor="middle">Confirm &amp; submit</text>
+
+  <!-- ── NODE 8: Approved ── (success state) -->
+  <rect x="752" y="173" width="70" height="54" rx="8" fill="#EFF5F0" stroke="#4A6B4E" stroke-width="1.8"/>
+  <text x="787" y="197" font-family="'Courier New',monospace" font-size="22" fill="#4A6B4E" text-anchor="middle">✓</text>
+  <text x="787" y="213" font-family="'Courier New',monospace" font-size="6.5" fill="#4A6B4E" text-anchor="middle" font-weight="700">Approved</text>
+  <text x="787" y="223" font-family="'Courier New',monospace" font-size="5.5" fill="#6A9B6E" text-anchor="middle">Account live</text>
+  <text x="787" y="243" font-family="'Courier New',monospace" font-size="6" fill="#4A6B4E" text-anchor="middle" font-weight="700">✓</text>
+
+  <!-- ─────────────────────────────
+       STICKY NOTE ANNOTATIONS
+  ───────────────────────────────── -->
+
+  <!-- Note 1: drop-off risk at docs -->
+  <g transform="translate(440, 290)">
+    <rect width="118" height="56" rx="2" fill="#FEF3C7" stroke="#F0D060" stroke-width="0.8" transform="rotate(-1.5)"/>
+    <text x="10" y="18" font-family="'Courier New',monospace" font-size="7.5" fill="#92400E" font-weight="700">drop-off risk</text>
+    <text x="10" y="30" font-family="'Courier New',monospace" font-size="6.5" fill="#92400E">unclear file format</text>
+    <text x="10" y="40" font-family="'Courier New',monospace" font-size="6.5" fill="#92400E">requirements →</text>
+    <text x="10" y="50" font-family="'Courier New',monospace" font-size="6.5" fill="#92400E">show examples!</text>
+  </g>
+  <!-- line from note to docs node -->
+  <line x1="504" y1="226" x2="504" y2="290" stroke="#F0D060" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>
+
+  <!-- Note 2: progress context -->
+  <g transform="translate(148, 290)">
+    <rect width="118" height="48" rx="2" fill="#DBEAFE" stroke="#93C5FD" stroke-width="0.8" transform="rotate(1.2)"/>
+    <text x="10" y="16" font-family="'Courier New',monospace" font-size="7.5" fill="#1E3A5F" font-weight="700">progress bar</text>
+    <text x="10" y="27" font-family="'Courier New',monospace" font-size="6.5" fill="#1E3A5F">users need to know</text>
+    <text x="10" y="37" font-family="'Courier New',monospace" font-size="6.5" fill="#1E3A5F">how long this takes</text>
+    <text x="10" y="47" font-family="'Courier New',monospace" font-size="6.5" fill="#1E3A5F">~4 min est.</text>
+  </g>
+  <line x1="203" y1="224" x2="203" y2="290" stroke="#93C5FD" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>
+
+  <!-- Note 3: save & resume -->
+  <g transform="translate(590, 290)">
+    <rect width="120" height="48" rx="2" fill="#FCE7F3" stroke="#F9A8D4" stroke-width="0.8" transform="rotate(0.8)"/>
+    <text x="10" y="16" font-family="'Courier New',monospace" font-size="7.5" fill="#831843" font-weight="700">save &amp; resume</text>
+    <text x="10" y="27" font-family="'Courier New',monospace" font-size="6.5" fill="#831843">user can't finish</text>
+    <text x="10" y="37" font-family="'Courier New',monospace" font-size="6.5" fill="#831843">in one sitting →</text>
+    <text x="10" y="47" font-family="'Courier New',monospace" font-size="6.5" fill="#831843">draft state needed</text>
+  </g>
+  <line x1="650" y1="224" x2="650" y2="290" stroke="#F9A8D4" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>
+
+  <!-- ── HMW prompt at bottom ── -->
+  <rect x="40" y="390" width="760" height="32" rx="3" fill="white" stroke="#DDD9D2" stroke-width="0.8"/>
+  <text x="54" y="406" font-family="'Courier New',monospace" font-size="8" fill="#C94F1E" font-weight="700">HMW →</text>
+  <text x="120" y="406" font-family="'Courier New',monospace" font-size="8" fill="#2A2520">reduce abandonment at the document upload step for first-time users unfamiliar with KYC requirements?</text>
+
+  <!-- Estimated time bar -->
+  <rect x="40" y="432" width="760" height="16" rx="2" fill="#EDEBE6"/>
+  <rect x="40" y="432" width="100" height="16" rx="2" fill="#B8B3AC" opacity="0.4"/><!-- Landing+Creds -->
+  <rect x="140" y="432" width="80" height="16" rx="0" fill="#B8B3AC" opacity="0.6"/><!-- Identity -->
+  <rect x="220" y="432" width="80" height="16" rx="0" fill="#B8B3AC" opacity="0.4"/><!-- Address -->
+  <rect x="300" y="432" width="120" height="16" rx="0" fill="#C94F1E" opacity="0.25"/><!-- Docs - long -->
+  <rect x="420" y="432" width="100" height="16" rx="0" fill="#B8B3AC" opacity="0.5"/><!-- Selfie -->
+  <rect x="520" y="432" width="80" height="16" rx="2" fill="#4A6B4E" opacity="0.3"/><!-- Review -->
+  <text x="54" y="442" font-family="'Courier New',monospace" font-size="6" fill="#888">1–2 min</text>
+  <text x="154" y="442" font-family="'Courier New',monospace" font-size="6" fill="#888">90s</text>
+  <text x="234" y="442" font-family="'Courier New',monospace" font-size="6" fill="#888">60s</text>
+  <text x="314" y="442" font-family="'Courier New',monospace" font-size="6" fill="#C94F1E" font-weight="700">2–4 min ⚠</text>
+  <text x="430" y="442" font-family="'Courier New',monospace" font-size="6" fill="#888">45s</text>
+  <text x="530" y="442" font-family="'Courier New',monospace" font-size="6" fill="#555">review</text>
+  <text x="40" y="462" font-family="'Courier New',monospace" font-size="7" fill="#AAA">estimated time per step</text>
+
+  <!-- Bottom meta -->
+  <text x="420" y="488" font-family="'Courier New', monospace" font-size="8" fill="#C2BDB6" text-anchor="middle">Week 2 · Research Synthesis → Flow Mapping · Before / After HMW framing</text>
+  <line x1="40" y1="478" x2="800" y2="478" stroke="#D8D4CE" stroke-width="0.5"/>
+</svg>
