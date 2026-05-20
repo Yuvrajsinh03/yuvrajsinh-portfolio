@@ -20,11 +20,11 @@
       --f-display:'Cormorant Garamond',Georgia,serif;
       --f-body:'DM Sans',system-ui,sans-serif;
       --ease:cubic-bezier(0.16,1,0.3,1);
-      /* CISO tokens */
-      --c-bg:#0A1628;--c-bg2:#0F1E35;--c-bg3:#162540;
-      --c-accent:#2D6CDF;--c-accent2:#4F87F0;--c-glow:#1A4DB8;
+      /* CISO tokens — teal palette */
+      --c-bg:#0A0F1C;--c-bg2:#0D1520;--c-bg3:#111B27;
+      --c-accent:#14B8A6;--c-accent2:#2DD4BF;--c-glow:#0D9488;
       --c-success:#34C17B;--c-warn:#F5A623;--c-danger:#E84545;
-      --c-soft:#EEF3FF;--c-muted:#6B86B0;
+      --c-soft:#F0FDFA;--c-muted:#4D7A75;
       --c-rule:rgba(255,255,255,.06);
     }
     html{scroll-behavior:smooth;}
@@ -35,7 +35,7 @@
     /* CURSOR */
     #cur{position:fixed;width:9px;height:9px;background:var(--c-accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .3s;}
     #cur.big{width:44px;height:44px;background:transparent;border:1.5px solid var(--c-accent);}
-    #curf{position:fixed;width:32px;height:32px;border:1px solid rgba(45,108,223,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+    #curf{position:fixed;width:32px;height:32px;border:1px solid rgba(20,184,166,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
 
     /* LOADER */
     #loader{position:fixed;inset:0;background:var(--c-bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
@@ -56,8 +56,8 @@
     /* HERO */
     .hero{min-height:100svh;background:var(--c-bg);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 72px;position:relative;overflow:hidden;}
     .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
-    .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 70% 20%,rgba(45,108,223,.14) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(26,77,184,.10) 0%,transparent 50%);}
-    .hero-scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(45,108,223,.012) 3px,rgba(45,108,223,.012) 4px);}
+    .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 70% 20%,rgba(20,184,166,.12) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(13,148,136,.08) 0%,transparent 50%);}
+    .hero-scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(20,184,166,.010) 3px,rgba(20,184,166,.010) 4px);}
     .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-accent2);margin-bottom:24px;display:flex;align-items:center;gap:12px;}
     .hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--c-accent);}
     .hero-h1{font-family:var(--f-display);font-size:clamp(60px,9vw,136px);font-weight:300;line-height:.9;letter-spacing:-.04em;color:var(--c-soft);margin-bottom:48px;max-width:1100px;}
@@ -109,7 +109,7 @@
     /* INSIGHT CARDS */
     .insights-list{display:flex;flex-direction:column;gap:3px;margin-top:48px;}
     .insight{display:grid;grid-template-columns:52px 1fr;gap:24px;align-items:start;padding:32px;background:var(--bg2);border-radius:3px;border-left:3px solid transparent;transition:border-color .25s,background .25s;}
-    .insight:hover{border-left-color:var(--c-accent);background:rgba(45,108,223,.03);}
+    .insight:hover{border-left-color:var(--c-accent);background:rgba(20,184,166,.04);}
     .insight-n{font-family:var(--f-display);font-size:40px;font-weight:300;color:rgba(26,18,8,.12);line-height:1;padding-top:4px;}
     .insight-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;}
     .insight-body{font-size:14px;color:var(--muted);line-height:1.68;}
@@ -123,7 +123,7 @@
     /* HMW */
     .hmw-list{display:flex;flex-direction:column;gap:12px;margin-top:40px;}
     .hmw{padding:24px 32px;border:1px solid var(--border);border-radius:4px;display:flex;gap:20px;align-items:flex-start;transition:border-color .25s,background .25s;}
-    .hmw:hover{border-color:var(--c-accent);background:rgba(45,108,223,.03);}
+    .hmw:hover{border-color:var(--c-accent);background:rgba(20,184,166,.04);}
     .hmw-q{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent);flex-shrink:0;padding-top:5px;white-space:nowrap;}
     .hmw-text{font-family:var(--f-display);font-size:21px;font-weight:400;line-height:1.35;letter-spacing:-.01em;}
 
@@ -157,7 +157,7 @@
     .dash-body{display:grid;grid-template-columns:200px 1fr;min-height:360px;}
     .dash-sidebar{background:var(--c-bg2);border-right:1px solid var(--c-rule);padding:16px 0;}
     .dash-nav-item{padding:9px 20px;font-size:11.5px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:10px;transition:color .2s,background .2s;}
-    .dash-nav-item.active{color:var(--c-soft);background:rgba(45,108,223,.12);border-right:2px solid var(--c-accent);}
+    .dash-nav-item.active{color:var(--c-soft);background:rgba(20,184,166,.12);border-right:2px solid var(--c-accent);}
     .dash-nav-item svg{flex-shrink:0;opacity:.5;}
     .dash-nav-item.active svg{opacity:1;}
     .dash-content{padding:20px;display:flex;flex-direction:column;gap:12px;}
@@ -198,6 +198,12 @@
     .next-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s,gap .25s var(--ease);}
     .next-btn:hover{background:var(--c-accent);color:#fff;border-color:var(--c-accent);gap:16px;}
     .next-img{border-radius:6px;overflow:hidden;}
+
+    /* ARTIFACT FIGURES */
+    .artifact-fig{margin-top:48px;}
+    .artifact-fig img{width:100%;border-radius:6px;border:1px solid rgba(20,184,166,.15);display:block;}
+    .artifact-fig figcaption{font-size:11.5px;color:var(--muted);margin-top:12px;letter-spacing:.02em;line-height:1.55;}
+    .artifact-fig figcaption strong{color:var(--ink2);font-weight:600;}
 
     /* GRAIN */
     body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
@@ -325,6 +331,11 @@
       <div class="method-desc">Evaluated Splunk SIEM, Microsoft Sentinel, CrowdStrike Falcon, and Palo Alto XSOAR against the four decision frameworks. None handled the "executive view vs. analyst view" split cleanly. This became our primary differentiation.</div>
     </div>
   </div>
+
+  <figure class="artifact-fig reveal">
+    <img src="/ciso-wireframes.svg" alt="Three dashboard layout explorations: alert-list dominant, risk-score hero (selected), and split-panel approach with annotated trade-offs.">
+    <figcaption><strong>Layout explorations — three dashboard directions.</strong> V1 led with a raw alert list; V2 promoted the risk score to the hero position (selected); V3 attempted a split-panel view. Annotations capture why V2 answered the CISO's primary question — "are we okay?" — faster than the alternatives.</figcaption>
+  </figure>
 </section>
 
 <!-- ═══ INSIGHTS ═══ -->
@@ -436,6 +447,11 @@
       <div class="pf-desc">Unmoderated usability testing with 12 participants across CISO and analyst roles. Measured time-to-triage and confidence scores before shipping to production.</div>
     </div>
   </div>
+
+  <figure class="artifact-fig reveal">
+    <img src="/ciso-flow.svg" alt="Alert triage information architecture diagram showing the flow from raw signals through severity classification to dual-mode routing and action outcomes.">
+    <figcaption><strong>Alert triage architecture — information flow diagram.</strong> Raw signals from three platforms converge into a normalisation layer, pass through a four-tier severity model, and fork into either the CISO executive view or the analyst deep-dive. The redesigned severity taxonomy (Critical / High / Monitor / Noise) replaced tool-default categories and reduced category inflation — the root cause of the 78% dismissal rate.</figcaption>
+  </figure>
 </section>
 
 <!-- ═══ DASHBOARD MOCK ═══ -->
@@ -526,19 +542,19 @@
             <svg width="100%" height="80" viewBox="0 0 300 80" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#2D6CDF" stop-opacity=".35"/>
-                  <stop offset="100%" stop-color="#2D6CDF" stop-opacity="0"/>
+                  <stop offset="0%" stop-color="#14B8A6" stop-opacity=".35"/>
+                  <stop offset="100%" stop-color="#14B8A6" stop-opacity="0"/>
                 </linearGradient>
               </defs>
               <path d="M0,70 L20,60 L40,65 L60,45 L80,50 L100,35 L120,42 L140,30 L160,38 L180,25 L200,32 L220,20 L240,28 L260,18 L280,22 L300,15 L300,80 L0,80 Z" fill="url(#chartFill)"/>
-              <path d="M0,70 L20,60 L40,65 L60,45 L80,50 L100,35 L120,42 L140,30 L160,38 L180,25 L200,32 L220,20 L240,28 L260,18 L280,22 L300,15" stroke="#2D6CDF" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <path d="M0,70 L20,60 L40,65 L60,45 L80,50 L100,35 L120,42 L140,30 L160,38 L180,25 L200,32 L220,20 L240,28 L260,18 L280,22 L300,15" stroke="#14B8A6" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
             </svg>
           </div>
           <div class="dash-chart-box">
             <div class="dash-chart-title">By Platform</div>
             <svg width="100%" height="80" viewBox="0 0 200 80">
-              <rect x="10" y="20" width="50" height="12" rx="2" fill="#2D6CDF"/>
-              <rect x="10" y="36" width="32" height="12" rx="2" fill="#4F87F0"/>
+              <rect x="10" y="20" width="50" height="12" rx="2" fill="#14B8A6"/>
+              <rect x="10" y="36" width="32" height="12" rx="2" fill="#2DD4BF"/>
               <rect x="10" y="52" width="44" height="12" rx="2" fill="#E84545"/>
               <text x="68" y="30" fill="rgba(255,255,255,.5)" font-size="10" font-family="sans-serif">ServiceNow</text>
               <text x="50" y="46" fill="rgba(255,255,255,.5)" font-size="10" font-family="sans-serif">Netskope</text>
