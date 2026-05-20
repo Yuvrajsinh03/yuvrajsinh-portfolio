@@ -542,6 +542,54 @@
     .wg-arrow { position:absolute; top:20px; right:20px; width:36px; height:36px; background:rgba(245,240,232,.1); backdrop-filter:blur(8px); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--bg); opacity:0; transform:scale(0.7) rotate(-45deg); transition:opacity .3s, transform .3s var(--ease-out); }
     .wg-item:hover .wg-arrow { opacity:1; transform:scale(1) rotate(0deg); }
 
+    /* Mobile scroll-snap dots */
+    .wg-dots { display:none; }
+    @media (max-width:899px) {
+      .work-scroll-section { padding:60px 0 0 0; }
+      .work-scroll-header { padding-left:24px; padding-right:24px; }
+      .work-scroll-label::after { content:'swipe to explore →'; }
+      /* Native touch-scroll with snap */
+      .work-h-wrap {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* no clip — let it scroll freely */
+        padding-bottom: 24px;
+      }
+      .work-h-wrap::-webkit-scrollbar { display: none; }
+      .work-h-inner {
+        width: auto;
+        padding-left: 24px;
+        padding-right: 24px;
+        gap: 12px;
+      }
+      .wg-item {
+        width: 78vw;
+        max-width: 340px;
+        scroll-snap-align: start;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+      /* always show arrow on mobile (no hover state) */
+      .wg-arrow { opacity:1; transform:scale(1) rotate(0deg); background:rgba(245,240,232,.16); }
+      /* dot indicators */
+      .wg-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        padding: 16px 0 32px;
+      }
+      .wg-dot {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--border);
+        transition: background .3s, transform .3s;
+      }
+      .wg-dot.active { background: var(--accent); transform: scale(1.4); }
+    }
+
     /* ══════════════════════════════════════
        SCROLL → PROCESS DIVIDER
     ══════════════════════════════════════ */
@@ -801,12 +849,10 @@
       .hero-left { padding:80px 28px 0 28px; }
       .section, .philo, footer { padding-left:28px; padding-right:28px; }
       .process { padding-left:28px; padding-right:28px; }
-      .work-scroll-section { padding-left:28px; }
-      .work-h-inner { padding-right:28px; }
+      /* work-scroll-section horizontal padding handled by mobile snap block above */
       .section-sep, .scroll-to-process-gap, .stpg-inner { padding-left:28px; padding-right:28px; }
       .ft-top { grid-template-columns:1fr; gap:60px; }
       .ft-links-grid { grid-template-columns:1fr; }
-      .wg-item { width:280px; }
       .wf-info { width:85%; padding:44px 28px; min-height:440px; }
       .wf-item { min-height:440px; }
       .work-feat { gap:4px; }
@@ -1175,6 +1221,8 @@
       </div>
     </div>
   </div>
+  <!-- Mobile dot indicators — rendered by JS -->
+  <div class="wg-dots" id="wgDots" aria-hidden="true"></div>
 </div>
 
 <!-- ════ CLEAR VISUAL SEPARATOR before dark process section ════ -->
@@ -1582,15 +1630,48 @@
   /* ─── HORIZONTAL SCROLL ─── */
   const hWrap  = document.getElementById('workHWrap');
   const hInner = document.getElementById('workHInner');
+  const dotsEl = document.getElementById('wgDots');
+
   if (hWrap && hInner) {
-    const getAmt = () => -(hInner.scrollWidth - window.innerWidth + 56);
-    ScrollTrigger.create({
-      trigger:hWrap, pin:true, start:'top top',
-      end: () => '+=' + Math.abs(getAmt()),
-      scrub:1.2,
-      onUpdate: self => gsap.set(hInner, { x: getAmt() * self.progress })
+    /* ── Desktop: GSAP pin-scroll ── */
+    ScrollTrigger.matchMedia({
+      "(min-width: 900px)": function() {
+        const getAmt = () => -(hInner.scrollWidth - window.innerWidth + 56);
+        ScrollTrigger.create({
+          trigger: hWrap, pin: true, start: 'top top',
+          end: () => '+=' + Math.abs(getAmt()),
+          scrub: 1.2,
+          onUpdate: self => gsap.set(hInner, { x: getAmt() * self.progress })
+        });
+      }
     });
+
+    /* ── Mobile: scroll-snap + dot indicators ── */
+    const items = hInner.querySelectorAll('.wg-item');
+    if (dotsEl && items.length) {
+      // Build dots
+      items.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'wg-dot' + (i === 0 ? ' active' : '');
+        dotsEl.appendChild(d);
+      });
+      const dots = dotsEl.querySelectorAll('.wg-dot');
+
+      // Update active dot on scroll
+      let scrollTicking = false;
+      hWrap.addEventListener('scroll', () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          const itemW = items[0].offsetWidth + 12; // width + gap
+          const idx   = Math.round(hWrap.scrollLeft / itemW);
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          scrollTicking = false;
+        });
+      }, { passive: true });
+    }
   }
+
   document.querySelectorAll('.wg-item').forEach((item, i) => {
     gsap.fromTo(item, { opacity:0, y:28 }, {
       opacity:1, y:0, duration:0.8, delay:i*0.07, ease:'expo.out',
