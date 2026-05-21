@@ -1,0 +1,341 @@
+<svg width="840" height="520" viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="pm-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="0.65" fill="#7C3AED" opacity="0.12"/>
+  </pattern>
+</defs>
+
+<!-- Background -->
+<rect width="840" height="520" fill="#0B0918"/>
+<rect width="840" height="520" fill="url(#pm-dots)"/>
+
+<!-- Title bar -->
+<text x="36" y="40" font-family="monospace" font-size="9.5" fill="rgba(167,139,250,0.55)" letter-spacing="2.2">LAYOUT EXPLORATIONS — V1 WIREFRAME REVIEW · 3 DIRECTIONS</text>
+<line x1="36" y1="50" x2="804" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+<!-- Corner brackets -->
+<path d="M22,63 L22,78 L37,78" stroke="rgba(167,139,250,0.22)" stroke-width="1" fill="none"/>
+<path d="M818,63 L818,78 L803,78" stroke="rgba(167,139,250,0.22)" stroke-width="1" fill="none"/>
+
+<!-- Panel dividers -->
+<line x1="278" y1="60" x2="278" y2="465" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,5"/>
+<line x1="558" y1="60" x2="558" y2="465" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,5"/>
+
+<!-- Panel version labels -->
+<text x="148" y="73" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" letter-spacing="1.2">V1 — CALENDAR FIRST</text>
+<text x="416" y="73" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(167,139,250,0.6)" letter-spacing="1.2">V2 — KANBAN SPLIT</text>
+<text x="697" y="73" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" letter-spacing="1.2">V3 — RESOURCE GRID</text>
+
+<!-- ═══════════ PANEL 1: CALENDAR / GANTT VIEW ═══════════ -->
+<rect x="22" y="86" width="250" height="328" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+<!-- P1 Top bar -->
+<rect x="22" y="86" width="250" height="22" rx="3" fill="rgba(255,255,255,0.04)"/>
+<line x1="22" y1="108" x2="272" y2="108" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Dashboard label -->
+<rect x="30" y="92" width="52" height="9" rx="2" fill="rgba(255,255,255,0.1)"/>
+<!-- View toggle pills -->
+<rect x="100" y="92" width="28" height="9" rx="4" fill="rgba(109,40,217,0.45)"/>
+<rect x="132" y="92" width="32" height="9" rx="4" fill="rgba(255,255,255,0.05)"/>
+<rect x="168" y="92" width="28" height="9" rx="4" fill="rgba(255,255,255,0.05)"/>
+<!-- Create button -->
+<rect x="214" y="91" width="52" height="11" rx="5" fill="rgba(109,40,217,0.5)"/>
+
+<!-- P1 Sidebar -->
+<rect x="22" y="108" width="58" height="306" fill="rgba(255,255,255,0.025)"/>
+<line x1="80" y1="108" x2="80" y2="414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Sidebar section: Favourites -->
+<text x="28" y="124" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.2)">Favourites</text>
+<rect x="28" y="130" width="44" height="7" rx="2" fill="rgba(109,40,217,0.35)"/>
+<circle cx="70" cy="134" r="3" fill="rgba(52,193,123,0.7)"/>
+<rect x="28" y="142" width="40" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<circle cx="70" cy="146" r="3" fill="rgba(232,69,69,0.7)"/>
+<rect x="28" y="154" width="42" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<circle cx="64" cy="158" r="2.5" fill="rgba(245,158,11,0.7)"/>
+<circle cx="70" cy="158" r="2.5" fill="rgba(232,69,69,0.7)"/>
+<!-- Divider -->
+<line x1="28" y1="168" x2="72" y2="168" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<!-- Sidebar section: All Projects -->
+<text x="28" y="180" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.2)">All Projects</text>
+<rect x="28" y="186" width="44" height="7" rx="2" fill="rgba(109,40,217,0.3)"/>
+<rect x="28" y="198" width="40" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="28" y="210" width="42" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="28" y="222" width="38" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="28" y="234" width="44" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="28" y="246" width="36" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+
+<!-- P1 Calendar main area -->
+<!-- Month header row -->
+<rect x="80" y="108" width="192" height="18" fill="rgba(255,255,255,0.02)"/>
+<line x1="80" y1="126" x2="272" y2="126" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Month column dividers (8 months, ~24px each) -->
+<line x1="104" y1="108" x2="104" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="128" y1="108" x2="128" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="152" y1="108" x2="152" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="176" y1="108" x2="176" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="200" y1="108" x2="200" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="224" y1="108" x2="224" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<line x1="248" y1="108" x2="248" y2="414" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<!-- Month labels -->
+<text x="92"  y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">May</text>
+<text x="116" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Jun</text>
+<text x="140" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Jul</text>
+<text x="164" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Aug</text>
+<text x="188" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Sep</text>
+<text x="212" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Oct</text>
+<text x="236" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Nov</text>
+<text x="260" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Dec</text>
+
+<!-- Project bars (calendar view) -->
+<!-- Google Meet: May→Oct, on track green -->
+<rect x="84" y="136" width="118" height="22" rx="3" fill="rgba(109,40,217,0.18)" stroke="rgba(109,40,217,0.4)" stroke-width="1"/>
+<circle cx="92" cy="147" r="3.5" fill="none" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+<rect x="99" y="143" width="50" height="5" rx="2" fill="rgba(167,139,250,0.4)"/>
+<text x="154" y="149" font-family="monospace" font-size="7" fill="rgba(52,193,123,0.7)">80%</text>
+<circle cx="84" cy="162" r="2.5" fill="rgba(52,193,123,0.7)"/>
+<text x="89" y="165" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.2)">According to plan</text>
+
+<!-- Adobe Contract: May→Aug, delayed red -->
+<rect x="84" y="174" width="68" height="22" rx="3" fill="rgba(232,69,69,0.12)" stroke="rgba(232,69,69,0.35)" stroke-width="1"/>
+<circle cx="92" cy="185" r="3.5" fill="none" stroke="rgba(232,69,69,0.4)" stroke-width="1"/>
+<rect x="99" y="181" width="36" height="5" rx="2" fill="rgba(232,69,69,0.3)"/>
+<text x="145" y="187" font-family="monospace" font-size="7" fill="rgba(232,69,69,0.7)">25%</text>
+<circle cx="84" cy="200" r="2.5" fill="rgba(232,69,69,0.7)"/>
+<text x="89" y="203" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.2)">Delay</text>
+
+<!-- Asana Wall: May→Oct, partial -->
+<rect x="84" y="212" width="118" height="22" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<circle cx="92" cy="223" r="3.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+<rect x="99" y="219" width="60" height="5" rx="2" fill="rgba(255,255,255,0.1)"/>
+<text x="163" y="225" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.35)">70%</text>
+<circle cx="84" cy="238" r="2.5" fill="rgba(232,69,69,0.6)"/>
+<circle cx="91" cy="238" r="2.5" fill="rgba(245,158,11,0.6)"/>
+<text x="96" y="241" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.18)">Delay · Dependencies</text>
+
+<!-- Ubisoft: starts Sep -->
+<rect x="176" y="250" width="90" height="22" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="184" cy="261" r="3.5" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+<rect x="191" y="257" width="42" height="5" rx="2" fill="rgba(255,255,255,0.07)"/>
+<text x="178" y="276" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.15)">Starting from 19th Sep</text>
+
+<!-- P1 annotation below panel -->
+<rect x="22" y="426" width="250" height="54" rx="3" fill="rgba(232,69,69,0.07)" stroke="rgba(232,69,69,0.25)" stroke-width="1"/>
+<text x="30" y="443" font-family="monospace" font-size="7.5" fill="rgba(232,69,69,0.65)" letter-spacing="0.5">✕  LIMITATION</text>
+<text x="30" y="458" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">No task-level detail visible</text>
+<text x="30" y="471" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">Resource load not surfaced</text>
+
+<!-- ═══════════ PANEL 2: KANBAN SPLIT (SELECTED) ═══════════ -->
+<rect x="285" y="86" width="268" height="328" rx="3" fill="rgba(109,40,217,0.07)" stroke="rgba(109,40,217,0.55)" stroke-width="1.5"/>
+<!-- Selected badge -->
+<rect x="376" y="75" width="64" height="16" rx="8" fill="#7C3AED"/>
+<text x="408" y="87" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#fff" letter-spacing="0.5">SELECTED</text>
+
+<!-- P2 Top bar -->
+<rect x="285" y="86" width="268" height="22" rx="3" fill="rgba(255,255,255,0.04)"/>
+<line x1="285" y1="108" x2="553" y2="108" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Project name + status -->
+<circle cx="298" cy="97" r="7" fill="rgba(245,158,11,0.25)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+<rect x="310" y="92" width="56" height="9" rx="2" fill="rgba(255,255,255,0.1)"/>
+<!-- View tabs -->
+<rect x="380" y="92" width="34" height="9" rx="4" fill="rgba(109,40,217,0.5)"/>
+<rect x="418" y="92" width="28" height="9" rx="4" fill="rgba(255,255,255,0.05)"/>
+<rect x="450" y="92" width="36" height="9" rx="4" fill="rgba(255,255,255,0.05)"/>
+<!-- Status badges top right -->
+<rect x="494" y="92" width="26" height="9" rx="4" fill="rgba(232,69,69,0.3)"/>
+<rect x="524" y="92" width="22" height="9" rx="4" fill="rgba(245,158,11,0.25)"/>
+
+<!-- P2 Left sidebar -->
+<rect x="285" y="108" width="55" height="306" fill="rgba(255,255,255,0.025)"/>
+<line x1="340" y1="108" x2="340" y2="414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Sidebar items -->
+<text x="291" y="124" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.18)">Favourites</text>
+<rect x="291" y="129" width="42" height="7" rx="2" fill="rgba(109,40,217,0.4)"/>
+<circle cx="329" cy="133" r="2.5" fill="rgba(52,193,123,0.7)"/>
+<rect x="291" y="141" width="38" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<circle cx="329" cy="145" r="2.5" fill="rgba(232,69,69,0.7)"/>
+<rect x="291" y="153" width="42" height="7" rx="2" fill="rgba(255,255,255,0.06)"/>
+<circle cx="323" cy="157" r="2" fill="rgba(245,158,11,0.6)"/>
+<circle cx="329" cy="157" r="2" fill="rgba(232,69,69,0.6)"/>
+<line x1="291" y1="168" x2="331" y2="168" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+<text x="291" y="180" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.18)">All Projects</text>
+<rect x="291" y="185" width="42" height="7" rx="2" fill="rgba(109,40,217,0.3)"/>
+<rect x="291" y="197" width="38" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<rect x="291" y="209" width="40" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<rect x="291" y="221" width="36" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<rect x="291" y="233" width="42" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+
+<!-- P2 Kanban columns (3) -->
+<!-- Column headers -->
+<line x1="340" y1="122" x2="553" y2="122" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<text x="358" y="119" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.3)">To Do</text>
+<text x="419" y="119" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.3)">In Progress</text>
+<text x="490" y="119" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.3)">To Test</text>
+<!-- Column dividers -->
+<line x1="412" y1="122" x2="412" y2="414" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="3,4"/>
+<line x1="480" y1="122" x2="480" y2="414" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="3,4"/>
+
+<!-- To Do column — violet stripe cards -->
+<rect x="343" y="125" width="64" height="4" rx="2" fill="rgba(109,40,217,0.55)"/>
+<rect x="343" y="133" width="64" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="349" y="140" width="48" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="349" y="150" width="40" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="349" y="158" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="343" y="182" width="64" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="349" y="189" width="48" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="349" y="199" width="36" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="349" y="207" width="30" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="343" y="231" width="64" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="349" y="238" width="44" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+
+<!-- In Progress column — amber stripe cards -->
+<rect x="416" y="125" width="58" height="4" rx="2" fill="rgba(245,158,11,0.5)"/>
+<rect x="416" y="133" width="58" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="422" y="140" width="42" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="422" y="150" width="36" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="422" y="158" width="28" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="416" y="182" width="58" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="422" y="189" width="38" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="416" y="231" width="58" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="422" y="238" width="42" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+
+<!-- To Test column — green stripe cards -->
+<rect x="484" y="125" width="60" height="4" rx="2" fill="rgba(52,193,123,0.45)"/>
+<rect x="484" y="133" width="60" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="490" y="140" width="44" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="490" y="150" width="36" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="484" y="182" width="60" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="490" y="189" width="40" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+<rect x="484" y="231" width="60" height="44" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<rect x="490" y="238" width="38" height="6" rx="2" fill="rgba(255,255,255,0.13)"/>
+
+<!-- P2 annotation -->
+<rect x="285" y="426" width="268" height="54" rx="3" fill="rgba(109,40,217,0.08)" stroke="rgba(109,40,217,0.3)" stroke-width="1"/>
+<text x="293" y="443" font-family="monospace" font-size="7.5" fill="rgba(167,139,250,0.65)" letter-spacing="0.5">✓  SELECTED — RATIONALE</text>
+<text x="293" y="458" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">Task detail + calendar in one toggle</text>
+<text x="293" y="471" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">Multi-view from single sidebar nav</text>
+
+<!-- ═══════════ PANEL 3: RESOURCE GRID VIEW ═══════════ -->
+<rect x="565" y="86" width="253" height="328" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+<!-- P3 Top bar -->
+<rect x="565" y="86" width="253" height="22" rx="3" fill="rgba(255,255,255,0.04)"/>
+<line x1="565" y1="108" x2="818" y2="108" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Search -->
+<rect x="573" y="92" width="88" height="10" rx="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.09)" stroke-width="0.5"/>
+<text x="580" y="100" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">Search resources...</text>
+<!-- Resources title -->
+<rect x="668" y="93" width="56" height="8" rx="2" fill="rgba(255,255,255,0.08)"/>
+
+<!-- P3 Left sidebar (team categories) -->
+<rect x="565" y="108" width="60" height="306" fill="rgba(255,255,255,0.025)"/>
+<line x1="625" y1="108" x2="625" y2="414" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<!-- Category: All Teams -->
+<text x="571" y="122" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.18)">All Teams</text>
+<!-- Category items with counts -->
+<rect x="571" y="128" width="32" height="7" rx="2" fill="rgba(109,40,217,0.4)"/>
+<rect x="607" y="128" width="14" height="7" rx="2" fill="rgba(109,40,217,0.3)"/>
+<text x="612" y="134" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(167,139,250,0.7)">13</text>
+
+<rect x="571" y="140" width="34" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<rect x="607" y="140" width="14" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<text x="612" y="146" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.3)">15</text>
+
+<rect x="571" y="152" width="38" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<rect x="607" y="152" width="14" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<text x="612" y="158" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.3)">08</text>
+
+<rect x="571" y="164" width="30" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<rect x="607" y="164" width="14" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<text x="612" y="170" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.3)">04</text>
+
+<rect x="571" y="176" width="36" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<rect x="607" y="176" width="14" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<text x="612" y="182" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.3)">03</text>
+
+<rect x="571" y="188" width="40" height="7" rx="2" fill="rgba(255,255,255,0.07)"/>
+<rect x="607" y="188" width="14" height="7" rx="2" fill="rgba(255,255,255,0.05)"/>
+<text x="612" y="194" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.3)">07</text>
+
+<!-- P3 Filter tabs -->
+<rect x="629" y="110" width="24" height="12" rx="6" fill="rgba(109,40,217,0.5)"/>
+<rect x="657" y="110" width="48" height="12" rx="6" fill="rgba(255,255,255,0.05)"/>
+<rect x="709" y="110" width="52" height="12" rx="6" fill="rgba(255,255,255,0.05)"/>
+<!-- Grid view button -->
+<rect x="770" y="110" width="40" height="12" rx="3" fill="rgba(109,40,217,0.3)"/>
+
+<!-- P3 Person cards grid (2 cols × 3 rows) -->
+<!-- Row 1, Col 1 -->
+<rect x="629" y="128" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="644" cy="146" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="658" y="139" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="658" y="149" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="658" y="157" width="26" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<!-- Utilization ring 75% -->
+<circle cx="700" cy="139" r="9" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+<path d="M700,130 A9,9 0 1,1 691.6,154" fill="none" stroke="rgba(109,40,217,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+<text x="700" y="143" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(167,139,250,0.9)">75%</text>
+<!-- Tech icons -->
+<circle cx="635" cy="180" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+<circle cx="647" cy="180" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+<!-- Row 1, Col 2 -->
+<rect x="723" y="128" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="738" cy="146" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="752" y="139" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="752" y="149" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<rect x="752" y="157" width="26" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<!-- 100% ring -->
+<circle cx="794" cy="139" r="9" fill="none" stroke="rgba(52,193,123,0.7)" stroke-width="2.5"/>
+<text x="794" y="143" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(52,193,123,0.9)">100%</text>
+<circle cx="729" cy="180" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+<!-- Row 2, Col 1 -->
+<rect x="629" y="198" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="644" cy="216" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="658" y="209" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="658" y="219" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<!-- 28% ring (low — amber warning) -->
+<circle cx="700" cy="209" r="9" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+<path d="M700,200 A9,9 0 0,1 708.5,214" fill="none" stroke="rgba(245,158,11,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+<text x="700" y="213" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(245,158,11,0.9)">28%</text>
+<circle cx="635" cy="250" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+<!-- Row 2, Col 2 -->
+<rect x="723" y="198" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="738" cy="216" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="752" y="209" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="752" y="219" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<!-- 61% ring -->
+<circle cx="794" cy="209" r="9" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+<path d="M794,200 A9,9 0 1,1 786,218" fill="none" stroke="rgba(109,40,217,0.65)" stroke-width="2.5" stroke-linecap="round"/>
+<text x="794" y="213" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(167,139,250,0.9)">61%</text>
+
+<!-- Row 3, Col 1 -->
+<rect x="629" y="268" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="644" cy="286" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="658" y="279" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="658" y="289" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+<circle cx="635" cy="320" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+<!-- Row 3, Col 2 -->
+<rect x="723" y="268" width="88" height="62" rx="3" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="738" cy="286" r="9" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<rect x="752" y="279" width="42" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+<rect x="752" y="289" width="34" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+
+<!-- Assign to Project button -->
+<rect x="629" y="356" width="182" height="30" rx="15" fill="rgba(109,40,217,0.5)" stroke="rgba(109,40,217,0.6)" stroke-width="1"/>
+<text x="720" y="375" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.85)">Assign to Project</text>
+
+<!-- P3 annotation -->
+<rect x="565" y="426" width="253" height="54" rx="3" fill="rgba(52,193,123,0.06)" stroke="rgba(52,193,123,0.22)" stroke-width="1"/>
+<text x="573" y="443" font-family="monospace" font-size="7.5" fill="rgba(52,193,123,0.6)" letter-spacing="0.5">✓  DIFFERENTIATION</text>
+<text x="573" y="458" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">Utilization % visible at a glance</text>
+<text x="573" y="471" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.4)">Overloading caught before confirming</text>
+
+<!-- Caption bar -->
+<rect x="0" y="487" width="840" height="33" fill="rgba(0,0,0,0.3)"/>
+<line x1="0" y1="487" x2="840" y2="487" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+<text x="36" y="507" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,0.18)">Project Clarity · Layout Explorations · Wireframe Review Round 1 · 2022</text>
+<text x="804" y="507" text-anchor="end" font-family="monospace" font-size="8.5" fill="rgba(167,139,250,0.35)">3 DIRECTIONS · V2 SELECTED</text>
+</svg>
