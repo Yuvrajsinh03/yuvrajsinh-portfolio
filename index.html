@@ -528,10 +528,14 @@
     ══════════════════════════════════════ */
     .work-scroll-section { position:relative; padding:80px 0 0 56px; background:var(--bg); }
     .work-scroll-header { display:flex; align-items:center; justify-content:space-between; padding-right:56px; margin-bottom:28px; }
-    .work-scroll-label { font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:14px; }
-    .work-scroll-label::after { content:'drag to explore →'; opacity:.35; font-size:9.5px; font-weight:400; letter-spacing:.1em; }
-    .work-h-wrap { overflow:hidden; }
-    .work-h-inner { display:flex; gap:3px; width:max-content; padding-right:56px; }
+    .work-scroll-label { font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+    .work-scroll-nav { display:flex; align-items:center; gap:8px; }
+    .wg-nav-btn { width:40px; height:40px; border-radius:50%; border:1.5px solid var(--border); background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:var(--ink2); transition:background .2s, border-color .2s, color .2s, transform .2s var(--ease); }
+    .wg-nav-btn:hover { background:var(--ink); border-color:var(--ink); color:var(--bg); transform:scale(1.07); }
+    .wg-nav-btn:disabled { opacity:.3; cursor:default; transform:none; }
+    .work-h-wrap { overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+    .work-h-wrap::-webkit-scrollbar { display:none; }
+    .work-h-inner { display:flex; gap:12px; width:max-content; padding-right:56px; }
     .wg-item { position:relative; overflow:hidden; width:400px; aspect-ratio:4/3; background:var(--bg2); border-radius:4px; flex-shrink:0; display:block; cursor:none; }
     .wg-item img { width:100%; height:100%; object-fit:cover; opacity:.85; transition:transform .8s var(--ease), opacity .4s; will-change:transform; }
     .wg-item:hover img { transform:scale(1.06); opacity:1; }
@@ -1178,14 +1182,167 @@
       <div class="wf-bg-num">02</div>
     </div>
 
+    <!-- Project 03 — Design System -->
+    <a href="/case-study/design-system" class="wf-item" data-cursor-label="View Case Study">
+      <div class="wf-img-bg" style="background:#0D0D12;">
+        <!-- subtle dot grid background -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.4;" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="wf-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(99,102,241,0.3)"/></pattern></defs><rect width="100%" height="100%" fill="url(#wf-dots)"/></svg>
+        <!-- indigo glow -->
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(99,102,241,.18) 0%,transparent 60%);pointer-events:none;"></div>
+      </div>
+      <div class="wf-info">
+        <div class="wf-info-top">
+          <div class="wf-num">03</div>
+          <p class="wf-cat">Design Systems</p>
+          <h3 class="wf-name">Foundation — Design System</h3>
+          <p class="wf-desc">Built ComplyStream's entire UI foundation from zero — 35 production-ready components, 85+ design tokens, and 100% engineering adoption in 2 months.</p>
+          <div class="wf-row">
+            <div class="wf-meta-item"><div class="wf-meta-label">Role</div><div class="wf-meta-val">Founding Designer</div></div>
+            <div class="wf-meta-item"><div class="wf-meta-label">Duration</div><div class="wf-meta-val">2 Months</div></div>
+            <div class="wf-meta-item"><div class="wf-meta-label">Outcome</div><div class="wf-meta-val">100% adoption</div></div>
+          </div>
+        </div>
+        <span class="wf-btn">
+          <span class="wf-btn-text">View Case Study</span>
+          <span class="wf-btn-arrow">→</span>
+        </span>
+      </div>
+      <!-- Figma-style component library mockup -->
+      <div class="wf-mockup">
+        <div class="wf-browser" style="background:#0F0F14;border-color:rgba(99,102,241,0.2);">
+          <div class="wf-browser-bar" style="background:#0A0A0E;border-bottom:1px solid rgba(99,102,241,0.12);">
+            <span class="wf-bb-dots"><i></i><i></i><i></i></span>
+            <span class="wf-bb-addr" style="color:rgba(129,140,248,.5);">Design System _ Shadcn Library · Components</span>
+          </div>
+          <div class="wf-browser-screen" style="background:#0F0F14;overflow:hidden;">
+            <svg viewBox="0 0 560 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+              <defs><pattern id="bp-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(99,102,241,0.1)"/></pattern></defs>
+              <rect width="560" height="460" fill="#0F0F14"/>
+              <rect width="560" height="460" fill="url(#bp-dots)"/>
+              <!-- header -->
+              <text x="22" y="28" font-family="system-ui,sans-serif" font-size="7" font-weight="700" letter-spacing="0.12em" fill="rgba(99,102,241,0.65)">COMPONENT LIBRARY — 35 COMPONENTS</text>
+              <!-- FORM ROW -->
+              <text x="22" y="50" font-family="system-ui,sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.1em" fill="rgba(255,255,255,0.3)">FORM  ·  8</text>
+              <!-- Button -->
+              <rect x="22" y="58" width="58" height="24" rx="5" fill="#6366F1"/>
+              <text x="51" y="74" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="white" text-anchor="middle">Button</text>
+              <!-- Input -->
+              <rect x="88" y="58" width="72" height="24" rx="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+              <text x="100" y="74" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.3)">Input…</text>
+              <!-- Select -->
+              <rect x="168" y="58" width="72" height="24" rx="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+              <text x="180" y="74" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.3)">Select ▾</text>
+              <!-- Checkbox -->
+              <rect x="248" y="63" width="14" height="14" rx="3" fill="#6366F1"/>
+              <text x="255" y="73" font-family="system-ui,sans-serif" font-size="8" fill="white" text-anchor="middle">✓</text>
+              <text x="270" y="73" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.5)">Check</text>
+              <!-- Toggle -->
+              <rect x="316" y="65" width="28" height="16" rx="8" fill="#6366F1"/>
+              <circle cx="336" cy="73" r="6" fill="white"/>
+              <text x="350" y="73" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.5)">Toggle</text>
+              <!-- Slider -->
+              <rect x="400" y="69" width="60" height="3" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+              <rect x="400" y="69" width="36" height="3" rx="1.5" fill="#6366F1"/>
+              <circle cx="436" cy="70.5" r="5" fill="white"/>
+              <!-- divider -->
+              <line x1="22" y1="96" x2="538" y2="96" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <!-- NAV ROW -->
+              <text x="22" y="112" font-family="system-ui,sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.1em" fill="rgba(255,255,255,0.3)">NAVIGATION  ·  5</text>
+              <!-- Tabs -->
+              <rect x="22" y="120" width="40" height="20" rx="4" fill="#6366F1"/>
+              <text x="42" y="134" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="white" text-anchor="middle">Tab 1</text>
+              <rect x="66" y="120" width="40" height="20" rx="4" fill="rgba(255,255,255,0.07)"/>
+              <text x="86" y="134" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle">Tab 2</text>
+              <!-- Breadcrumb -->
+              <text x="116" y="133" font-family="system-ui,sans-serif" font-size="8" fill="rgba(99,102,241,0.8)">Home</text>
+              <text x="144" y="133" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.25)">/</text>
+              <text x="152" y="133" font-family="system-ui,sans-serif" font-size="8" fill="rgba(99,102,241,0.8)">Section</text>
+              <text x="188" y="133" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.25)">/</text>
+              <text x="196" y="133" font-family="system-ui,sans-serif" font-size="8" fill="rgba(255,255,255,0.55)">Page</text>
+              <!-- Pagination -->
+              <rect x="248" y="120" width="20" height="20" rx="3" fill="rgba(255,255,255,0.06)"/><text x="258" y="134" font-family="system-ui,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">‹</text>
+              <rect x="272" y="120" width="20" height="20" rx="3" fill="#6366F1"/><text x="282" y="134" font-family="system-ui,sans-serif" font-size="9" fill="white" text-anchor="middle">1</text>
+              <rect x="296" y="120" width="20" height="20" rx="3" fill="rgba(255,255,255,0.06)"/><text x="306" y="134" font-family="system-ui,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">2</text>
+              <rect x="320" y="120" width="20" height="20" rx="3" fill="rgba(255,255,255,0.06)"/><text x="330" y="134" font-family="system-ui,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">›</text>
+              <!-- divider -->
+              <line x1="22" y1="156" x2="538" y2="156" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <!-- FEEDBACK ROW -->
+              <text x="22" y="172" font-family="system-ui,sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.1em" fill="rgba(255,255,255,0.3)">FEEDBACK  ·  8</text>
+              <!-- Alert -->
+              <rect x="22" y="180" width="110" height="30" rx="5" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+              <rect x="22" y="180" width="3" height="30" rx="1.5" fill="#6366F1"/>
+              <text x="32" y="193" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.75)">Information</text>
+              <text x="32" y="204" font-family="system-ui,sans-serif" font-size="7" fill="rgba(255,255,255,0.3)">This is an alert message</text>
+              <!-- Badge -->
+              <rect x="142" y="185" width="38" height="16" rx="8" fill="rgba(99,102,241,0.2)" stroke="rgba(99,102,241,0.4)" stroke-width="1"/>
+              <text x="161" y="197" font-family="system-ui,sans-serif" font-size="7.5" fill="#818CF8" text-anchor="middle">Active</text>
+              <rect x="186" y="185" width="38" height="16" rx="8" fill="rgba(34,197,94,0.15)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+              <text x="205" y="197" font-family="system-ui,sans-serif" font-size="7.5" fill="#4ade80" text-anchor="middle">Done</text>
+              <!-- Toast -->
+              <rect x="234" y="180" width="110" height="30" rx="6" fill="#1E293B" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+              <text x="244" y="194" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.85)">✓ Saved</text>
+              <text x="244" y="205" font-family="system-ui,sans-serif" font-size="7" fill="rgba(255,255,255,0.3)">Changes saved successfully.</text>
+              <!-- Progress -->
+              <rect x="354" y="190" width="90" height="4" rx="2" fill="rgba(255,255,255,0.07)"/>
+              <rect x="354" y="190" width="58" height="4" rx="2" fill="#6366F1"/>
+              <text x="354" y="207" font-family="system-ui,sans-serif" font-size="7" fill="rgba(255,255,255,0.3)">Progress  65%</text>
+              <!-- divider -->
+              <line x1="22" y1="226" x2="538" y2="226" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <!-- DATA DISPLAY -->
+              <text x="22" y="242" font-family="system-ui,sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.1em" fill="rgba(255,255,255,0.3)">DATA DISPLAY &amp; LAYOUT  ·  14</text>
+              <!-- Card -->
+              <rect x="22" y="250" width="80" height="60" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+              <rect x="30" y="258" width="64" height="18" rx="3" fill="rgba(99,102,241,0.18)"/>
+              <rect x="30" y="282" width="40" height="6" rx="2" fill="rgba(255,255,255,0.1)"/>
+              <rect x="30" y="293" width="54" height="5" rx="2" fill="rgba(255,255,255,0.06)"/>
+              <!-- Avatar group -->
+              <circle cx="126" cy="280" r="14" fill="#6366F1"/>
+              <text x="126" y="284" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="white" text-anchor="middle">YJ</text>
+              <circle cx="148" cy="280" r="14" fill="#4338CA"/>
+              <text x="148" y="284" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="white" text-anchor="middle">AB</text>
+              <circle cx="170" cy="280" r="14" fill="#818CF8"/>
+              <text x="170" y="284" font-family="system-ui,sans-serif" font-size="7" font-weight="600" fill="white" text-anchor="middle">+3</text>
+              <!-- Table -->
+              <rect x="196" y="250" width="130" height="62" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <rect x="196" y="250" width="130" height="16" rx="3" fill="rgba(255,255,255,0.06)"/>
+              <text x="204" y="261" font-family="system-ui,sans-serif" font-size="6.5" font-weight="600" fill="rgba(255,255,255,0.5)">Name</text>
+              <text x="260" y="261" font-family="system-ui,sans-serif" font-size="6.5" font-weight="600" fill="rgba(255,255,255,0.5)">Status</text>
+              <text x="204" y="276" font-family="system-ui,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.4)">Item A</text>
+              <text x="260" y="276" font-family="system-ui,sans-serif" font-size="6.5" fill="#4ade80">● Active</text>
+              <line x1="196" y1="279" x2="326" y2="279" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <text x="204" y="291" font-family="system-ui,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.4)">Item B</text>
+              <text x="260" y="291" font-family="system-ui,sans-serif" font-size="6.5" fill="rgba(239,68,68,0.8)">● Paused</text>
+              <line x1="196" y1="294" x2="326" y2="294" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <text x="204" y="306" font-family="system-ui,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.4)">Item C</text>
+              <text x="260" y="306" font-family="system-ui,sans-serif" font-size="6.5" fill="#818CF8">● Draft</text>
+              <!-- Dialog -->
+              <rect x="340" y="248" width="110" height="64" rx="6" fill="#0D1117" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+              <text x="352" y="263" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.8)">Confirm action</text>
+              <text x="352" y="275" font-family="system-ui,sans-serif" font-size="7" fill="rgba(255,255,255,0.3)">This cannot be undone.</text>
+              <rect x="352" y="283" width="38" height="16" rx="4" fill="rgba(239,68,68,0.8)"/>
+              <text x="371" y="295" font-family="system-ui,sans-serif" font-size="7.5" font-weight="600" fill="white" text-anchor="middle">Delete</text>
+              <rect x="396" y="283" width="44" height="16" rx="4" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+              <text x="418" y="295" font-family="system-ui,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">Cancel</text>
+              <!-- footer -->
+              <text x="280" y="450" font-family="system-ui,sans-serif" font-size="7" fill="rgba(255,255,255,0.15)" text-anchor="middle">8 FORM · 5 NAV · 8 FEEDBACK · 14 DATA = 35 TOTAL</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="wf-bg-num">03</div>
+    </a>
 
   </div>
 </section>
 
-<!-- ════ MORE PROJECTS — horizontal scroll ════ -->
+<!-- ════ MORE PROJECTS — arrow navigation ════ -->
 <div class="work-scroll-section">
   <div class="work-scroll-header">
     <p class="work-scroll-label">More Projects</p>
+    <div class="work-scroll-nav">
+      <button class="wg-nav-btn" id="wgPrev" aria-label="Previous">←</button>
+      <button class="wg-nav-btn" id="wgNext" aria-label="Next">→</button>
+    </div>
   </div>
   <div class="work-h-wrap" id="workHWrap">
     <div class="work-h-inner" id="workHInner">
@@ -1628,49 +1785,64 @@
     });
   });
 
-  /* ─── HORIZONTAL SCROLL ─── */
+  /* ─── HORIZONTAL SCROLL — arrow nav ─── */
   const hWrap  = document.getElementById('workHWrap');
   const hInner = document.getElementById('workHInner');
   const dotsEl = document.getElementById('wgDots');
+  const btnPrev = document.getElementById('wgPrev');
+  const btnNext = document.getElementById('wgNext');
 
   if (hWrap && hInner) {
-    /* ── Desktop: GSAP pin-scroll ── */
-    ScrollTrigger.matchMedia({
-      "(min-width: 900px)": function() {
-        const getAmt = () => -(hInner.scrollWidth - window.innerWidth + 56);
-        ScrollTrigger.create({
-          trigger: hWrap, pin: true, start: 'top top',
-          end: () => '+=' + Math.abs(getAmt()),
-          scrub: 1.2,
-          onUpdate: self => gsap.set(hInner, { x: getAmt() * self.progress })
-        });
-      }
-    });
+    const STEP = 412; // card width (400) + gap (12) ≈ one card step
+
+    function updateBtns() {
+      if (!btnPrev || !btnNext) return;
+      const maxScroll = hInner.scrollWidth - hWrap.clientWidth;
+      btnPrev.disabled = hWrap.scrollLeft <= 4;
+      btnNext.disabled = hWrap.scrollLeft >= maxScroll - 4;
+    }
+
+    function scrollBy(dir) {
+      hWrap.scrollBy({ left: dir * STEP, behavior: 'smooth' });
+    }
+
+    if (btnPrev) btnPrev.addEventListener('click', () => scrollBy(-1));
+    if (btnNext) btnNext.addEventListener('click', () => scrollBy(1));
+
+    // Update button states on scroll
+    hWrap.addEventListener('scroll', updateBtns, { passive: true });
+
+    // Make hWrap scrollable with overflow on desktop too
+    hWrap.style.overflowX = 'auto';
+    hWrap.style.overflowY = 'hidden';
+    hWrap.style.scrollbarWidth = 'none';
+    hWrap.style.cssText += '; scrollbar-width:none;';
+
+    setTimeout(updateBtns, 100);
 
     /* ── Mobile: scroll-snap + dot indicators ── */
     const items = hInner.querySelectorAll('.wg-item');
     if (dotsEl && items.length) {
-      // Build dots
       items.forEach((_, i) => {
         const d = document.createElement('div');
         d.className = 'wg-dot' + (i === 0 ? ' active' : '');
         dotsEl.appendChild(d);
       });
       const dots = dotsEl.querySelectorAll('.wg-dot');
-
-      // Update active dot on scroll
       let scrollTicking = false;
       hWrap.addEventListener('scroll', () => {
         if (scrollTicking) return;
         scrollTicking = true;
         requestAnimationFrame(() => {
-          const itemW = items[0].offsetWidth + 12; // width + gap
+          const itemW = items[0].offsetWidth + 12;
           const idx   = Math.round(hWrap.scrollLeft / itemW);
           dots.forEach((d, i) => d.classList.toggle('active', i === idx));
           scrollTicking = false;
         });
       }, { passive: true });
     }
+
+    window.addEventListener('resize', updateBtns);
   }
 
   document.querySelectorAll('.wg-item').forEach((item, i) => {
