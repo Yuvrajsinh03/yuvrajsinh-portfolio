@@ -204,6 +204,65 @@
     .next-thumb{border-radius:6px;overflow:hidden;background:var(--ink);aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
     .next-thumb-inner{font-family:var(--f-display);font-size:32px;font-weight:300;font-style:italic;color:rgba(245,240,232,.2);text-align:center;}
 
+    /* ── FLOATING COMPONENTS ── */
+    #hero-floats{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
+    .hf{position:absolute;opacity:0;will-change:transform;user-select:none;}
+
+    /* shared component aesthetics */
+    .hf-inner{
+      background:rgba(15,15,20,.72);
+      border:1px solid rgba(99,102,241,.22);
+      border-radius:10px;
+      backdrop-filter:blur(12px) saturate(160%);
+      box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
+      padding:14px 16px;
+      font-family:var(--f-body);
+      color:rgba(255,255,255,.85);
+      font-size:12px;
+      line-height:1.5;
+      white-space:nowrap;
+    }
+
+    /* individual float positions */
+    .hf-tokens  { top:11%; right:7%;  }
+    .hf-card    { top:19%; right:37%; }
+    .hf-button  { top:30%; right:20%; }
+    .hf-input   { top:45%; right:8%;  }
+    .hf-badge   { top:23%; right:6%;  }
+    .hf-toggle  { top:57%; right:31%; }
+    .hf-matrix  { top:15%; right:54%; }
+    .hf-tag     { top:38%; right:42%; }
+
+    /* component internals */
+    .hf-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+    .hf-row:last-child{margin-bottom:0;}
+    .hf-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(99,102,241,.6);margin-bottom:8px;}
+    .hf-btn-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:600;}
+    .hf-btn-primary{background:#6366F1;color:white;}
+    .hf-btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.6);}
+    .hf-btn-dest{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:rgba(239,68,68,.9);}
+    .hf-input-field{padding:7px 10px;border-radius:5px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);font-size:11px;width:140px;font-family:var(--f-body);}
+    .hf-swatch{width:18px;height:18px;border-radius:4px;flex-shrink:0;}
+    .hf-swatch-name{font-size:10px;color:rgba(255,255,255,.4);}
+    .hf-swatch-val{font-size:9px;color:rgba(99,102,241,.6);font-family:monospace;}
+    .hf-badge-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:600;}
+    .hf-badge-active{background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.35);color:#818CF8;}
+    .hf-badge-success{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);color:#4ade80;}
+    .hf-badge-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#fbbf24;}
+    .hf-toggle-wrap{display:flex;align-items:center;gap:10px;}
+    .hf-toggle-track{width:36px;height:20px;border-radius:10px;background:#6366F1;position:relative;flex-shrink:0;}
+    .hf-toggle-thumb{position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:white;}
+    .hf-toggle-off .hf-toggle-track{background:rgba(255,255,255,.12);}
+    .hf-toggle-off .hf-toggle-thumb{right:auto;left:3px;}
+    .hf-card-thumb{width:160px;}
+    .hf-card-img{height:56px;border-radius:5px;background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(67,56,202,.15));margin-bottom:8px;display:flex;align-items:center;justify-content:center;}
+    .hf-card-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);margin-bottom:3px;}
+    .hf-card-sub{font-size:10px;color:rgba(255,255,255,.3);}
+    .hf-matrix-grid{display:grid;grid-template-columns:repeat(3,28px);gap:4px;}
+    .hf-matrix-cell{width:28px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;}
+
+    @media(max-width:1100px){ #hero-floats{ display:none; } }
+
     /* GRAIN */
     body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
 
@@ -243,6 +302,111 @@
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
+
+  <!-- ── FLOATING COMPONENT CHIPS ── -->
+  <div id="hero-floats">
+
+    <!-- Color tokens strip -->
+    <div class="hf hf-tokens" data-depth="0.4">
+      <div class="hf-inner">
+        <div class="hf-label">Colour tokens</div>
+        <div class="hf-row"><div class="hf-swatch" style="background:#6366F1"></div><span class="hf-swatch-name">primary</span><span class="hf-swatch-val">--color-primary</span></div>
+        <div class="hf-row"><div class="hf-swatch" style="background:#818CF8"></div><span class="hf-swatch-name">primary-hover</span><span class="hf-swatch-val">--color-primary-hover</span></div>
+        <div class="hf-row"><div class="hf-swatch" style="background:#1E293B"></div><span class="hf-swatch-name">surface</span><span class="hf-swatch-val">--color-surface</span></div>
+        <div class="hf-row"><div class="hf-swatch" style="background:#EF4444"></div><span class="hf-swatch-name">destructive</span><span class="hf-swatch-val">--color-destructive</span></div>
+      </div>
+    </div>
+
+    <!-- Button variants -->
+    <div class="hf hf-button" data-depth="0.7">
+      <div class="hf-inner">
+        <div class="hf-label">Button · 6 variants</div>
+        <div class="hf-row">
+          <span class="hf-btn-pill hf-btn-primary">Primary</span>
+          <span class="hf-btn-pill hf-btn-ghost">Ghost</span>
+          <span class="hf-btn-pill hf-btn-dest">Delete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input field -->
+    <div class="hf hf-input" data-depth="0.55">
+      <div class="hf-inner">
+        <div class="hf-label">Input · 4 variants</div>
+        <div class="hf-row"><input class="hf-input-field" placeholder="ava.wright@gmail.com" readonly tabindex="-1"></div>
+        <div class="hf-row" style="gap:6px;">
+          <span style="font-size:10px;color:rgba(239,68,68,.8);">✕ This is an error message</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="hf hf-badge" data-depth="0.35">
+      <div class="hf-inner">
+        <div class="hf-label">Badge</div>
+        <div class="hf-row">
+          <span class="hf-badge-pill hf-badge-active">● Active</span>
+          <span class="hf-badge-pill hf-badge-success">● Done</span>
+          <span class="hf-badge-pill hf-badge-warn">● Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle switches -->
+    <div class="hf hf-toggle" data-depth="0.6">
+      <div class="hf-inner">
+        <div class="hf-label">Toggle</div>
+        <div class="hf-row hf-toggle-wrap">
+          <div class="hf-toggle-track"><div class="hf-toggle-thumb"></div></div>
+          <span style="font-size:11px;color:rgba(255,255,255,.65);">Notifications</span>
+        </div>
+        <div class="hf-row hf-toggle-wrap hf-toggle-off">
+          <div class="hf-toggle-track"><div class="hf-toggle-thumb"></div></div>
+          <span style="font-size:11px;color:rgba(255,255,255,.35);">Dark mode</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card thumbnail -->
+    <div class="hf hf-card" data-depth="0.45">
+      <div class="hf-inner" style="padding:12px;">
+        <div class="hf-card-thumb">
+          <div class="hf-card-img">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="10" height="10" rx="2.5" fill="rgba(99,102,241,0.8)"/><rect x="18" y="4" width="10" height="10" rx="2.5" fill="rgba(99,102,241,0.4)"/><rect x="4" y="18" width="10" height="10" rx="2.5" fill="rgba(99,102,241,0.4)"/><rect x="18" y="18" width="10" height="10" rx="2.5" fill="rgba(99,102,241,0.15)"/></svg>
+          </div>
+          <div class="hf-card-title">Design System · Shadcn</div>
+          <div class="hf-card-sub">35 components · 85+ tokens</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variant matrix -->
+    <div class="hf hf-matrix" data-depth="0.3">
+      <div class="hf-inner">
+        <div class="hf-label">Variants × States</div>
+        <div class="hf-matrix-grid">
+          <div class="hf-matrix-cell" style="background:#6366F1;color:white;font-weight:600;">Btn</div>
+          <div class="hf-matrix-cell" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#818CF8;">Btn</div>
+          <div class="hf-matrix-cell" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);">Btn</div>
+          <div class="hf-matrix-cell" style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:rgba(239,68,68,.9);">Del</div>
+          <div class="hf-matrix-cell" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.2);">Dis</div>
+          <div class="hf-matrix-cell" style="background:rgba(99,102,241,.08);border:1px dashed rgba(99,102,241,.2);color:rgba(99,102,241,.5);">+</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacing tag -->
+    <div class="hf hf-tag" data-depth="0.65">
+      <div class="hf-inner" style="padding:10px 14px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(99,102,241,.6);">spacing-4</span>
+          <span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,.5);">1rem · 16px</span>
+          <div style="width:16px;height:8px;background:rgba(99,102,241,.35);border-radius:2px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /hero-floats -->
 
   <p class="hero-eyebrow" id="h-eye">Design System · ComplyStream · 2025</p>
 
@@ -1168,6 +1332,49 @@ window.addEventListener('load', () => {
     gsap.from('#h-title', { y:50, opacity:0, duration:1.1, ease:'expo.out', delay:.2 });
     gsap.from('#h-meta', { y:30, opacity:0, duration:.9, ease:'expo.out', delay:.45 });
     gsap.from('#h-cover', { y:40, opacity:0, duration:1, ease:'expo.out', delay:.6 });
+
+    /* ── FLOATING COMPONENTS ── */
+    const floats = document.querySelectorAll('.hf');
+    if (floats.length && window.innerWidth > 1100) {
+      // Stagger fade-in after loader clears
+      gsap.to(floats, {
+        opacity: 1, duration: 1.4, stagger: 0.18,
+        ease: 'expo.out', delay: 0.5
+      });
+
+      // Individual continuous drift — each chip bobs at its own rhythm
+      floats.forEach((el, i) => {
+        const yAmt = 10 + (i % 3) * 7;
+        const dur  = 3.8 + (i * 0.65);
+        const xAmt = 4 + (i % 2) * 3;
+        gsap.to(el, {
+          y: `+=${yAmt}`, x: `+=${xAmt}`,
+          duration: dur, repeat: -1, yoyo: true,
+          ease: 'sine.inOut', delay: i * 0.35
+        });
+      });
+
+      // Mouse parallax — depth attribute drives how much each chip moves
+      let rafId;
+      document.addEventListener('mousemove', e => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const cx = window.innerWidth / 2;
+          const cy = window.innerHeight / 2;
+          const dx = (e.clientX - cx) / cx;
+          const dy = (e.clientY - cy) / cy;
+          floats.forEach(el => {
+            const depth = parseFloat(el.dataset.depth || '0.5');
+            gsap.to(el, {
+              x: `+=${dx * depth * 26}`,
+              y: `+=${dy * depth * 14}`,
+              duration: 1.4, ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          });
+        });
+      });
+    }
   }, 600);
 });
 
