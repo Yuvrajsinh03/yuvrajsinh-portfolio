@@ -50,7 +50,7 @@
     #loader.out { opacity:0; pointer-events:none; transition:opacity .7s; }
     .loader-word { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(36px,7vw,80px); font-weight:800; color:var(--pink); letter-spacing:-.04em; }
 
-     /* NAV */
+    /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s;}
     nav.scrolled{background:rgba(10,22,40,.92);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--c-rule);}
     .nav-logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.01em;color:rgba(238,243,255,.7);transition:color .3s;}
@@ -1239,13 +1239,9 @@ window.addEventListener('load', () => {
   setTimeout(() => loader.remove(), 700);
 });
 
-// ── Nav scroll behaviour (GSAP)
-const nav = document.getElementById('nav');
-ScrollTrigger.create({
-  start: 80,
-  onEnter:     () => nav.classList.add('scrolled'),
-  onLeaveBack: () => nav.classList.remove('scrolled')
-});
+// NAV
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
 
 // ── Cursor
 const cur  = document.getElementById('cur');
