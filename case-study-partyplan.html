@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Party Plan — Case Study · Yuvrajsinh Jadeja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pink:    #FF2D78;
+      --pink2:   #FF6FA3;
+      --purple:  #7B2EBD;
+      --purple2: #9D52D6;
+      --yellow:  #FFD600;
+      --teal:    #00C9A7;
+      --coral:   #FF6B35;
+      --navy:    #0F0A1E;
+      --navy2:   #1A1035;
+      --white:   #FFFFFF;
+      --off:     #F8F5FF;
+      --body:    #3D3354;
+      --muted:   #8B7BA8;
+      --border:  #E8E2F5;
+      --card:    #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      background: var(--white);
+      color: var(--body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CURSOR ─── */
+    #cur { position:fixed; width:9px; height:9px; background:var(--pink); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .3s,height .3s,opacity .3s; }
+    #cur.big { width:44px; height:44px; background:transparent; border:1.5px solid var(--pink); }
+    #curf { position:fixed; width:32px; height:32px; border:1px solid rgba(255,45,120,.28); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+
+    /* ─── LOADER ─── */
+    #loader { position:fixed; inset:0; background:var(--navy); z-index:10000; display:flex; align-items:center; justify-content:center; }
+    #loader.out { opacity:0; pointer-events:none; transition:opacity .7s; }
+    .loader-word { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(36px,7vw,80px); font-weight:800; color:var(--pink); letter-spacing:-.04em; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 20px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background .4s, border-color .4s;
+    }
+    nav.scrolled {
+      background: rgba(15,10,30,.93);
+      backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav-logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,.70);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .nav-logo:hover { color: var(--white); }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      text-decoration: none;
+      transition: color .2s, gap .2s;
+    }
+    .nav-back::before { content: '←'; }
+    .nav-back:hover { color: var(--pink2); gap: 14px; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 120px 48px 72px;
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+    }
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% -10%, #FF2D7840 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at -10% 80%, #7B2EBD50 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 110%, #00C9A730 0%, transparent 50%);
+    }
+
+    /* Confetti dots */
+    .confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-120vh) rotate(720deg); }
+    }
+
+    .hero-eyebrow {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      background: linear-gradient(135deg, var(--pink), var(--coral));
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+    }
+    .hero-tag2 {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .hero-title {
+      position: relative;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(56px, 9vw, 120px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+    }
+    .hero-title .gradient-word {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-title .teal-word {
+      background: linear-gradient(135deg, var(--teal) 0%, #00F5D4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(15px, 1.8vw, 18px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    .hero-stats {
+      position: relative;
+      display: flex;
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      max-width: 720px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+    }
+    .h-stat {
+      flex: 1;
+      padding: 28px 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+    .h-stat:last-child { border-right: none; }
+    .h-stat-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .h-stat-num .accent { color: var(--pink2); }
+    .h-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ─── META BAND ─── */
+    .meta-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--off);
+    }
+    .meta-cell {
+      padding: 32px 40px;
+      border-right: 1px solid var(--border);
+    }
+    .meta-cell:last-child { border-right: none; }
+    .meta-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .meta-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section { padding: 96px 48px; }
+    .section-narrow { max-width: 760px; margin: 0 auto; }
+    .section-wide { max-width: 1100px; margin: 0 auto; }
+
+    /* ─── SECTION LABEL ─── */
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 20px;
+    }
+    .label .dot-icon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+
+    .label-teal { color: var(--teal); }
+    .label-teal .dot-icon { background: var(--teal); }
+    .label-purple { color: var(--purple2); }
+    .label-purple .dot-icon { background: var(--purple2); }
+    .label-coral { color: var(--coral); }
+    .label-coral .dot-icon { background: var(--coral); }
+    .label-yellow { color: #B89600; }
+    .label-yellow .dot-icon { background: #B89600; }
+
+    /* ─── HEADINGS ─── */
+    h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    h2 .pink { color: var(--pink); }
+    h2 .teal { color: var(--teal); }
+    h2 .purple { color: var(--purple2); }
+    h2 .yellow { color: #FFB900; }
+
+    h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+      margin-top: 48px;
+    }
+    h3:first-child { margin-top: 0; }
+
+    p {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--body);
+      margin-bottom: 20px;
+    }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--navy); font-weight: 600; }
+
+    /* ─── PULL QUOTE ─── */
+    .pull-quote {
+      border-left: 3px solid var(--pink);
+      padding: 24px 36px;
+      margin: 44px 0;
+      background: linear-gradient(135deg, #FFF0F5 0%, #F8F0FF 100%);
+      border-radius: 0 16px 16px 0;
+    }
+    .pull-quote p {
+      font-family: 'Inter', sans-serif;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--navy);
+      font-style: italic;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ─── INSIGHT GRID ─── */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+    .insight-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .insight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(123,46,189,0.08);
+    }
+    .insight-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .insight-card:nth-child(1)::before { background: linear-gradient(90deg, var(--pink), var(--coral)); }
+    .insight-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), var(--purple2)); }
+    .insight-card:nth-child(3)::before { background: linear-gradient(90deg, var(--teal), #00F5D4); }
+    .insight-card:nth-child(4)::before { background: linear-gradient(90deg, var(--yellow), var(--coral)); }
+
+    .insight-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .insight-card:nth-child(1) .insight-num { color: var(--pink); }
+    .insight-card:nth-child(2) .insight-num { color: var(--purple2); }
+    .insight-card:nth-child(3) .insight-num { color: var(--teal); }
+    .insight-card:nth-child(4) .insight-num { color: var(--coral); }
+
+    .insight-card h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .insight-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ─── DARK SECTION ─── */
+    .dark-section {
+      background: var(--navy);
+      padding: 96px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dark-section::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: 60%;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #7B2EBD30 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .dark-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; right: -10%;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #FF2D7820 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .dark-section .label { color: var(--pink2); }
+    .dark-section .label .dot-icon { background: var(--pink2); }
+    .dark-section h2 { color: var(--white); }
+    .dark-section h2 .pink { color: var(--pink2); }
+    .dark-section p { color: rgba(255,255,255,0.65); }
+    .dark-section strong { color: var(--white); }
+    .dark-section h3 { color: var(--white); }
+
+    /* ─── HMW CARD ─── */
+    .hmw-card {
+      position: relative;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 100%);
+      border-radius: 24px;
+      padding: 48px;
+      margin: 44px 0;
+      overflow: hidden;
+    }
+    .hmw-card::before {
+      content: '?';
+      position: absolute;
+      right: -20px; top: -40px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 300px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .hmw-card h3 {
+      color: var(--white);
+      font-size: 20px;
+      line-height: 1.5;
+      font-style: italic;
+      font-weight: 600;
+      margin: 0 0 16px;
+    }
+    .hmw-card p {
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* ─── PRINCIPLE LIST ─── */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 32px 0;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      transition: background 0.2s;
+    }
+    .principle-item:last-child { border-bottom: none; }
+    .principle-item:hover { background: var(--off); }
+    .principle-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-top: 2px;
+    }
+    .principle-item:nth-child(1) .principle-icon { background: #FFF0F5; }
+    .principle-item:nth-child(2) .principle-icon { background: #F0EBFF; }
+    .principle-item:nth-child(3) .principle-icon { background: #E8FFF9; }
+    .principle-item:nth-child(4) .principle-icon { background: #FFF9E6; }
+    .principle-content h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .principle-content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ─── COLOR SECTION ─── */
+    .color-section {
+      background: linear-gradient(135deg, #FFF0F8 0%, #F0E8FF 50%, #E8FFF9 100%);
+      padding: 96px 48px;
+    }
+
+    /* ─── DECISION GRID ─── */
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+    .decision-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .decision-card-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1;
+      opacity: 0.07;
+      position: absolute;
+      right: 20px;
+      bottom: 10px;
+      color: var(--navy);
+    }
+    .decision-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .tag-pink { background: #FFF0F5; color: var(--pink); }
+    .tag-purple { background: #F0EBFF; color: var(--purple2); }
+    .tag-teal { background: #E8FFF9; color: #00A589; }
+    .tag-coral { background: #FFF3ED; color: var(--coral); }
+    .decision-card h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .decision-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ─── TEAL SECTION ─── */
+    .teal-section {
+      background: #0A2E2A;
+      padding: 96px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .teal-section::before {
+      content: '';
+      position: absolute;
+      top: -30%; left: -10%;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00C9A720 0%, transparent 70%);
+    }
+    .teal-section .label { color: var(--teal); }
+    .teal-section .label .dot-icon { background: var(--teal); }
+    .teal-section h2 { color: var(--white); }
+    .teal-section h2 .teal { color: var(--teal); }
+    .teal-section p { color: rgba(255,255,255,0.65); }
+    .teal-section strong { color: var(--white); }
+    .teal-section h3 { color: var(--white); }
+
+    /* ─── FLOW STEPS ─── */
+    .flow-steps { margin: 40px 0; display: flex; flex-direction: column; gap: 0; }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      align-items: start;
+    }
+    .flow-step:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .flow-step:nth-child(1) .step-num { background: #FF2D7830; color: var(--pink2); }
+    .flow-step:nth-child(2) .step-num { background: #7B2EBD30; color: #C084FC; }
+    .flow-step:nth-child(3) .step-num { background: #00C9A730; color: var(--teal); }
+    .flow-step:nth-child(4) .step-num { background: #FFD60030; color: #FFD600; }
+    .flow-step:nth-child(5) .step-num { background: #FF6B3530; color: var(--coral); }
+    .step-content h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .step-content p { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.7; margin: 0; color: rgba(255,255,255,0.6); }
+
+    /* ─── SCREEN NOTE CARD ─── */
+    .screen-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px;
+      padding: 36px;
+      margin: 32px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .screen-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--pink));
+    }
+    .screen-card-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .screen-card h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .screen-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 20px;
+    }
+    .annotation-list { display: flex; flex-direction: column; gap: 12px; }
+    .annotation {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .a-dot {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,201,167,0.2);
+      border: 1px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-top: 2px;
+    }
+    .annotation p {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .annotation p strong { color: rgba(255,255,255,0.9); }
+
+    /* ─── OUTCOME SECTION ─── */
+    .outcome-section {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 60%, #1A0A3B 100%);
+      padding: 96px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .outcome-section::before {
+      content: '🎉';
+      position: absolute;
+      font-size: 300px;
+      opacity: 0.05;
+      right: -40px;
+      top: -80px;
+      pointer-events: none;
+    }
+    .outcome-section .label { color: rgba(255,255,255,0.7); }
+    .outcome-section .label .dot-icon { background: rgba(255,255,255,0.7); }
+    .outcome-section h2 { color: var(--white); }
+
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 48px 0;
+    }
+    .outcome-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .outcome-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 52px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .outcome-num .sup {
+      font-size: 28px;
+      vertical-align: super;
+      opacity: 0.7;
+    }
+    .outcome-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+    }
+
+    /* ─── OUTCOME BODY TEXT ─── */
+    .outcome-section p { color: rgba(255,255,255,0.72); }
+    .outcome-section strong { color: var(--white); }
+
+    /* ─── REFLECTION ─── */
+    .reflection-section { background: var(--off); padding: 96px 48px; }
+
+    .reflection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+    .reflection-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+    .reflection-emoji {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .reflection-card h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .reflection-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ─── NEXT PROJECT ─── */
+    .next-section { padding:96px 56px; background:var(--off); border-top:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    .next-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+    .next-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(32px,5vw,60px); font-weight:800; line-height:1.05; letter-spacing:-.03em; margin-bottom:28px; color:var(--navy); }
+    .next-title em { font-style:italic; color:var(--pink); font-weight:400; }
+    .next-sub { font-size:15px; color:var(--muted); line-height:1.65; margin-bottom:32px; }
+    .next-btn { display:inline-flex; align-items:center; gap:10px; padding:13px 28px; border:1.5px solid var(--border); border-radius:100px; font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--navy); transition:background .25s,color .25s,border-color .25s,gap .25s; }
+    .next-btn:hover { background:var(--pink); color:#fff; border-color:var(--pink); gap:16px; }
+    .next-img { border-radius:6px; overflow:hidden; }
+    .next-img img { width:100%; aspect-ratio:3/2; object-fit:cover; filter:saturate(.85); }
+
+    /* ─── FOOTER ─── */
+    .pp-footer { background:var(--navy); padding:32px 56px; display:flex; justify-content:space-between; align-items:center; }
+    .pp-footer-brand { font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; font-weight:700; color:rgba(255,255,255,.4); }
+    .pp-footer-back { font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:rgba(255,255,255,.25); text-decoration:none; transition:color .2s; }
+    .pp-footer-back:hover { color:var(--pink2); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 100px 24px 60px; }
+      .section { padding: 64px 24px; }
+      .dark-section, .teal-section, .color-section, .outcome-section, .reflection-section { padding: 64px 24px; }
+      .meta-band { grid-template-columns: repeat(2, 1fr); }
+      .meta-cell { border-right: none; border-bottom: 1px solid var(--border); }
+      .insight-grid, .decision-grid, .reflection-grid { grid-template-columns: 1fr; }
+      .outcome-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { flex-direction: column; }
+      .h-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .next-section { grid-template-columns:1fr; padding:64px 24px; }
+      .pp-footer { padding:32px 24px; flex-direction:column; gap:16px; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="curf"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <span class="loader-word">Party Plan</span>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="/">Yuvrajsinh Jadeja</a>
+  <a class="nav-back" href="/#work">All Work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-gradient"></div>
+  <div class="confetti">
+    <div class="dot" style="width:12px;height:12px;background:#FF2D78;left:8%;top:80%;animation-duration:18s;animation-delay:-4s;"></div>
+    <div class="dot" style="width:8px;height:8px;background:#FFD600;left:20%;top:90%;animation-duration:22s;animation-delay:-8s;"></div>
+    <div class="dot" style="width:16px;height:16px;background:#00C9A7;left:35%;top:85%;animation-duration:15s;animation-delay:-2s;"></div>
+    <div class="dot" style="width:6px;height:6px;background:#7B2EBD;left:55%;top:88%;animation-duration:25s;animation-delay:-12s;"></div>
+    <div class="dot" style="width:10px;height:10px;background:#FF6B35;left:70%;top:82%;animation-duration:20s;animation-delay:-6s;"></div>
+    <div class="dot" style="width:14px;height:14px;background:#FF2D78;left:85%;top:87%;animation-duration:17s;animation-delay:-10s;"></div>
+    <div class="dot" style="width:8px;height:8px;background:#00C9A7;left:92%;top:91%;animation-duration:23s;animation-delay:-1s;"></div>
+    <div class="dot" style="width:20px;height:20px;background:#FFD600;left:48%;top:78%;animation-duration:19s;animation-delay:-7s;"></div>
+    <div class="dot" style="width:5px;height:5px;background:#FF6B35;left:62%;top:93%;animation-duration:28s;animation-delay:-15s;"></div>
+    <div class="dot" style="width:9px;height:9px;background:#7B2EBD;left:15%;top:76%;animation-duration:21s;animation-delay:-3s;"></div>
+  </div>
+
+  <div class="hero-eyebrow">
+    <span class="hero-tag">Case Study</span>
+    <span class="hero-tag2">Consumer Travel · 2023–2024</span>
+  </div>
+
+  <h1 class="hero-title">
+    Party<br>
+    <span class="gradient-word">Plan.</span><br>
+    <span class="teal-word" style="font-size: clamp(26px, 4vw, 52px); font-weight: 600; letter-spacing: -0.01em;">Group travel, zero chaos.</span>
+  </h1>
+
+  <p class="hero-sub">
+    End-to-end product design for a group travel marketplace and planning app — from discovery to the night of the trip, across web and mobile.
+  </p>
+
+  <div class="hero-stats">
+    <div class="h-stat">
+      <div class="h-stat-num">1M<span class="accent">+</span></div>
+      <div class="h-stat-label">Users</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num">4.8<span class="accent">★</span></div>
+      <div class="h-stat-label">App Store Rating</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num">88<span class="accent">%</span></div>
+      <div class="h-stat-label">CSAT Score</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num">4<span class="accent">×</span></div>
+      <div class="h-stat-label">YoY Growth</div>
+    </div>
+  </div>
+</div>
+
+<!-- META BAND -->
+<div class="meta-band">
+  <div class="meta-cell">
+    <div class="meta-label">My Role</div>
+    <div class="meta-value">Sole Product Designer<br>End-to-End</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Surfaces</div>
+    <div class="meta-value">Marketing Website<br>iOS · Android App</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Scope</div>
+    <div class="meta-value">Research · Design System<br>Marketplace · Booking</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Stage</div>
+    <div class="meta-value">0→1 Launch<br>Series A Backed</div>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="section">
+  <div class="section-narrow">
+    <div class="label"><span class="dot-icon"></span> Context</div>
+    <h2>Group travel planning<br>was <span class="pink">completely broken.</span></h2>
+    <p>
+      The fastest-growing travel segment — friend groups heading out for bachelorettes, birthdays, and long-overdue reunions — had no dedicated product. Planners were running five browser tabs, a WhatsApp thread, a Google Doc, and Venmo simultaneously. One person absorbed all the stress. The rest just showed up.
+    </p>
+    <p>
+      Party Plan's vision was to collapse all of that chaos into a single, joyful product. A marketplace for curated group experiences, paired with a planning tool that made coordination feel social — not like project management. I was the first designer on the team with a mandate to build the full consumer product from scratch: brand to checkout, web and mobile, before the bachelorette travel season.
+    </p>
+
+    <div class="pull-quote">
+      <p>"Life is hard. Having fun shouldn't be. That was the brief — and it shaped every design decision from the ground up."</p>
+    </div>
+
+    <h3>The market gap</h3>
+    <p>
+      The US bachelorette travel market alone crossed $5B. Group getaways were among the fastest-growing leisure categories post-2022. Yet TripAdvisor, Viator, and Airbnb Experiences were designed for solo and couple travel. Groups were a product afterthought — bulk tickets and no coordination layer. Nobody had <strong>actually designed for the group as the primary user.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- RESEARCH — DARK BG -->
+<div class="dark-section">
+  <div class="section-narrow">
+    <div class="label"><span class="dot-icon"></span> Research & Discovery</div>
+    <h2>Talking to planners<br>before touching <span class="pink">a single pixel.</span></h2>
+    <p>
+      I ran 12 moderated interviews over two weeks — a mix of trip planners who'd recently organised group getaways, and attendees who'd been on those trips. I also did a competitive teardown of 8 products across three categories: experience marketplaces, group coordination tools, and travel apps.
+    </p>
+
+    <div class="insight-grid" style="margin-top: 40px;">
+      <div class="insight-card">
+        <div class="insight-num">01</div>
+        <h4>The planner carries all the weight</h4>
+        <p>Planning was stressful, not exciting. The product needed to give planners real leverage — information visibility without manual effort. The design had to redistribute the cognitive load.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">02</div>
+        <h4>Decisions need to be socialised, not dictated</h4>
+        <p>Nobody could just pick an experience solo. Group chats created infinite back-and-forth. A lightweight in-product voting mechanic was the design gap every user described without naming it.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">03</div>
+        <h4>"Is this good for groups?" is question one</h4>
+        <p>Group size, group vibe, and group pricing were the first filters — not location or solo price. Every competitor card was built around solo traveller framing. Huge signal.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">04</div>
+        <h4>The lead booker pays, others contribute later</h4>
+        <p>One person books, the group pays them back. Forcing split-at-checkout added friction and anxiety. The checkout had to be designed for the lead booker — not an assumed group split.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote" style="background: rgba(255,255,255,0.06); border-left-color: var(--pink2);">
+      <p style="color: rgba(255,255,255,0.9);">"Planners wanted to feel organised — not like a travel agent. The design had to reduce visible complexity without hiding the power underneath it."</p>
+    </div>
+
+    <h3>Journey mapping the five phases</h3>
+    <p>
+      I mapped the full planner arc: <strong>Dream → Decide → Book → Coordinate → Experience.</strong> Each phase had a distinct emotional signature. Dream was exciting. Decide was exhausting. Book was anxious. Coordinate was frustrating. Only Experience was the payoff everyone signed up for.
+    </p>
+    <p>
+      Most competitors stopped at Decide. Our opportunity was to own the full arc — giving planners a single, beautiful thread from first inspiration to the morning of the trip.
+    </p>
+  </div>
+</div>
+
+<!-- PROBLEM STATEMENT — COLOR SECTION -->
+<div class="color-section">
+  <div class="section-narrow">
+    <div class="label label-purple"><span class="dot-icon"></span> Problem Definition</div>
+    <h2>The problem we<br>chose to <span class="purple">solve.</span></h2>
+
+    <div class="hmw-card">
+      <h3>How might we give group trip planners a single, beautiful surface that reduces coordination overhead, surfaces the right experiences for their group, and makes booking feel like the start of the fun — not the final hurdle?</h3>
+      <p>Three distinct design surfaces. One coherent product. The marketplace (discovery + purchase), the planning layer (coordination + itinerary), and the mobile app (the on-trip companion).</p>
+    </div>
+
+    <h3>Design principles I set from day one</h3>
+
+    <div class="principle-list">
+      <div class="principle-item">
+        <div class="principle-icon">🎉</div>
+        <div class="principle-content">
+          <h4>Social before transactional</h4>
+          <p>Every screen should feel like something people want to share — not a task to complete. Group experiences are inherently social; the UI should reflect that energy.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-icon">👑</div>
+        <div class="principle-content">
+          <h4>The planner gets leverage, the group gets visibility</h4>
+          <p>One person holds the wheel, but everyone sees the road. Permissions and views are designed around distinct roles — planner, guest of honour, attendee.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-icon">🎯</div>
+        <div class="principle-content">
+          <h4>Reduce clicks to confidence, not just completion</h4>
+          <p>Booking an unfamiliar experience for 12 people is a high-stakes call. Confidence signals matter as much as CTAs. We earn the click before we ask for it.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-icon">📱</div>
+        <div class="principle-content">
+          <h4>Mobile-first, every time</h4>
+          <p>Trip decisions happen on phones, in group chats, at 11pm on the couch. Desktop is the secondary surface. Every component was designed mobile-first and scaled up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEB MARKETPLACE -->
+<div class="section">
+  <div class="section-wide">
+    <div class="label label-coral"><span class="dot-icon"></span> Design · Web Marketplace</div>
+    <h2>Discovery designed for<br>the group — <span class="yellow">not the solo traveller.</span></h2>
+
+    <div class="section-narrow" style="padding: 0; max-width: 100%;">
+      <p style="max-width: 680px;">
+        The website was the primary acquisition and conversion surface. Users arrived emotionally primed — already inspired, already planning. The UX had to honour that inspiration mode and ride it through to checkout without a single unnecessary interruption.
+      </p>
+
+      <div class="decision-grid">
+        <div class="decision-card">
+          <div class="decision-card-num">1</div>
+          <div class="decision-tag tag-pink">Homepage</div>
+          <h4>Lead with mood, not a search bar</h4>
+          <p>Rather than opening with city filters, the homepage led with aspirational editorial imagery and a "What's your vibe?" quick-filter row — anchored by occasion types like Bachelorette, Birthday, and Guys Weekend. Users knew their occasion first. We met them there.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-card-num">2</div>
+          <div class="decision-tag tag-purple">Experience Cards</div>
+          <h4>Group-first information hierarchy</h4>
+          <p>Every card showed group pricing prominently, a "Perfect for X–Y people" tag, a vibe label (Rowdy / Chill / Adventurous / Scenic), and social proof from real group bookers. Solo metrics were present — but secondary. A deliberate reversal from every competitor.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-card-num">3</div>
+          <div class="decision-tag tag-teal">Detail Page</div>
+          <h4>Confidence before the CTA</h4>
+          <p>The detail page front-loaded the three group questions: Is this right for our size? What's included? Can we modify it? The sticky "Add to Trip Board" CTA only appeared after users scrolled past the confidence signals — not before. This sequencing dramatically improved add-to-board rates.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-card-num">4</div>
+          <div class="decision-tag tag-coral">Checkout</div>
+          <h4>Lead booker model, split-pay optional</h4>
+          <p>One person, one card, one confirmation. A "Split with friends" request flow was available post-booking — not forced at checkout. This removed the anxiety of coordinating payments before committing, and simplified the primary conversion flow to its essential minimum.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE APP — TEAL BG -->
+<div class="teal-section">
+  <div class="section-narrow">
+    <div class="label"><span class="dot-icon"></span> Design · Mobile App</div>
+    <h2>A planning tool that feels<br>like a group chat — <span class="teal">not a spreadsheet.</span></h2>
+    <p>
+      The app was the coordination and companion layer. Where the website handled discovery and purchase, the app handled the messy social coordination before booking — and everything after it. I designed iOS and Android simultaneously using a shared design system of 40+ components, maintaining platform conventions while keeping one visual language across both.
+    </p>
+
+    <h3>5 core flows I designed</h3>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Trip Creation & Group Invite</h4>
+          <p>Planners create a trip in under 60 seconds — just a name, city, and dates. Invite was designed as a shareable link (not individual email fields) — friction nearly zero. Guests joined the trip context automatically. Onboarding was a by-product of invitation, not a prerequisite to it.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>The Shared Itinerary</h4>
+          <p>A day-by-day timeline anchored by dates — but designed to feel like a photo album, not a calendar. Each day had a hero image. Events appeared as vivid cards with RSVPs visible. Closer to editorial than task list. This was intentional: the product had to feel like the trip was already happening.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Group Polls</h4>
+          <p>The highest-engagement feature. Planners created a poll directly from any experience card — "Yacht tour or Wine tasting?" — and pushed it to the group. Native bottom sheet with swipe-to-vote interaction. Results updated live. Polls expired at a deadline the planner set, automatically surfacing the winner with a one-tap "Book this" CTA.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>In-App Explore & Book</h4>
+          <p>The marketplace was fully native — not a webview. Same group-first discovery UX as web. Key difference: in-app checkout pre-filled group size from the trip context, eliminating a full step from the purchase flow. Conversion was measurably higher than the web checkout path.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Trip Day Mode</h4>
+          <p>On the day of an experience, the app surfaced a simplified "What's happening today" view — address, timings, tickets, and emergency contact for the provider. Designed for one-handed use at 8am when everyone's getting ready. No back-navigation needed. Everything critical above the fold.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <div class="screen-card-eyebrow">Key Design · Shared Itinerary Screen</div>
+      <h4>The product's heartbeat — making the plan feel like the beginning of the party</h4>
+      <p>The itinerary was the most-opened screen in the app. I designed it around one question: "What does this need to feel like?" The answer was: a hype reel, not a to-do list. Editorial imagery on every day card, RSVP dots showing who's in, and empty days that acted as prompts — "Nothing yet · Explore Nashville →" — turning dead space into conversion surface.</p>
+      <div class="annotation-list">
+        <div class="annotation">
+          <div class="a-dot">A</div>
+          <p><strong>Participant RSVP dots:</strong> Each event card showed avatar icons of who's attending. Social accountability baked in — a subtle, friendly nudge to confirm.</p>
+        </div>
+        <div class="annotation">
+          <div class="a-dot">B</div>
+          <p><strong>Planner reveal mode:</strong> A toggle let the planner hide itinerary events until they were ready — preserving the surprise element for guests before the trip.</p>
+        </div>
+        <div class="annotation">
+          <div class="a-dot">C</div>
+          <p><strong>Empty states as hooks:</strong> Blank days showed city-specific experience suggestions inline — turning gaps in the itinerary into natural discovery moments.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <div class="screen-card-eyebrow">Key Design · Group Poll Screen</div>
+      <h4>Decision-making made social — and fast</h4>
+      <p>The poll flow took four steps: experience card → poll created → shared to group → results in. Designed with swipe-to-vote (left to skip, right to vote) and a live percentage bar updating in real time. Polls expired at the planner's deadline — with a winner auto-surfaced and a "Book this" CTA ready to go.</p>
+      <div class="annotation-list">
+        <div class="annotation">
+          <div class="a-dot">A</div>
+          <p><strong>Rich option cards:</strong> Each poll option showed the experience image, name, price/person, and a one-line description — enough to decide without leaving the poll screen.</p>
+        </div>
+        <div class="annotation">
+          <div class="a-dot">B</div>
+          <p><strong>Personalised nudge notification:</strong> "Hey Sarah, 3 people voted — your turn!" — sent 4 hours before deadline. Drove a 78% poll completion rate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUTCOMES -->
+<div class="outcome-section">
+  <div class="section-narrow">
+    <div class="label"><span class="dot-icon"></span> Outcomes</div>
+    <h2>What shipped.<br>What moved.</h2>
+
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-num">1M<span class="sup">+</span></div>
+        <div class="outcome-label">Users in year one</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">4.8<span class="sup">★</span></div>
+        <div class="outcome-label">App Store rating — iOS & Android</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">88<span class="sup">%</span></div>
+        <div class="outcome-label">Customer satisfaction score</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">4<span class="sup">×</span></div>
+        <div class="outcome-label">Year-over-year user growth</div>
+      </div>
+    </div>
+
+    <p>
+      The product launched into the bachelorette travel season and grew faster than anything comparable in the category. <strong>The group poll feature became the most-shared mechanic</strong> — users organically sent poll links to friends, generating acquisition loops the team hadn't planned for. Virality emerged from the design.
+    </p>
+    <p>
+      The <strong>Series A was raised post-launch.</strong> The design system I built became the engineering team's foundation — not rebuilt, extended. In-app booking outperformed the web checkout flow measurably, validating the pre-filled group size decision. The 4.8 App Store rating — across both platforms — told me the coordination flow, booking flow, and day-of mode were all working as intended, under real conditions, with real people having real fun.
+    </p>
+  </div>
+</div>
+
+<!-- REFLECTION -->
+<div class="reflection-section">
+  <div class="section-narrow">
+    <div class="label label-purple"><span class="dot-icon"></span> Reflection</div>
+    <h2>What I learned building<br>consumer <span class="purple">at scale.</span></h2>
+
+    <p>
+      This was my first fully consumer-facing product designed end-to-end. The shift from enterprise B2B UX to consumer brought lessons I couldn't have predicted.
+    </p>
+
+    <div class="reflection-grid">
+      <div class="reflection-card">
+        <span class="reflection-emoji">💃</span>
+        <p>Consumer users don't read interfaces — they feel them. The first homepage was well-organized but emotionally flat. Redesign started with a single question: <em>what does it feel like to book a bachelorette trip?</em> Once I answered that, every layout decision became obvious.</p>
+      </div>
+      <div class="reflection-card">
+        <span class="reflection-emoji">🧪</span>
+        <h4>Research before instinct</h4>
+        <p>Every assumption I brought from B2B UX — rational flows, feature density, admin-first hierarchy — was wrong for this audience. The research phase wasn't project setup. It was deprogramming. I'm a better designer for every consumer interview I ran.</p>
+      </div>
+      <div class="reflection-card">
+        <span class="reflection-emoji">🔁</span>
+        <h4>Virality is a design decision</h4>
+        <p>The group poll mechanic wasn't a growth hack — it was the right UX for the problem. When design solves the real coordination problem, sharing happens naturally. You don't need to bolt it on later. The 4× growth loop came from solving the actual pain.</p>
+      </div>
+      <div class="reflection-card">
+        <span class="reflection-emoji">📱</span>
+        <h4>Mobile isn't a screen — it's a moment</h4>
+        <p>The day-of mode taught me that mobile design isn't just small screens. It's a specific time, place, and emotional state — 8am, one hand, everyone's rushing. Every tap counts. Designing for the moment, not the device, changed how I think about mobile entirely.</p>
+      </div>
+    </div>
+
+    <blockquote class="pull-quote">
+      <p>"The best design decision on this project wasn't a screen — it was choosing not to build a group chat. We got out of the way and let people use WhatsApp, where they already were."</p>
+    </blockquote>
+
+    <p>
+      Knowing what not to build is the hardest skill in product design. Users weren't looking for another inbox — they needed a planning layer that <strong>complemented</strong> their existing communication, not replaced it. Research gave us that answer before we got attached to the idea. That's the lesson I'd carry into any consumer product: talk to people first, build second.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════ NEXT PROJECT ═══════════════ -->
+<div class="next-section">
+  <div>
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title">Customer <em>Onboarding</em> Flow</h2>
+    <p class="next-sub">Redesigning the most friction-heavy moment in financial products — the moment a user decides if they trust you enough to hand over their identity.</p>
+    <a href="/case-study/customer-onboarding-flow" class="next-btn">View Case Study →</a>
+  </div>
+  <div class="next-img">
+    <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Customer Onboarding Flow">
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="pp-footer">
+  <span class="pp-footer-brand">Yuvrajsinh Jadeja</span>
+  <a href="/#work" class="pp-footer-back">← All Work</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Loader
+const loader = document.getElementById('loader');
+window.addEventListener('load', () => {
+  loader.classList.add('out');
+  setTimeout(() => loader.remove(), 700);
+});
+
+// ── Nav scroll behaviour (GSAP)
+const nav = document.getElementById('nav');
+ScrollTrigger.create({
+  start: 80,
+  onEnter:     () => nav.classList.add('scrolled'),
+  onLeaveBack: () => nav.classList.remove('scrolled')
+});
+
+// ── Cursor
+const cur  = document.getElementById('cur');
+const curf = document.getElementById('curf');
+let tx = 0, ty = 0, cx = 0, cy = 0;
+window.addEventListener('mousemove', e => {
+  tx = e.clientX; ty = e.clientY;
+  cur.style.left = tx + 'px'; cur.style.top = ty + 'px';
+});
+(function loop() {
+  cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+  curf.style.left = cx + 'px'; curf.style.top = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// ── Scroll reveals
+gsap.utils.toArray('.next-label, .next-title, .next-sub, .next-btn, .next-img').forEach(el => {
+  gsap.from(el, {
+    y: 30, opacity: 0, duration: .85, ease: 'expo.out',
+    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+  });
+});
+</script>
+</body>
+</html>
