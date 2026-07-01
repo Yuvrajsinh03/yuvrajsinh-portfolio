@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Party Plan — Case Study · Yuvrajsinh Jadeja</title>
+  <title>Party Plan - Yuvrajsinh Jadeja</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -50,46 +50,13 @@
     #loader.out { opacity:0; pointer-events:none; transition:opacity .7s; }
     .loader-word { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(36px,7vw,80px); font-weight:800; color:var(--pink); letter-spacing:-.04em; }
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 500;
-      padding: 20px 56px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background .4s, border-color .4s;
-    }
-    nav.scrolled {
-      background: rgba(15,10,30,.93);
-      backdrop-filter: blur(24px) saturate(180%);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .nav-logo {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: rgba(255,255,255,.70);
-      text-decoration: none;
-      transition: color .3s;
-    }
-    .nav-logo:hover { color: var(--white); }
-    .nav-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: .09em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.35);
-      text-decoration: none;
-      transition: color .2s, gap .2s;
-    }
-    .nav-back::before { content: '←'; }
-    .nav-back:hover { color: var(--pink2); gap: 14px; }
+     /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s;}
+    nav.scrolled{background:rgba(10,22,40,.92);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--c-rule);}
+    .nav-logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.01em;color:rgba(238,243,255,.7);transition:color .3s;}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .2s,gap .2s var(--ease);}
+    .nav-back::before{content:'←';}
+    .nav-back:hover{color:var(--c-accent2);gap:14px;}
 
     /* ─── HERO ─── */
     .hero {
@@ -796,16 +763,15 @@
       margin: 0;
     }
 
-    /* ─── NEXT PROJECT ─── */
-    .next-section { padding:96px 56px; background:var(--off); border-top:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-    .next-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
-    .next-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(32px,5vw,60px); font-weight:800; line-height:1.05; letter-spacing:-.03em; margin-bottom:28px; color:var(--navy); }
-    .next-title em { font-style:italic; color:var(--pink); font-weight:400; }
-    .next-sub { font-size:15px; color:var(--muted); line-height:1.65; margin-bottom:32px; }
-    .next-btn { display:inline-flex; align-items:center; gap:10px; padding:13px 28px; border:1.5px solid var(--border); border-radius:100px; font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--navy); transition:background .25s,color .25s,border-color .25s,gap .25s; }
-    .next-btn:hover { background:var(--pink); color:#fff; border-color:var(--pink); gap:16px; }
-    .next-img { border-radius:6px; overflow:hidden; }
-    .next-img img { width:100%; aspect-ratio:3/2; object-fit:cover; filter:saturate(.85); }
+    /* NEXT */
+    .next-section{padding:96px 56px;background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .next-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+    .next-title{font-family:var(--f-display);font-size:clamp(32px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-.03em;margin-bottom:28px;}
+    .next-title em{font-style:italic;color:var(--accent,#D94F1E);}
+    .next-sub{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:32px;}
+    .next-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s,gap .25s var(--ease);}
+    .next-btn:hover{background:var(--c-accent);color:#fff;border-color:var(--c-accent);gap:16px;}
+    .next-img{border-radius:6px;overflow:hidden;}
 
     /* ─── FOOTER ─── */
     .pp-footer { background:var(--navy); padding:32px 56px; display:flex; justify-content:space-between; align-items:center; }
@@ -1236,24 +1202,30 @@
   </div>
 </div>
 
-<!-- ═══════════════ NEXT PROJECT ═══════════════ -->
-<div class="next-section">
+<!-- ═══ NEXT ═══ -->
+<section class="next-section reveal">
   <div>
-    <p class="next-label">Next Project</p>
-    <h2 class="next-title">Customer <em>Onboarding</em> Flow</h2>
-    <p class="next-sub">Redesigning the most friction-heavy moment in financial products — the moment a user decides if they trust you enough to hand over their identity.</p>
+    <div class="next-label">Next Case Study</div>
+    <h2 class="next-title">Customer Onboarding <em>Flow</em></h2>
+    <p class="next-sub">Redesigning the compliance onboarding experience for a regtech platform — reducing form abandonment by 34% and analyst review errors by 41%.</p>
     <a href="/case-study/customer-onboarding-flow" class="next-btn">View Case Study →</a>
   </div>
-  <div class="next-img">
-    <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Customer Onboarding Flow">
+  <div class="next-img" style="background:var(--bg3);border-radius:6px;min-height:280px;display:flex;align-items:center;justify-content:center;padding:40px;">
+    <svg width="240" height="160" viewBox="0 0 240 160" fill="none">
+      <!-- phone wireframe -->
+      <rect x="72" y="8" width="96" height="144" rx="10" stroke="rgba(26,18,8,.15)" stroke-width="1.5" fill="rgba(26,18,8,.03)"/>
+      <rect x="80" y="20" width="80" height="12" rx="3" fill="rgba(26,18,8,.08)"/>
+      <rect x="80" y="38" width="80" height="6" rx="2" fill="rgba(217,79,30,.2)"/>
+      <rect x="80" y="48" width="80" height="36" rx="3" fill="rgba(26,18,8,.06)"/>
+      <rect x="80" y="90" width="80" height="6" rx="2" fill="rgba(26,18,8,.08)"/>
+      <rect x="80" y="100" width="80" height="18" rx="3" fill="rgba(26,18,8,.06)"/>
+      <rect x="86" y="126" width="68" height="14" rx="7" fill="rgba(217,79,30,.3)"/>
+      <!-- progress bar -->
+      <rect x="80" y="38" width="52" height="6" rx="2" fill="rgba(217,79,30,.5)"/>
+    </svg>
   </div>
-</div>
+</section>
 
-<!-- FOOTER -->
-<footer class="pp-footer">
-  <span class="pp-footer-brand">Yuvrajsinh Jadeja</span>
-  <a href="/#work" class="pp-footer-back">← All Work</a>
-</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
