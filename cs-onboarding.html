@@ -185,6 +185,36 @@
     /* GRAIN */
     body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
 
+    /* ════ CS SECTION NAV (reusable drop-in) ════ */
+    #cs-nav{position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:400;display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+    #cs-nav::before{content:'';position:absolute;right:2px;top:10px;bottom:10px;width:1px;background:var(--border);pointer-events:none;}
+    .cs-nav-item{display:flex;align-items:center;gap:10px;cursor:pointer;padding:5px 0;text-decoration:none;color:inherit;}
+    .cs-nav-label{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);opacity:0;transform:translateX(6px);transition:opacity .2s,transform .2s,color .2s;white-space:nowrap;pointer-events:none;}
+    .cs-nav-dot{width:5px;height:5px;border-radius:50%;border:1.5px solid rgba(138,126,110,.38);background:transparent;flex-shrink:0;transition:background .25s,border-color .25s,transform .2s;}
+    .cs-nav-item:hover .cs-nav-label,.cs-nav-item.active .cs-nav-label{opacity:1;transform:translateX(0);}
+    .cs-nav-item:hover .cs-nav-dot{border-color:var(--ink2);}
+    .cs-nav-item.active .cs-nav-dot{background:var(--accent);border-color:var(--accent);transform:scale(1.6);}
+    .cs-nav-item.active .cs-nav-label{color:var(--accent);}
+
+    /* Mobile pill */
+    #cs-nav-pill{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:400;background:rgba(245,240,232,.96);border:1px solid var(--border);border-radius:100px;padding:10px 18px;align-items:center;gap:10px;cursor:pointer;backdrop-filter:blur(24px);box-shadow:0 4px 28px rgba(26,18,8,.10);max-width:calc(100vw - 48px);}
+    #cs-pill-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+    #cs-pill-icon{font-size:11px;color:var(--muted);flex-shrink:0;line-height:1;}
+
+    /* Mobile drawer */
+    #cs-drawer{position:fixed;inset:0;z-index:600;background:rgba(26,18,8,.42);backdrop-filter:blur(6px);display:none;align-items:flex-end;}
+    #cs-drawer.open{display:flex;}
+    .cs-drawer-panel{background:var(--bg);border-radius:20px 20px 0 0;width:100%;padding:20px 20px 44px;border-top:1px solid var(--border);max-height:85svh;overflow-y:auto;}
+    .cs-drawer-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
+    .cs-drawer-title{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 4px;}
+    .cs-drawer-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:background .2s,color .2s;}
+    .cs-drawer-item:hover{background:var(--bg2);color:var(--ink);}
+    .cs-drawer-item.active{background:rgba(217,79,30,.07);color:var(--accent);font-weight:600;}
+    .cs-drawer-dot{width:6px;height:6px;border-radius:50%;border:1.5px solid rgba(138,126,110,.4);background:transparent;flex-shrink:0;}
+    .cs-drawer-item.active .cs-drawer-dot{background:var(--accent);border-color:var(--accent);}
+
+    @media(max-width:1100px){#cs-nav{display:none;}#cs-nav-pill{display:flex;}}
+
     /* RESPONSIVE */
     @media(max-width:960px){
       nav,.hero,.s,.pullquote,.next-section{padding-left:28px;padding-right:28px;}
@@ -206,6 +236,22 @@
 <!-- LOADER -->
 <div id="loader">
   <span class="loader-word">Loading…</span>
+</div>
+
+<!-- ════ CS SECTION NAV (desktop dots + mobile pill/drawer) ════ -->
+<nav id="cs-nav" aria-label="Case study sections"></nav>
+
+<button id="cs-nav-pill" aria-label="Navigate case study sections">
+  <span id="cs-pill-label">The Brief</span>
+  <span id="cs-pill-icon">&#9776;</span>
+</button>
+
+<div id="cs-drawer" role="dialog" aria-label="Case study navigation">
+  <div class="cs-drawer-panel">
+    <div class="cs-drawer-handle"></div>
+    <div class="cs-drawer-title">Jump to section</div>
+    <!-- Items injected by JS -->
+  </div>
 </div>
 
 <!-- NAV -->
@@ -237,7 +283,7 @@
 </section>
 
 <!-- ═══════════════ THE BRIEF ═══════════════ -->
-<section class="s">
+<section class="s" id="brief" data-cs-section="The Brief">
   <div class="two-col two-col-3-2">
     <div>
       <p class="s-label">The Brief</p>
@@ -272,7 +318,7 @@
 </section>
 
 <!-- ═══════════════ DISCOVERY ═══════════════ -->
-<section class="s s-alt">
+<section class="s s-alt" id="discovery" data-cs-section="01 · Discovery">
   <p class="s-label">01 · Discovery</p>
   <h2 class="s-h2" style="max-width:700px;">I spent two weeks not designing anything. Just watching.</h2>
   <p class="s-body">Before touching Figma, I needed to understand the actual work — what decisions analysts make, in what order, with what information, and where they fail. Desk research on KYC regulation was table stakes. The real insight came from sitting next to analysts while they worked.</p>
@@ -301,7 +347,7 @@
 </section>
 
 <!-- ═══════════════ SYNTHESIS ═══════════════ -->
-<section class="s">
+<section class="s" id="synthesis" data-cs-section="02 · Synthesis">
   <p class="s-label">02 · Synthesis</p>
   <h2 class="s-h2">Five things that changed everything.</h2>
   <p class="s-body">The research produced 60+ observations. After affinity mapping and two rounds of synthesis, these five insights kept surfacing — and each one had direct design consequences.</p>
@@ -353,7 +399,7 @@
 </div>
 
 <!-- ═══════════════ DEFINE / HMW ═══════════════ -->
-<section class="s s-alt">
+<section class="s s-alt" id="define" data-cs-section="03 · Define">
   <p class="s-label">03 · Define</p>
   <h2 class="s-h2">Reframing the problem as opportunity.</h2>
   <p class="s-body">Once I had the insights, I needed design opportunities — not solutions. These HMW statements became the filter every design decision was tested against throughout the project.</p>
@@ -382,21 +428,18 @@
 </section>
 
 <!-- ═══════════════ IDEATION ═══════════════ -->
-<section class="s">
+<section class="s" id="ideation" data-cs-section="04 · Ideation">
   <p class="s-label">04 · Ideation</p>
-  <h2 class="s-h2">The concepts I explored — and why most of them were wrong.</h2>
+  <h2 class="s-h2">Five concepts explored. <em>Three</em> found a home in the product.</h2>
   <div class="two-col">
     <div>
-      <p class="s-body">I ran two ideation sprints. The first generated 30+ concepts, some of which were technically interesting but behaviourally naive — they assumed analysts would change habits they'd spent years building.</p>
+      <p class="s-body">Each HMW statement became a focused ideation anchor — one concept per opportunity space, specific enough to test in a day. The constraint was intentional: <strong>every concept had to fit the analyst's existing mental model</strong>, not ask them to build a new one.</p>
       <br>
-      <p class="s-body">The second sprint was more constrained: <strong>every concept had to work within 3 clicks</strong> of the existing mental model. The breakthrough ideas came from that constraint.</p>
-      <br>
-      <p class="s-body">I tested lo-fi prototypes with 4 analysts in 45-minute sessions. The sessions were as much about watching hesitation and confusion as they were about collecting verbal feedback.</p>
+      <p class="s-body">I tested lo-fi prototypes with 4 analysts across 45-minute sessions — watching for hesitation as much as listening for feedback. Two concepts revealed friction in the wrong places and were set aside early. Three held up and became the foundation of the redesign.</p>
       <div class="divider" style="margin-top:32px;"></div>
       <div class="ideation-list">
-        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Gamification layer (added cognitive load, felt patronising)</span></div>
-        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Mandatory pause-and-confirm dialogs (analysts closed them immediately)</span></div>
-        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Fully AI-driven case routing (compliance managers wouldn't trust it)</span></div>
+        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Gamification layer — added cognitive load in a domain that demands gravity, not points</span></div>
+        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Mandatory pause-and-confirm dialogs — analysts dismissed them without reading in every session</span></div>
         <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Risk-tiered queue with visual weight differentiation</strong></span></div>
         <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Persistent context panel (always-on, never a modal)</strong></span></div>
         <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Inline decision annotation (reasoning captured mid-flow)</strong></span></div>
@@ -412,7 +455,7 @@
 </section>
 
 <!-- ═══════════════ PROCESS FLOW ═══════════════ -->
-<section class="s s-alt">
+<section class="s s-alt" id="design-flow" data-cs-section="04b · Design Flow">
   <p class="s-label">04b · Design Flow</p>
   <h2 class="s-h2">The redesigned analyst workflow.</h2>
   <p class="s-body" style="max-width:600px;">The new workflow reduced the number of decision points per case from 7 to 4, without removing any compliance-required checks. Fewer steps, same regulatory rigour.</p>
@@ -441,7 +484,7 @@
 </section>
 
 <!-- ═══════════════ KEY DECISIONS ═══════════════ -->
-<section class="s">
+<section class="s" id="decisions" data-cs-section="05 · Design Decisions">
   <p class="s-label">05 · Design Decisions</p>
   <h2 class="s-h2">Four decisions that defined the product.</h2>
   <p class="s-body">Every design has a hundred small decisions. These four had the most argument, the most testing, and the most impact.</p>
@@ -498,7 +541,7 @@
 </section>
 
 <!-- ═══════════════ FINAL DESIGN ═══════════════ -->
-<section class="s s-alt">
+<section class="s s-alt" id="the-design" data-cs-section="06 · The Design">
   <p class="s-label">06 · The Design</p>
   <h2 class="s-h2">What shipped.</h2>
   <p class="s-body">The redesigned platform shipped in phases — the triage view and split-pane layout first, followed by the context sidebar and decision annotation in the second release.</p>
@@ -541,7 +584,7 @@
 </section>
 
 <!-- ═══════════════ OUTCOMES ═══════════════ -->
-<section class="s s-dark">
+<section class="s s-dark" id="outcomes" data-cs-section="07 · Outcomes">
   <p class="s-label s-label-inv">07 · Outcomes</p>
   <h2 class="s-h2 s-h2-inv" style="max-width:680px;">Three months after launch — the numbers that came back.</h2>
   <div class="outcomes-row">
@@ -562,7 +605,7 @@
 </section>
 
 <!-- ═══════════════ REFLECTION ═══════════════ -->
-<section class="s">
+<section class="s" id="reflection" data-cs-section="08 · Reflection">
   <p class="s-label">08 · Reflection</p>
   <h2 class="s-h2">What I learned. What I'd do differently.</h2>
   <div class="refl-list">
@@ -586,7 +629,7 @@
 </section>
 
 <!-- ═══════════════ NEXT PROJECT ═══════════════ -->
-<div class="next-section">
+<div class="next-section" id="next-project" data-cs-section="Next Project">
   <div>
     <p class="next-label">Next Project</p>
     <h2 class="next-title"><em>Nishaba</em> Dynamis</h2>
@@ -700,6 +743,79 @@ gsap.utils.toArray('.refl-list').forEach(list => {
     scrollTrigger: { trigger: list, start: 'top 85%' }
   });
 });
+
+/* ════ CS SECTION NAV — reusable scrollspy component ════
+ * Drop-in: add id + data-cs-section="Label" to any section element.
+ * Builds desktop dot-nav (#cs-nav) + mobile pill (#cs-nav-pill) + drawer (#cs-drawer) automatically.
+ */
+(function(){
+  const sections = Array.from(document.querySelectorAll('[data-cs-section]'));
+  if (!sections.length) return;
+
+  const nav = document.getElementById('cs-nav');
+  const pill = document.getElementById('cs-nav-pill');
+  const pillLabel = document.getElementById('cs-pill-label');
+  const drawer = document.getElementById('cs-drawer');
+  const drawerPanel = drawer.querySelector('.cs-drawer-panel');
+
+  /* Build desktop nav items */
+  sections.forEach(sec => {
+    const label = sec.dataset.csSection;
+    const item = document.createElement('a');
+    item.className = 'cs-nav-item';
+    item.href = '#' + sec.id;
+    item.innerHTML = '<span class="cs-nav-label">' + label + '</span><span class="cs-nav-dot"></span>';
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(item);
+  });
+
+  /* Build mobile drawer items */
+  sections.forEach((sec, i) => {
+    const label = sec.dataset.csSection;
+    const item = document.createElement('div');
+    item.className = 'cs-drawer-item';
+    item.dataset.idx = i;
+    item.innerHTML = '<span class="cs-drawer-dot"></span>' + label;
+    item.addEventListener('click', () => {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closeDrawer();
+    });
+    drawerPanel.appendChild(item);
+  });
+
+  /* Pill open/close */
+  pill.addEventListener('click', () => drawer.classList.add('open'));
+  drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+  function closeDrawer() { drawer.classList.remove('open'); }
+
+  /* Scrollspy via IntersectionObserver */
+  const navItems = Array.from(nav.querySelectorAll('.cs-nav-item'));
+  const drawerItems = Array.from(drawerPanel.querySelectorAll('.cs-drawer-item'));
+  let currentIdx = 0;
+
+  function setActive(idx) {
+    if (idx === currentIdx && navItems[idx] && navItems[idx].classList.contains('active')) return;
+    currentIdx = idx;
+    navItems.forEach((el, i) => el.classList.toggle('active', i === idx));
+    drawerItems.forEach((el, i) => el.classList.toggle('active', i === idx));
+    if (sections[idx]) pillLabel.textContent = sections[idx].dataset.csSection;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target);
+        if (idx !== -1) setActive(idx);
+      }
+    });
+  }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+
+  sections.forEach(sec => observer.observe(sec));
+  setActive(0);
+})();
 </script>
 </body>
 </html>
