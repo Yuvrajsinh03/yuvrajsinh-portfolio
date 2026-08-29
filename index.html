@@ -60,9 +60,10 @@
     .pre-name {
       position:absolute; top:50%; left:50%;
       transform:translate(-50%,-50%);
-      font-family:var(--f-display); font-size:clamp(56px,10vw,120px);
+      font-family:var(--f-display); font-size:clamp(36px,8vw,120px);
       font-weight:300; font-style:italic; color:var(--bg);
-      letter-spacing:-.04em; white-space:nowrap; z-index:10001; overflow:hidden;
+      letter-spacing:-.04em; text-align:center;
+      width:min(90vw, 880px); z-index:10001; overflow:hidden;
     }
     .pre-name-inner { display:block; transform:translateY(110%); }
     .pre-bottom-bar {
@@ -123,12 +124,14 @@
     nav.hero-nav { background:transparent; }
     nav.hero-nav .nav-logo { color:rgba(245,240,232,.85); }
     nav.hero-nav .nav-links a { color:rgba(245,240,232,.45); }
+    nav.hero-nav .nav-links a:hover { color:rgba(245,240,232,.9); }
     nav.hero-nav .nav-cta { border-color:rgba(245,240,232,.3); color:rgba(245,240,232,.75); }
     .nav-logo { font-family:var(--f-display); font-size:19px; font-weight:600; letter-spacing:-.01em; transition:color .4s; }
     .nav-links { display:flex; gap:40px; align-items:center; font-size:12px; font-weight:500; letter-spacing:.09em; text-transform:uppercase; }
-    .nav-links a { opacity:.48; transition:opacity .2s, color .4s; position:relative; }
-    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:100%; height:1px; background:var(--accent); transition:right .3s var(--ease-out); }
-    .nav-links a:hover { opacity:1; }
+    /* color-only transition — no opacity, so no reflow jerk */
+    .nav-links a { color:rgba(26,18,8,.42); transition:color .28s; position:relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:100%; height:1px; background:var(--accent); transition:right .32s var(--ease-out); }
+    .nav-links a:hover { color:var(--ink); }
     .nav-links a:hover::after { right:0; }
     .nav-cta { opacity:1 !important; padding:9px 22px; border:1.5px solid var(--ink); border-radius:100px; font-size:11.5px; font-weight:600; letter-spacing:.07em; transition:background .22s, color .22s, transform .15s, border-color .22s, opacity .4s !important; }
     .nav-cta:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
@@ -238,6 +241,7 @@
     .hero-sub {
       max-width:520px; font-size:15px; line-height:1.78; text-align:center;
       color:rgba(245,240,232,.45); margin-bottom:36px; opacity:0;
+      text-wrap:balance;
     }
     .hero-sub strong { color:rgba(245,240,232,.82); font-weight:500; }
     .hero-meta { display:flex; gap:40px; opacity:0; flex-wrap:wrap; justify-content:center; align-items:center; }
@@ -1073,7 +1077,7 @@
     @media (max-width:900px) {
       nav { padding:16px 28px; }
       .nav-links { display:none; }
-      .hero-left { padding:80px 28px 0 28px; }
+      .hero-left { padding:80px 28px 60px; }
       .section, .philo, footer { padding-left:28px; padding-right:28px; }
       .process { padding-left:28px; padding-right:28px; }
       /* work-scroll-section horizontal padding handled by mobile snap block above */
