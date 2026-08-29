@@ -140,8 +140,8 @@
     ══════════════════════════════════════ */
     .hero {
       min-height:100svh;
-      display:grid;
-      grid-template-columns:1fr 400px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
       background:var(--ink);
       position:relative;
       overflow:hidden;
@@ -169,33 +169,35 @@
     }
     @keyframes bgRoll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* dot grid */
+    /* CSS crosshatch grid (Firecrawl-style, 88×88) */
     .hero::before {
-      content:''; position:absolute; inset:0; z-index:0;
-      background-image:radial-gradient(circle, rgba(245,240,232,.055) 1px, transparent 1px);
-      background-size:38px 38px; pointer-events:none;
+      content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background-image:
+        linear-gradient(rgba(245,240,232,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,240,232,.06) 1px, transparent 1px);
+      background-size:88px 88px;
     }
 
-    /* left content */
+    /* centered content */
     .hero-left {
-      position:relative; z-index:2; padding:88px 64px 0 56px;
-      display:flex; flex-direction:column;
-      border-right:1px solid rgba(245,240,232,.07);
+      position:relative; z-index:2; padding:100px 56px;
+      display:flex; flex-direction:column; align-items:center;
+      width:100%; max-width:1000px; text-align:center;
     }
 
     /* top bar */
     .hero-top-bar {
-      padding:28px 0 28px;
-      border-bottom:1px solid rgba(245,240,232,.07);
+      padding:0 0 36px;
       margin-bottom:0;
-      display:flex; justify-content:space-between; align-items:center;
+      display:flex; justify-content:center; align-items:center; gap:20px;
+      flex-wrap:wrap;
     }
     .hero-eyebrow {
-      display:flex; align-items:center; gap:14px;
+      display:flex; align-items:center; gap:12px; justify-content:center;
       font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
       color:rgba(245,240,232,.32); opacity:0;
     }
-    .hero-eyebrow::before { content:''; display:block; width:20px; height:1px; background:rgba(245,240,232,.2); flex-shrink:0; }
+    .hero-eyebrow::before,.hero-eyebrow::after { content:''; display:block; width:18px; height:1px; background:rgba(245,240,232,.2); flex-shrink:0; }
     .avail-badge {
       display:inline-flex; align-items:center; gap:7px; padding:6px 14px 6px 8px;
       background:rgba(217,79,30,.1); border:1px solid rgba(217,79,30,.3);
@@ -213,12 +215,12 @@
     }
 
     /* headline */
-    .hero-mid { flex:1; display:flex; align-items:center; padding:40px 0; }
+    .hero-mid { display:flex; align-items:center; justify-content:center; padding:20px 0 36px; }
     .hero-h1 {
       font-family:var(--f-display);
-      font-size:clamp(72px, 9.8vw, 162px);
-      font-weight:300; line-height:.88; letter-spacing:-.04em;
-      color:var(--bg);
+      font-size:clamp(44px, 5.2vw, 76px);
+      font-weight:300; line-height:.95; letter-spacing:-.04em;
+      color:var(--bg); text-align:center;
     }
     .h-line { display:block; overflow:hidden; line-height:1; }
     .h-line span { display:block; transform:translateY(106%); }
@@ -229,22 +231,24 @@
 
     /* bottom: sub + meta */
     .hero-bottom {
-      padding:28px 0 48px;
+      padding:28px 0 0;
       border-top:1px solid rgba(245,240,232,.07);
+      display:flex; flex-direction:column; align-items:center;
     }
     .hero-sub {
-      max-width:480px; font-size:15px; line-height:1.78;
+      max-width:520px; font-size:15px; line-height:1.78; text-align:center;
       color:rgba(245,240,232,.45); margin-bottom:36px; opacity:0;
     }
     .hero-sub strong { color:rgba(245,240,232,.82); font-weight:500; }
-    .hero-meta { display:flex; gap:40px; opacity:0; }
+    .hero-meta { display:flex; gap:40px; opacity:0; flex-wrap:wrap; justify-content:center; align-items:center; }
     .hm-label { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(245,240,232,.25); margin-bottom:5px; }
     .hm-val { font-size:13px; font-weight:500; color:rgba(245,240,232,.7); }
+    .hm-avail { display:flex; align-items:center; gap:8px; }
+    .hm-avail .hm-val { color:rgba(217,79,30,.9); }
 
-    /* right: floating project mosaic */
+    /* right: floating project mosaic — hidden in centered layout */
     .hero-right {
-      position:relative; z-index:2; overflow:hidden; opacity:0;
-      display:flex; align-items:center; justify-content:center;
+      display:none;
     }
     .hero-mosaic {
       position:relative; width:100%; height:100%;
@@ -304,6 +308,225 @@
       45%  { transform:scaleY(1); transform-origin:top; opacity:1; }
       55%  { transform:scaleY(1); transform-origin:bottom; opacity:1; }
       100% { transform:scaleY(0); transform-origin:bottom; opacity:0; }
+    }
+
+    /* ══════════════════════════════════════
+       HERO GRID OVERLAY — Firecrawl-style
+       Labels snap to 88px grid intersections
+       Sparkles sit exactly on grid crossings
+       Animated data-block scrollers
+    ══════════════════════════════════════ */
+
+    /* Corner labels — snapped to grid intersections */
+    .hg-label {
+      position:absolute; z-index:4; pointer-events:none;
+      font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+      color:rgba(245,240,232,.28);
+      font-family:var(--f-display);
+      opacity:0;
+      transition:opacity .4s;
+    }
+    /* TL: bracket opens at intersection — label flows right+down */
+    .hg-label-tl { top:calc(88px * 2); left:calc(88px * 2); }
+    /* TR: bracket closes at intersection — label flows left+down */
+    .hg-label-tr { top:calc(88px * 2); right:calc(88px * 2); }
+    /* BL: bracket opens at intersection — label flows right+up  */
+    .hg-label-bl { bottom:calc(88px * 2); left:calc(88px * 2); }
+    /* BR: bracket closes at intersection — label flows left+up  */
+    .hg-label-br { bottom:calc(88px * 2); right:calc(88px * 2); }
+
+    /* Sparkle crosshairs — exact grid intersection, center of + is at the crossing */
+    .hg-spark {
+      position:absolute; z-index:4; pointer-events:none;
+      width:20px; height:20px;
+      opacity:0;
+      animation:sparkPulse 3.2s ease-in-out infinite;
+    }
+    /* Center the 20px element so its midpoint lands on the grid line crossing */
+    .hg-spark-l {
+      left:calc(88px * 5 - 10px);
+      top:calc(88px * 3 - 10px);
+    }
+    .hg-spark-r {
+      right:calc(88px * 5 - 10px);
+      top:calc(88px * 3 - 10px);
+    }
+    /* Horizontal bar */
+    .hg-spark::before {
+      content:''; position:absolute;
+      width:100%; height:1.5px;
+      top:50%; left:0; transform:translateY(-50%);
+      background:var(--accent);
+      border-radius:1px;
+    }
+    /* Vertical bar */
+    .hg-spark::after {
+      content:''; position:absolute;
+      height:100%; width:1.5px;
+      left:50%; top:0; transform:translateX(-50%);
+      background:var(--accent);
+      border-radius:1px;
+    }
+    /* Center glow dot via box-shadow on a pseudo-element trick — use a child span */
+    .hg-spark-dot {
+      position:absolute; z-index:5;
+      width:5px; height:5px; border-radius:50%;
+      background:var(--accent);
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      box-shadow:0 0 8px 2px rgba(217,79,30,.6);
+    }
+    @keyframes sparkPulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      40%      { opacity:.45; transform:scale(.72); }
+      60%      { opacity:.45; transform:scale(.72); }
+    }
+
+    /* Animated data-block scrollers — sit left & right of centered content */
+    .hg-blocks {
+      position:absolute; z-index:2; pointer-events:none;
+      width:calc(88px * 2); overflow:hidden;
+      opacity:0;
+    }
+    .hg-blocks-l {
+      /* 2 cells wide, starts at left spark x, 1 cell below spark */
+      left:calc(88px * 4);
+      top:calc(88px * 4);
+      height:calc(88px * 4);
+    }
+    .hg-blocks-r {
+      right:calc(88px * 4);
+      top:calc(88px * 4);
+      height:calc(88px * 4);
+    }
+    .hg-blocks-inner {
+      display:flex; flex-direction:column; gap:5px;
+      padding:8px;
+      /* double height for seamless loop */
+      animation:blockScroll 9s linear infinite;
+    }
+    .hg-blocks-r .hg-blocks-inner { animation-duration:12s; animation-direction:reverse; }
+    @keyframes blockScroll {
+      0%   { transform:translateY(0); }
+      100% { transform:translateY(-50%); }
+    }
+    /* Individual block bars */
+    .hg-b {
+      height:7px; border-radius:2px; flex-shrink:0;
+      background:rgba(245,240,232,.08);
+    }
+    .hg-b.s  { width:38%; }
+    .hg-b.m  { width:62%; }
+    .hg-b.l  { width:82%; }
+    .hg-b.xl { width:100%; }
+    .hg-b.a  { background:rgba(217,79,30,.25); }   /* accent colored */
+    /* spacer between groups */
+    .hg-bsep { height:14px; flex-shrink:0; }
+
+    /* ── Mini UI artifact elements — Firecrawl-style floating snippets ── */
+    .hg-mini {
+      position:absolute; z-index:3; pointer-events:none; opacity:0;
+    }
+
+    /* Mini wireframe card — left margin */
+    .hg-mini-wf {
+      left:calc(88px * 1 + 8px); top:calc(88px * 3);
+      width:calc(88px * 2 - 20px);
+      padding:10px; background:rgba(245,240,232,.035);
+      border:1px solid rgba(245,240,232,.07); border-radius:6px;
+      animation:hgFloat1 8s ease-in-out 0.3s infinite;
+    }
+    .hg-wf-head { display:flex; align-items:center; gap:5px; margin-bottom:8px; }
+    .hg-wf-dot { width:4px; height:4px; border-radius:50%; background:var(--accent); opacity:.65; flex-shrink:0; }
+    .hg-wf-title { height:4px; border-radius:2px; background:rgba(245,240,232,.18); width:55%; }
+    .hg-wf-row { height:3px; border-radius:2px; background:rgba(245,240,232,.08); margin-bottom:3px; width:100%; }
+    .hg-wf-row.w2 { width:80%; }
+    .hg-wf-row.w3 { width:60%; }
+    .hg-wf-sep { height:7px; }
+    .hg-wf-box { height:18px; border-radius:3px; background:rgba(245,240,232,.05); border:1px solid rgba(245,240,232,.06); margin-bottom:5px; display:flex; align-items:center; padding:0 5px; gap:4px; }
+    .hg-wf-box-dot { width:3px; height:3px; border-radius:50%; background:rgba(217,79,30,.5); flex-shrink:0; }
+    .hg-wf-box-line { height:2px; border-radius:1px; background:rgba(245,240,232,.1); flex:1; }
+
+    /* Mini component icon grid (3×3) — right margin */
+    .hg-mini-ig {
+      right:calc(88px * 1 + 4px); top:calc(88px * 2 + 16px);
+      padding:8px; background:rgba(245,240,232,.03);
+      border:1px solid rgba(245,240,232,.07); border-radius:6px;
+      display:grid; grid-template-columns:repeat(3,1fr); gap:4px; width:84px;
+      animation:hgFloat2 10s ease-in-out 1.2s infinite;
+    }
+    .hg-ig-sq { height:18px; border-radius:3px; background:rgba(245,240,232,.07); }
+    .hg-ig-sq.a { background:rgba(217,79,30,.22); }
+    .hg-ig-sq.b { background:rgba(245,240,232,.13); }
+
+    /* Mini token pill — left lower */
+    .hg-mini-tok {
+      left:calc(88px * 2 + 4px); bottom:calc(88px * 3 + 8px);
+      display:inline-flex; align-items:center; gap:6px;
+      padding:4px 10px 4px 7px;
+      background:rgba(245,240,232,.035); border:1px solid rgba(245,240,232,.07); border-radius:100px;
+      animation:hgTokPulse 6s ease-in-out 0.8s infinite;
+    }
+    .hg-tok-dot { width:4px; height:4px; border-radius:50%; background:var(--accent); opacity:.7; flex-shrink:0; }
+    .hg-tok-txt { font-size:7px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(245,240,232,.22); font-family:var(--f-display); }
+
+    /* Mini stat chip — right lower */
+    .hg-mini-stat {
+      right:calc(88px * 2 + 4px); bottom:calc(88px * 3 + 8px);
+      display:flex; flex-direction:column; gap:2px;
+      padding:7px 10px; background:rgba(245,240,232,.03);
+      border:1px solid rgba(245,240,232,.07); border-radius:6px;
+      animation:hgFloat1 11s ease-in-out 2s infinite;
+    }
+    .hg-st-label { font-size:6.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(245,240,232,.2); font-family:var(--f-display); }
+    .hg-st-val { font-size:15px; font-weight:600; color:rgba(217,79,30,.7); font-family:var(--f-display); line-height:1; letter-spacing:-.02em; }
+    .hg-st-sub { font-size:7px; color:rgba(245,240,232,.2); font-family:var(--f-display); letter-spacing:.04em; }
+
+    @keyframes hgFloat1 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+    @keyframes hgFloat2 { 0%,100%{transform:translateY(-4px);} 50%{transform:translateY(4px);} }
+    @keyframes hgTokPulse { 0%,100%{opacity:.7;} 50%{opacity:1;} }
+
+    /* Work preview card below hero-bottom */
+    .hero-preview {
+      display:inline-flex; align-items:center; gap:14px;
+      margin-top:28px;
+      padding:10px 18px 10px 10px;
+      background:rgba(26,18,8,.7);
+      border:1px solid rgba(245,240,232,.1);
+      border-radius:12px;
+      backdrop-filter:blur(12px) saturate(160%);
+      cursor:none; color:inherit; text-decoration:none;
+      opacity:0;
+      transition:border-color .3s, box-shadow .3s;
+    }
+    .hero-preview:hover {
+      border-color:rgba(217,79,30,.35);
+      box-shadow:0 8px 32px rgba(0,0,0,.4);
+    }
+    .hp-thumb {
+      width:54px; height:40px; border-radius:6px; overflow:hidden; flex-shrink:0;
+      border:1px solid rgba(245,240,232,.08);
+    }
+    .hp-thumb img { width:100%; height:100%; object-fit:cover; filter:saturate(.55) brightness(.7); }
+    .hp-body { display:flex; flex-direction:column; gap:3px; text-align:left; }
+    .hp-label { font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(245,240,232,.28); }
+    .hp-name  { font-size:12px; font-weight:500; color:rgba(245,240,232,.7); white-space:nowrap; }
+    .hp-stat  {
+      font-size:10px; font-weight:700; letter-spacing:.05em;
+      color:var(--accent); white-space:nowrap;
+      padding-left:14px; border-left:1px solid rgba(245,240,232,.1);
+    }
+    .hp-arrow { color:rgba(245,240,232,.28); flex-shrink:0; transition:color .2s, transform .2s; }
+    .hero-preview:hover .hp-arrow { color:var(--accent); transform:translate(2px,-2px); }
+
+    /* Responsive: hide grid decorations on small screens */
+    @media(max-width:1000px) {
+      .hg-label, .hg-spark, .hg-blocks, .hg-mini { display:none; }
+      .hero-left { padding:80px 28px; }
+      .hero-top-bar { padding-bottom:24px; }
+    }
+    @media(max-width:600px) {
+      .hero-h1 { font-size:clamp(36px,11vw,60px); }
+      .hero-meta { flex-direction:column; gap:20px; align-items:center; }
     }
 
     /* ══════════════════════════════════════
@@ -655,9 +878,9 @@
     ══════════════════════════════════════ */
     #about { background:var(--bg2); }
     .about-inner { display:grid; grid-template-columns:1fr 420px; gap:100px; align-items:start; }
-    .about-stmt { font-family:var(--f-display); font-size:clamp(26px,3vw,44px); font-weight:300; line-height:1.25; letter-spacing:-.02em; margin-bottom:36px; opacity:0; }
+    .about-stmt { font-family:var(--f-display); font-size:clamp(20px,2.2vw,32px); font-weight:300; line-height:1.3; letter-spacing:-.02em; margin-bottom:28px; opacity:0; }
     .about-stmt em { font-style:italic; color:var(--accent); }
-    .about-p { font-size:15.5px; line-height:1.8; color:var(--muted); margin-bottom:20px; opacity:0; }
+    .about-p { font-size:14px; line-height:1.8; color:var(--muted); margin-bottom:18px; opacity:0; }
     .about-p strong { color:var(--ink); font-weight:500; }
     .about-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:44px; padding-top:36px; border-top:1px solid var(--border); opacity:0; }
     .tag { padding:8px 16px; border:1px solid var(--border); border-radius:100px; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); transition:border-color .2s, color .2s, transform .15s; }
@@ -864,7 +1087,7 @@
       .wrt-item.featured .wrt-body { padding:32px 28px; }
     }
     @media (max-width:600px) {
-      .hero-h1 { font-size:clamp(44px,12vw,72px); }
+      .hero-h1 { font-size:clamp(36px,10vw,60px); }
       .process-inner { grid-template-columns:1fr; }
       .stats-grid { grid-template-columns:1fr 1fr; }
       .pre-bottom-bar { left:28px; right:28px; }
@@ -919,6 +1142,110 @@
 <section class="hero" id="heroSection">
   <div id="hero-spotlight"></div>
 
+  <!-- ── Firecrawl-style grid overlay: labels at intersections, sparkles, data blocks ── -->
+  <div aria-hidden="true">
+    <!-- Corner labels — placed at exact 88px grid intersections -->
+    <div class="hg-label hg-label-tl">[ .design ]</div>
+    <div class="hg-label hg-label-tr">[ .fig ]</div>
+    <div class="hg-label hg-label-bl">[ .research ]</div>
+    <div class="hg-label hg-label-br">[ .system ]</div>
+
+    <!-- Sparkle crosshairs at grid intersections (5 cells from left/right, 3 from top) -->
+    <div class="hg-spark hg-spark-l"><span class="hg-spark-dot"></span></div>
+    <div class="hg-spark hg-spark-r"><span class="hg-spark-dot"></span></div>
+
+    <!-- Left data-block scroller -->
+    <div class="hg-blocks hg-blocks-l">
+      <div class="hg-blocks-inner">
+        <!-- set 1 -->
+        <div class="hg-b xl"></div><div class="hg-b m"></div><div class="hg-b s"></div>
+        <div class="hg-b l a"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b s"></div><div class="hg-b xl"></div><div class="hg-b m"></div>
+        <div class="hg-b l"></div><div class="hg-b s a"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b m"></div><div class="hg-b l"></div><div class="hg-b s"></div>
+        <div class="hg-b xl a"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b l"></div><div class="hg-b s"></div><div class="hg-b xl"></div>
+        <div class="hg-b m a"></div><div class="hg-b l"></div>
+        <div class="hg-bsep"></div>
+        <!-- set 2 (duplicate for seamless loop) -->
+        <div class="hg-b xl"></div><div class="hg-b m"></div><div class="hg-b s"></div>
+        <div class="hg-b l a"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b s"></div><div class="hg-b xl"></div><div class="hg-b m"></div>
+        <div class="hg-b l"></div><div class="hg-b s a"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b m"></div><div class="hg-b l"></div><div class="hg-b s"></div>
+        <div class="hg-b xl a"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b l"></div><div class="hg-b s"></div><div class="hg-b xl"></div>
+        <div class="hg-b m a"></div><div class="hg-b l"></div>
+        <div class="hg-bsep"></div>
+      </div>
+    </div>
+
+    <!-- Right data-block scroller -->
+    <div class="hg-blocks hg-blocks-r">
+      <div class="hg-blocks-inner">
+        <!-- set 1 -->
+        <div class="hg-b m"></div><div class="hg-b xl"></div><div class="hg-b s a"></div>
+        <div class="hg-b l"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b xl"></div><div class="hg-b s"></div><div class="hg-b l a"></div>
+        <div class="hg-b m"></div><div class="hg-b xl"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b s"></div><div class="hg-b m a"></div><div class="hg-b l"></div>
+        <div class="hg-b s"></div><div class="hg-b xl"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b l"></div><div class="hg-b m"></div><div class="hg-b s a"></div>
+        <div class="hg-b xl"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <!-- set 2 (duplicate for seamless loop) -->
+        <div class="hg-b m"></div><div class="hg-b xl"></div><div class="hg-b s a"></div>
+        <div class="hg-b l"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b xl"></div><div class="hg-b s"></div><div class="hg-b l a"></div>
+        <div class="hg-b m"></div><div class="hg-b xl"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b s"></div><div class="hg-b m a"></div><div class="hg-b l"></div>
+        <div class="hg-b s"></div><div class="hg-b xl"></div>
+        <div class="hg-bsep"></div>
+        <div class="hg-b l"></div><div class="hg-b m"></div><div class="hg-b s a"></div>
+        <div class="hg-b xl"></div><div class="hg-b m"></div>
+        <div class="hg-bsep"></div>
+      </div>
+    </div>
+
+    <!-- Mini UI artifact elements — floating design snippets in grid cells -->
+    <!-- Left: mini wireframe card -->
+    <div class="hg-mini hg-mini-wf">
+      <div class="hg-wf-head"><span class="hg-wf-dot"></span><div class="hg-wf-title"></div></div>
+      <div class="hg-wf-box"><span class="hg-wf-box-dot"></span><div class="hg-wf-box-line"></div></div>
+      <div class="hg-wf-row w2"></div>
+      <div class="hg-wf-sep"></div>
+      <div class="hg-wf-row"></div>
+      <div class="hg-wf-row w3"></div>
+    </div>
+    <!-- Right: mini component icon grid (3×3) -->
+    <div class="hg-mini hg-mini-ig">
+      <div class="hg-ig-sq b"></div><div class="hg-ig-sq"></div><div class="hg-ig-sq a"></div>
+      <div class="hg-ig-sq"></div><div class="hg-ig-sq b"></div><div class="hg-ig-sq"></div>
+      <div class="hg-ig-sq a"></div><div class="hg-ig-sq"></div><div class="hg-ig-sq b"></div>
+    </div>
+    <!-- Left lower: design token pill -->
+    <div class="hg-mini hg-mini-tok">
+      <span class="hg-tok-dot"></span><span class="hg-tok-txt">design.tokens</span>
+    </div>
+    <!-- Right lower: shipped stat -->
+    <div class="hg-mini hg-mini-stat">
+      <span class="hg-st-label">Shipped</span>
+      <span class="hg-st-val">15+</span>
+      <span class="hg-st-sub">Products</span>
+    </div>
+  </div>
+
   <!-- scrolling bg text -->
   <div class="hero-bg-track">
     <div class="hero-bg-roll">
@@ -931,14 +1258,6 @@
 
   <!-- left column -->
   <div class="hero-left">
-    <!-- top bar -->
-    <div class="hero-top-bar">
-      <div class="hero-eyebrow">
-        Product Designer · Enterprise Startups &amp; SaaS Products
-      </div>
-      <span class="avail-badge"><span class="avail-dot"></span>Open to opportunities</span>
-    </div>
-
     <!-- headline -->
     <div class="hero-mid">
       <h1 class="hero-h1">
@@ -951,15 +1270,25 @@
     <!-- sub + meta -->
     <div class="hero-bottom">
       <p class="hero-sub">
-        7+ years designing digital products that <strong>reduce friction, earn trust, and move business outcomes.</strong> 
-        From consumer apps to enterprise systems - turning ambiguous problems into clear, beautiful, and usable experiences.
+        Fintech &amp; Regtech product designer — turning complex, <strong>high-stakes workflows</strong> into experiences that feel clear, fast, and trustworthy.
       </p>
       <div class="hero-meta">
-        <div><div class="hm-label">Based in</div><div class="hm-val">Ahmedabad, India</div></div>
-        <div><div class="hm-label">Focus</div><div class="hm-val">Enterprise Startups · SaaS Products</div></div>
+        <div><div class="hm-label">Focus</div><div class="hm-val">Design to Change</div></div>
         <div><div class="hm-label">Experience</div><div class="hm-val">7+ Years</div></div>
-        <div><div class="hm-label">Updated</div><div class="hm-val">May 2026</div></div>
+        <div class="hm-avail"><span class="avail-dot"></span><div class="hm-val">Open to Opportunities</div></div>
       </div>
+      <!-- Mini work preview card -->
+      <a href="/case-study/customer-onboarding-flow" class="hero-preview" id="heroPreview">
+        <div class="hp-thumb">
+          <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="">
+        </div>
+        <div class="hp-body">
+          <span class="hp-label">Featured Case Study</span>
+          <span class="hp-name">Customer Onboarding Flow</span>
+        </div>
+        <div class="hp-stat">↓41% Review Errors</div>
+        <svg class="hp-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </div>
 
@@ -1524,12 +1853,10 @@
   </div>
   <div class="about-inner">
     <div class="about-left">
-      <p class="about-stmt">I make complex, high-stakes workflows feel inevitable - not just usable. Currently Senior Product Designer at ComplyStream, a London-based financial crime startup. Over 7 years, I've worked across fintech, cybersecurity, and startup MVPs turning dense, high-stakes workflows into experiences that feel clear, fast, and trustworthy.
-    </br><em>"Micro interactions are the heartbeat of UX."</em> </p>
-      <p class="about-p">I'm a product designer who lives at the intersection of <strong>regulation and human behaviour</strong>.</p>
-      <p class="about-p">That means <strong>KYC flows</strong> that don't feel like interrogations. <strong>CISO dashboards</strong> that communicate risk without manufacturing panic. <strong>Onboarding experiences</strong> that earn trust inside the first sixty seconds.</p>
-      <p class="about-p">I've been the <strong>sole designer at early-stage startups</strong>, which means I know what it's like to design without a design system, ship without a QA team, and build conviction for design decisions in rooms full of engineers and investors.</p>
-      <p class="about-p">Currently exploring what happens when <strong>AI meets compliance design</strong>. Building things that matter.</p>
+      <p class="about-stmt">I make complex, high-stakes workflows feel inevitable — not just <em>usable</em>.</p>
+      <p class="about-p"><strong>7+ years</strong> across fintech, cybersecurity, and startup MVPs. Currently Senior Product Designer at <strong>ComplyStream</strong>, a London-based financial crime startup — turning dense, regulated workflows into experiences that feel clear, fast, and trustworthy.</p>
+      <p class="about-p">I live at the intersection of <strong>regulation and human behaviour</strong>. That means KYC flows that don't feel like interrogations, CISO dashboards that communicate risk without manufacturing panic, and onboarding experiences that earn trust inside the first sixty seconds.</p>
+      <p class="about-p">I've been the <strong>sole designer at early-stage startups</strong> — designing without a system, shipping without a QA team, and building conviction for design in rooms full of engineers and investors. Currently exploring what happens when <strong>AI meets compliance design</strong>.</p>
       <div class="about-tags">
         <span class="tag">Product Design</span><span class="tag">UX Research</span><span class="tag">Design Systems</span>
         <span class="tag">Brand Identity</span><span class="tag">Motion Design</span><span class="tag">Figma</span>
@@ -1690,13 +2017,28 @@
 
   /* ─── HERO ENTRANCE ─── */
   function fireHeroEntrance() {
+    // set initial states for grid elements
+    gsap.set('.hg-spark', { scale:0.3, opacity:0 });
+    gsap.set('.hg-blocks', { opacity:0 });
+    gsap.set('.hg-mini',   { opacity:0, y:6 });
+
     const tl = gsap.timeline({ defaults:{ ease:'expo.out' } });
     tl.to('nav', { opacity:1, duration:0.6 }, 0)
-      .to('.hero-eyebrow', { opacity:1, y:0, duration:0.7 }, 0.18)
-      .to('.h-line span', { y:'0%', duration:1.1, stagger:0.13, ease:'expo.out' }, 0.3)
-      .to('.hero-sub',    { opacity:1, y:0, duration:0.85 }, 0.6)
-      .to('.hero-meta',   { opacity:1, y:0, duration:0.8  }, 0.75)
-      .to('.hero-right',  { opacity:1, y:0, duration:0.95 }, 0.42)
+      // grid labels fade in staggered from corners
+      .to('.hg-label', { opacity:1, duration:0.6, stagger:0.1 }, 0.1)
+      // sparkles scale in with a snap
+      .to('.hg-spark', { opacity:1, scale:1, duration:0.5, stagger:0.12, ease:'back.out(1.7)' }, 0.4)
+      // mini UI artifact elements
+      .to('.hg-mini',  { opacity:1, y:0, duration:0.9, stagger:0.14 }, 0.5)
+      // headline lines
+      .to('.h-line span', { y:'0%', duration:1.1, stagger:0.13, ease:'expo.out' }, 0.38)
+      // data block scrollers
+      .to('.hg-blocks', { opacity:1, duration:0.8 }, 0.65)
+      // body copy + meta
+      .to('.hero-sub',    { opacity:1, y:0, duration:0.85 }, 0.72)
+      .to('.hero-meta',   { opacity:1, y:0, duration:0.8  }, 0.88)
+      // work preview card
+      .to('#heroPreview', { opacity:1, duration:0.6 }, 1.05)
       .to('#heroScrollCue', { opacity:1, duration:0.7 }, 1.2);
   }
 
