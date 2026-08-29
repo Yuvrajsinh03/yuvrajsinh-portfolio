@@ -874,20 +874,26 @@
        PROCESS — dark panel
     ══════════════════════════════════════ */
     .process { padding:100px 56px; background:var(--ink); position:relative; overflow:hidden; }
+    /* Top accent progress bar */
+    .process-progress { position:absolute; top:0; left:0; height:2px; width:0; background:var(--accent); z-index:10; border-radius:0 1px 1px 0; box-shadow:0 0 8px rgba(217,79,30,.6); }
     .process-header { margin-bottom:72px; }
     .process-header .s-label { color:rgba(245,240,232,.3); }
     .process-header .s-title { color:var(--bg); }
     .process-inner { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; position:relative; }
-    .process-connector { position:absolute; top:68px; left:0; right:0; pointer-events:none; z-index:0; display:flex; align-items:center; padding:0 48px; }
-    .pc-line { flex:1; height:1px; background:rgba(245,240,232,.06); position:relative; }
-    .pc-fill { position:absolute; top:0; left:0; height:100%; width:0; background:var(--accent); transition:width 1.5s var(--ease-out); }
-    .pc-fill.animate { width:100%; }
-    .p-card { padding:48px 32px; background:rgba(255,255,255,.04); border-radius:4px; border:1px solid rgba(255,255,255,.06); position:relative; z-index:1; opacity:0; transform:translateY(36px); transition:background .3s, border-color .3s; }
+    /* Connector — 3 individual segments between 4 cards */
+    .process-connector { position:absolute; top:68px; left:0; right:0; pointer-events:none; z-index:0; display:flex; align-items:center; padding:0 80px; gap:3px; }
+    .pc-seg { flex:1; height:1px; background:rgba(245,240,232,.06); position:relative; overflow:hidden; }
+    .pc-seg-fill { position:absolute; top:0; left:0; height:100%; width:0; background:var(--accent); box-shadow:0 0 6px rgba(217,79,30,.5); }
+    /* Cards */
+    .p-card { padding:48px 32px; background:rgba(255,255,255,.04); border-radius:4px; border:1px solid rgba(255,255,255,.06); position:relative; z-index:1; opacity:0; transform:translateY(36px) scale(0.97); transition:background .3s, border-color .3s, box-shadow .3s; }
     .p-card:hover { background:rgba(255,255,255,.07); border-color:rgba(217,79,30,.2); }
-    .p-num { font-family:var(--f-display); font-size:48px; font-weight:300; color:rgba(255,255,255,.1); line-height:1; margin-bottom:28px; transition:color .4s; }
+    .p-card.is-lit { border-color:rgba(217,79,30,.28); background:rgba(255,255,255,.07); box-shadow:0 0 0 1px rgba(217,79,30,.12) inset, 0 24px 56px rgba(0,0,0,.35); }
+    /* Step number */
+    .p-num { font-family:var(--f-display); font-size:48px; font-weight:300; color:rgba(255,255,255,.1); line-height:1; margin-bottom:28px; }
     .p-card:hover .p-num { color:var(--accent); }
-    .p-title { font-size:17px; font-weight:600; letter-spacing:-.01em; margin-bottom:12px; color:rgba(245,240,232,.9); }
-    .p-desc { font-size:13.5px; color:rgba(245,240,232,.42); line-height:1.72; }
+    /* Title & desc start hidden — GSAP reveals them */
+    .p-title { font-size:17px; font-weight:600; letter-spacing:-.01em; margin-bottom:12px; color:rgba(245,240,232,.9); opacity:0; transform:translateY(10px); }
+    .p-desc { font-size:13.5px; color:rgba(245,240,232,.42); line-height:1.72; opacity:0; transform:translateY(10px); }
 
     /* ══════════════════════════════════════
        ABOUT
@@ -1082,6 +1088,8 @@
       .wrt-item.featured { grid-template-columns:1fr !important; }
       .wrt-item.featured .wrt-img { min-height:260px; }
       .writing-row { grid-template-columns:1fr 1fr; }
+      /* Connector doesn't make visual sense at 2-col layout — hide it */
+      .process-connector { display:none; }
     }
     @media (max-width:900px) {
       nav { padding:16px 28px; }
@@ -1104,6 +1112,71 @@
       .hero-meta { flex-wrap:wrap; gap:24px; }
       #work { padding-top:60px; }
     }
+
+    /* ══════════════════════════════════════
+       GUESTBOOK
+    ══════════════════════════════════════ */
+    .guestbook { padding:100px 56px; background:var(--bg); border-top:1px solid var(--border); }
+    .gb-header { margin-bottom:40px; }
+    .gb-title { font-family:var(--f-display); font-size:clamp(36px,4vw,56px); font-weight:300; letter-spacing:-.03em; color:var(--ink); line-height:1.1; margin-bottom:10px; }
+    .gb-sub { font-size:14px; color:var(--muted); line-height:1.6; }
+    .gb-count { font-size:12px; color:rgba(26,18,8,.38); margin-top:6px; min-height:16px; }
+    /* Picker — always above canvas */
+    .gb-picker-row { display:flex; align-items:center; gap:16px; margin-bottom:18px; }
+    .gb-picker-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+    .gb-picker { display:flex; gap:10px; flex-wrap:wrap; }
+    .gb-pick-btn {
+      width:52px; height:52px; border-radius:50%;
+      border:2px solid transparent;
+      background:rgba(26,18,8,.06);
+      cursor:pointer; padding:11px;
+      color:var(--sc,#888);
+      transition:border-color .2s, transform .15s, box-shadow .2s, background .2s;
+      flex-shrink:0;
+    }
+    .gb-pick-btn svg { width:100%; height:100%; display:block; }
+    .gb-pick-btn:hover { border-color:var(--sc); transform:scale(1.1); background:rgba(26,18,8,.04); }
+    .gb-pick-btn.active { border-color:var(--sc); box-shadow:0 0 0 3px rgba(26,18,8,.09); transform:scale(1.06); background:rgba(26,18,8,.04); }
+    /* Canvas — dark with dot grid, like the reference */
+    .gb-canvas {
+      width:100%; height:430px; position:relative; overflow:hidden;
+      background:#0C0B09;
+      border-radius:10px; cursor:crosshair;
+      box-shadow:0 6px 40px rgba(0,0,0,.38), 0 1px 0 rgba(255,255,255,.04) inset;
+      background-image:radial-gradient(rgba(245,240,232,.14) 1.2px, transparent 1.2px);
+      background-size:24px 24px;
+    }
+    .gb-canvas-hint {
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      font-size:13px; color:rgba(245,240,232,.18); letter-spacing:.06em;
+      pointer-events:none; user-select:none; transition:opacity .4s;
+    }
+    /* Individual stamps — rectangular, 140px wide */
+    .gb-stamp { position:absolute; width:140px; pointer-events:none; user-select:none; filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
+    .gb-stamp svg { width:100%; height:auto; display:block; color:var(--sc); }
+    /* Page navigation */
+    .gb-nav { display:flex; align-items:center; gap:14px; margin-top:18px; }
+    .gb-nav-btn {
+      width:34px; height:34px; border:1px solid var(--border); background:none;
+      border-radius:50%; cursor:pointer; font-size:14px; color:var(--ink2);
+      display:flex; align-items:center; justify-content:center; transition:.2s;
+    }
+    .gb-nav-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+    .gb-nav-btn:disabled { opacity:.25; cursor:not-allowed; }
+    .gb-page-info { font-size:12px; font-weight:500; color:var(--muted); letter-spacing:.04em; }
+    /* Toast */
+    .gb-toast {
+      position:absolute; bottom:14px; left:50%;
+      transform:translateX(-50%) translateY(8px);
+      background:var(--ink); color:var(--bg);
+      font-size:12px; padding:7px 18px; border-radius:100px;
+      opacity:0; transition:opacity .25s, transform .25s;
+      pointer-events:none; white-space:nowrap; z-index:20;
+    }
+    .gb-toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+    @media (max-width:900px) { .guestbook { padding:80px 28px; } }
+    @media (max-width:600px) { .gb-canvas { height:320px; } .gb-stamp { width:100px; } .gb-pick-btn { width:44px; height:44px; } }
+
   </style>
 </head>
 <body>
@@ -1696,18 +1769,37 @@
 
 <!-- ════ PROCESS ════ -->
 <div class="process">
+  <div class="process-progress" id="processProgress"></div>
   <div class="process-header">
     <p class="s-label">My Process</p>
     <h2 class="s-title">How I work</h2>
   </div>
   <div class="process-inner" id="processInner">
     <div class="process-connector" id="processConnector">
-      <div class="pc-line"><div class="pc-fill" id="pcFill"></div></div>
+      <div class="pc-seg"><div class="pc-seg-fill"></div></div>
+      <div class="pc-seg"><div class="pc-seg-fill"></div></div>
+      <div class="pc-seg"><div class="pc-seg-fill"></div></div>
     </div>
-    <div class="p-card"><div class="p-num">01</div><h3 class="p-title">Research & Immersion</h3><p class="p-desc">I go deep on the domain before touching Figma. For regulated industries, that means reading compliance docs — not just conducting user interviews.</p></div>
-    <div class="p-card"><div class="p-num">02</div><h3 class="p-title">Systems Thinking</h3><p class="p-desc">Every screen exists within a flow. I design the logic before the pixels — information architecture is where trust is built or quietly broken.</p></div>
-    <div class="p-card"><div class="p-num">03</div><h3 class="p-title">Prototype & Test</h3><p class="p-desc">High-fidelity prototypes tested with real users — including compliance officers, not just end consumers. Edge cases are first-class citizens here.</p></div>
-    <div class="p-card"><div class="p-num">04</div><h3 class="p-title">Ship & Iterate</h3><p class="p-desc">I stay in the product after launch. Metrics, feedback loops, and a bias toward shipping over endlessly perfecting.</p></div>
+    <div class="p-card" data-step="1">
+      <div class="p-num">00</div>
+      <h3 class="p-title">Research & Immersion</h3>
+      <p class="p-desc">I go deep on the domain before touching Figma. For regulated industries, that means reading compliance docs — not just conducting user interviews.</p>
+    </div>
+    <div class="p-card" data-step="2">
+      <div class="p-num">00</div>
+      <h3 class="p-title">Systems Thinking</h3>
+      <p class="p-desc">Every screen exists within a flow. I design the logic before the pixels — information architecture is where trust is built or quietly broken.</p>
+    </div>
+    <div class="p-card" data-step="3">
+      <div class="p-num">00</div>
+      <h3 class="p-title">Prototype & Test</h3>
+      <p class="p-desc">High-fidelity prototypes tested with real users — including compliance officers, not just end consumers. Edge cases are first-class citizens here.</p>
+    </div>
+    <div class="p-card" data-step="4">
+      <div class="p-num">00</div>
+      <h3 class="p-title">Ship & Iterate</h3>
+      <p class="p-desc">I stay in the product after launch. Metrics, feedback loops, and a bias toward shipping over endlessly perfecting.</p>
+    </div>
   </div>
 </div>
 
@@ -1881,6 +1973,31 @@
       </a>
     </div>
 
+  </div>
+</section>
+
+<!-- ════ GUESTBOOK ════ -->
+<section class="guestbook" id="guestbook">
+  <div class="gb-header">
+    <p class="s-label">Guestbook</p>
+    <h2 class="gb-title">Leave your mark.</h2>
+    <p class="gb-sub">Press anywhere on the canvas — your stamp stays here forever.</p>
+    <p class="gb-count" id="gbCount"></p>
+  </div>
+  <!-- Stamp picker — always visible above canvas -->
+  <div class="gb-picker-row">
+    <span class="gb-picker-label">Your stamp</span>
+    <div class="gb-picker" id="gbPicker"></div>
+  </div>
+  <!-- Canvas -->
+  <div class="gb-canvas" id="gbCanvas">
+    <div class="gb-canvas-hint" id="gbHint">↓ click anywhere to leave your stamp</div>
+  </div>
+  <!-- Page navigation -->
+  <div class="gb-nav">
+    <button class="gb-nav-btn" id="gbPrev" aria-label="Previous page">←</button>
+    <span class="gb-page-info" id="gbPageInfo">—</span>
+    <button class="gb-nav-btn" id="gbNext" aria-label="Next page">→</button>
   </div>
 </section>
 
@@ -2169,25 +2286,113 @@
     });
   });
 
-  /* ─── PROCESS ─── */
-  ScrollTrigger.create({
-    trigger:'.process', start:'top 70%',
-    onEnter: () => {
-      gsap.to('.p-card', { opacity:1, y:0, duration:0.85, stagger:0.14, ease:'expo.out' });
-      setTimeout(() => { const f=document.getElementById('pcFill'); if(f) f.classList.add('animate'); }, 350);
-    },
-    once:true
-  });
-  function positionConnector() {
-    const con = document.getElementById('processConnector');
-    const cards = document.querySelectorAll('.p-card');
-    if (!con || !cards.length) return;
-    const fr = cards[0].getBoundingClientRect();
-    const pr = document.querySelector('.process-inner').getBoundingClientRect();
-    con.style.top = (fr.top - pr.top + 56) + 'px';
-  }
-  positionConnector();
-  window.addEventListener('resize', positionConnector);
+  /* ─── PROCESS — sequential cinematic animation ─── */
+  (function initProcessAnimation() {
+    const cards   = document.querySelectorAll('.p-card');
+    const segs    = document.querySelectorAll('.pc-seg-fill');
+    const nums    = document.querySelectorAll('.p-num');
+    const bar     = document.getElementById('processProgress');
+
+    // Ensure initial CSS state is set via GSAP (overrides any lingering transforms)
+    gsap.set(cards, { opacity:0, y:36, scale:0.97 });
+    gsap.set(nums,  { color:'rgba(255,255,255,.1)' });
+    gsap.set(segs,  { width:0 });
+    if (bar) gsap.set(bar, { width:0 });
+
+    function animateCard(card, num, seg, step, delay) {
+      const target   = step;          // 1-based step number
+      const title    = card.querySelector('.p-title');
+      const desc     = card.querySelector('.p-desc');
+      const totalSteps = 4;
+
+      // 1. Card entrance — scale + fade + lift
+      gsap.to(card, {
+        opacity:1, y:0, scale:1,
+        duration:0.75, delay, ease:'expo.out'
+      });
+
+      // 2. Card briefly lights up (active border glow)
+      gsap.delayedCall(delay + 0.05, () => card.classList.add('is-lit'));
+      gsap.delayedCall(delay + 1.2,  () => card.classList.remove('is-lit'));
+
+      // 3. Number count-up: 00 → 0N
+      const countDuration = 480; // ms
+      gsap.delayedCall(delay + 0.08, () => {
+        const t0 = performance.now();
+        function tick() {
+          const elapsed  = performance.now() - t0;
+          const progress = Math.min(elapsed / countDuration, 1);
+          const ease     = 1 - Math.pow(1 - progress, 3);      // cubic ease-out
+          const val      = Math.round(ease * target);
+          num.textContent = String(val).padStart(2, '0');
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+
+      // 4. Number glow on — then glow off
+      gsap.to(num, {
+        color:'var(--accent)',
+        textShadow:'0 0 28px rgba(217,79,30,.55)',
+        duration:0.3, delay: delay + 0.12
+      });
+      gsap.to(num, {
+        color:'rgba(255,255,255,.1)',
+        textShadow:'none',
+        duration:0.8, delay: delay + 0.9
+      });
+
+      // 5. Title slides up
+      gsap.to(title, {
+        opacity:1, y:0,
+        duration:0.55, delay: delay + 0.22, ease:'power2.out'
+      });
+
+      // 6. Desc slides up
+      gsap.to(desc, {
+        opacity:1, y:0,
+        duration:0.55, delay: delay + 0.36, ease:'power2.out'
+      });
+
+      // 7. Connector segment fills to next card
+      if (seg) {
+        gsap.to(seg, {
+          width:'100%',
+          duration:0.5, delay: delay + 0.48, ease:'power2.inOut'
+        });
+      }
+
+      // 8. Progress bar grows proportionally
+      if (bar) {
+        gsap.to(bar, {
+          width: (step / totalSteps * 100) + '%',
+          duration:0.6, delay: delay + 0.5, ease:'power2.out'
+        });
+      }
+    }
+
+    ScrollTrigger.create({
+      trigger:'.process', start:'top 65%',
+      onEnter: () => {
+        const perCard = 0.52;
+        cards.forEach((card, i) => {
+          animateCard(card, nums[i], segs[i], i + 1, i * perCard);
+        });
+      },
+      once:true
+    });
+
+    // Reposition connector vertically on resize (keeps line at number mid-point)
+    function positionConnector() {
+      const con = document.getElementById('processConnector');
+      if (!con || !cards.length) return;
+      const fr = cards[0].getBoundingClientRect();
+      const pr = document.querySelector('.process-inner').getBoundingClientRect();
+      con.style.top = (fr.top - pr.top + 56) + 'px';
+    }
+    positionConnector();
+    window.addEventListener('resize', positionConnector);
+  })();
 
   /* ─── ABOUT ─── */
   ScrollTrigger.create({
@@ -2305,6 +2510,188 @@
     });
   });
 
+})();
+
+/* ═══════════════════════════════════════════════
+   GUESTBOOK — world-map stamp canvas, Supabase
+═══════════════════════════════════════════════ */
+(function initGuestbook() {
+  const SB_URL  = 'https://ftubenlcdaypxdbwfzji.supabase.co';
+  const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dWJlbmxjZGF5cHhkYndmemppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNzk2MTcsImV4cCI6MjA5NDY1NTYxN30.HORvx75jAm186bGWCE9xMFU7xmpgkN5htaJqRGXX060';
+  const REST    = SB_URL + '/rest/v1/guestbook_stamps';
+  const HDR     = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+  const PER_PAGE = 20;
+
+  /* ── 6 colours + greetings ── */
+  const STAMPS = [
+    { color:'#D4A017', greeting:'HELLO',    lang:'EN', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#C0392B', greeting:'HOLA',     lang:'ES', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#27AE60', greeting:'HEJ',      lang:'DA', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#2980B9', greeting:'BONJOUR',  lang:'FR', fsize:14, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#8E44AD', greeting:'नमस्ते',   lang:'HI', fsize:15, ffam:"system-ui,Arial,sans-serif"       },
+    { color:'#E67E22', greeting:'こんにちは', lang:'JA', fsize:10, ffam:"system-ui,Arial,sans-serif"       }
+  ];
+
+  /* ── Simplified world map (200×90 coordinate space) ── */
+  const WORLD = `<g fill="rgba(0,0,0,0.48)">
+    <polygon points="5,6 15,4 30,5 48,4 65,8 70,18 68,30 60,42 55,58 48,65 38,62 28,56 18,48 10,36 6,22"/>
+    <polygon points="62,3 78,2 82,10 78,18 68,20 62,14"/>
+    <polygon points="34,66 48,64 58,68 62,80 58,87 46,88 36,84 30,74 32,68"/>
+    <polygon points="86,6 92,5 96,8 104,6 108,8 110,14 108,22 104,26 96,28 90,26 86,18 86,10"/>
+    <polygon points="90,30 110,28 120,28 126,35 130,48 126,66 118,80 108,86 96,85 90,74 86,56 86,40"/>
+    <polygon points="120,30 130,28 136,30 138,40 134,52 124,54 118,46 116,35"/>
+    <polygon points="108,6 130,4 148,5 168,4 185,8 194,18 196,30 190,44 182,55 168,62 152,66 140,62 130,55 122,48 116,38 110,26 108,14"/>
+    <polygon points="150,54 156,52 162,55 164,62 160,66 152,64 148,58"/>
+    <polygon points="174,16 178,14 182,18 180,24 176,26 173,22"/>
+    <polygon points="150,66 168,64 180,65 188,70 190,80 184,87 172,88 158,86 150,78 148,70"/>
+  </g>`;
+
+  /* ── Format date: "29 AUG 2026" ── */
+  function fmtDate(d) {
+    const M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  /* ── Build stamp SVG (rectangular, world map + greeting + date) ── */
+  function buildSVG(type, dateStr) {
+    const s = STAMPS[type] || STAMPS[0];
+    return `<svg viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="130" fill="currentColor" rx="2"/>
+      ${WORLD}
+      <line x1="8" y1="93" x2="192" y2="93" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/>
+      <text x="8" y="111" font-size="7.5" fill="rgba(0,0,0,0.65)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="0.6">${dateStr}</text>
+      <text x="8" y="124" font-size="6" fill="rgba(0,0,0,0.42)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="1.2">YJ PORTFOLIO</text>
+      <text x="194" y="113" text-anchor="end" font-size="${s.fsize}" font-weight="900" fill="rgba(0,0,0,0.88)" font-family="${s.ffam}">${s.greeting}</text>
+      <text x="194" y="126" text-anchor="end" font-size="7" fill="rgba(0,0,0,0.55)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="1">${s.lang}</text>
+    </svg>`;
+  }
+
+  let currentPage = 1, totalPages = 1, pageStamps = [], selectedIdx = 0, placing = false;
+
+  async function sbGet(qs) {
+    try { const r = await fetch(REST + qs, { headers: HDR }); return { ok: r.ok, data: await r.json(), headers: r.headers }; }
+    catch { return { ok: false, data: [], headers: null }; }
+  }
+  async function sbPost(body) {
+    try { return (await fetch(REST, { method:'POST', headers:{ ...HDR, Prefer:'return=minimal' }, body: JSON.stringify(body) })).ok; }
+    catch { return false; }
+  }
+
+  function toast(msg) {
+    const c = document.getElementById('gbCanvas'); if (!c) return;
+    const t = document.createElement('div'); t.className = 'gb-toast'; t.textContent = msg;
+    c.appendChild(t);
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('on')));
+    setTimeout(() => { t.classList.remove('on'); setTimeout(() => t.remove(), 350); }, 2000);
+  }
+
+  function renderStamp(s, animate) {
+    const def     = STAMPS[s.stamp_type] || STAMPS[0];
+    const dateStr = s.created_at ? fmtDate(new Date(s.created_at)) : fmtDate(new Date());
+    const el      = document.createElement('div');
+    el.className  = 'gb-stamp';
+    el.style.cssText = `left:${s.x_pct}%;top:${s.y_pct}%;--sc:${def.color};transform:translate(-50%,-50%) rotate(${s.rotation}deg)${animate?' scale(1.6)':''};opacity:${animate?0:0.92};`;
+    el.innerHTML  = buildSVG(s.stamp_type, dateStr);
+    document.getElementById('gbCanvas').appendChild(el);
+    if (animate) requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.transition = 'transform .4s cubic-bezier(.17,.67,.25,1.4), opacity .2s ease';
+      el.style.transform  = `translate(-50%,-50%) rotate(${s.rotation}deg) scale(1)`;
+      el.style.opacity    = '0.92';
+    }));
+  }
+
+  async function loadPage(n) {
+    document.getElementById('gbCanvas').querySelectorAll('.gb-stamp').forEach(e => e.remove());
+    const { ok, data } = await sbGet(`?page_number=eq.${n}&order=created_at.asc&select=*`);
+    pageStamps = ok && Array.isArray(data) ? data : [];
+    pageStamps.forEach(s => renderStamp(s, false));
+    const hint = document.getElementById('gbHint');
+    if (hint) hint.style.opacity = pageStamps.length ? '0' : '1';
+    updateNav();
+  }
+
+  async function findActivePage() {
+    const { ok, data } = await sbGet('?select=page_number&order=page_number.desc&limit=1');
+    if (!ok || !data.length) return 1;
+    const maxPg = data[0].page_number;
+    const { headers } = await sbGet(`?page_number=eq.${maxPg}&select=id`);
+    const range = headers ? headers.get('Content-Range') : null;
+    const count = range && range.includes('/') ? parseInt(range.split('/')[1]) : 0;
+    if (count >= PER_PAGE) { totalPages = maxPg + 1; return maxPg + 1; }
+    totalPages = maxPg; return maxPg;
+  }
+
+  async function refreshCount() {
+    const { headers } = await sbGet('?select=id&limit=1');
+    const range = headers ? headers.get('Content-Range') : null;
+    const n = range && range.includes('/') ? parseInt(range.split('/')[1]) : null;
+    const el = document.getElementById('gbCount');
+    if (el && n !== null && n > 0) el.textContent = n.toLocaleString() + ' stamp' + (n !== 1 ? 's' : '') + ' and counting.';
+  }
+
+  async function onCanvasClick(e) {
+    if (placing) return;
+    const canvas = document.getElementById('gbCanvas');
+    const rect   = canvas.getBoundingClientRect();
+    // Safe zone: keep 140px stamp centred within canvas (pad ~10% on x, ~14% on y)
+    const xp  = Math.max(10, Math.min(90, +((e.clientX - rect.left) / rect.width  * 100).toFixed(2)));
+    const yp  = Math.max(14, Math.min(86, +((e.clientY - rect.top)  / rect.height * 100).toFixed(2)));
+    const rot = Math.round(Math.random() * 20 - 10); // -10° to +10°
+
+    if (pageStamps.length >= PER_PAGE) {
+      currentPage++; totalPages = Math.max(totalPages, currentPage);
+      await loadPage(currentPage); toast('Page ' + currentPage + ' — stamp away!'); return;
+    }
+
+    placing = true;
+    const now  = new Date().toISOString();
+    const data = { page_number: currentPage, x_pct: xp, y_pct: yp, stamp_type: selectedIdx, rotation: rot, created_at: now };
+    pageStamps.push(data);
+    renderStamp(data, true);
+    const hint = document.getElementById('gbHint');
+    if (hint) hint.style.opacity = '0';
+    const { page_number, x_pct, y_pct, stamp_type, rotation } = data;
+    sbPost({ page_number, x_pct, y_pct, stamp_type, rotation }).then(ok => {
+      if (!ok) toast('Saved locally — sync may retry.'); refreshCount();
+    });
+    placing = false;
+  }
+
+  function updateNav() {
+    const eff = Math.max(totalPages, currentPage);
+    document.getElementById('gbPageInfo').textContent = 'Page ' + currentPage + ' of ' + eff;
+    document.getElementById('gbPrev').disabled = currentPage <= 1;
+    document.getElementById('gbNext').disabled = currentPage >= eff;
+  }
+
+  (async function boot() {
+    const picker = document.getElementById('gbPicker'); if (!picker) return;
+    STAMPS.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'gb-pick-btn' + (i === 0 ? ' active' : '');
+      btn.style.setProperty('--sc', s.color);
+      btn.title = s.greeting;
+      // Picker shows greeting text on coloured circle
+      const disp = s.greeting.length > 6 ? s.lang : s.greeting;
+      btn.innerHTML = `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;color:rgba(0,0,0,.78);font-family:'Space Grotesk',Arial,sans-serif;line-height:1;">${disp}</span>`;
+      btn.addEventListener('click', () => {
+        picker.querySelectorAll('.gb-pick-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active'); selectedIdx = i;
+      });
+      picker.appendChild(btn);
+    });
+    const canvas = document.getElementById('gbCanvas');
+    if (canvas) canvas.addEventListener('click', onCanvasClick);
+    document.getElementById('gbPrev').addEventListener('click', async () => {
+      if (currentPage > 1) { currentPage--; await loadPage(currentPage); }
+    });
+    document.getElementById('gbNext').addEventListener('click', async () => {
+      if (currentPage < totalPages) { currentPage++; await loadPage(currentPage); }
+    });
+    currentPage = await findActivePage();
+    await loadPage(currentPage);
+    refreshCount();
+  })();
 })();
 </script>
 </body>
