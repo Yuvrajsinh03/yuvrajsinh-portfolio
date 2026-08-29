@@ -593,42 +593,48 @@
       transform:translateY(-2px);
     }
 
-    /* Radial light-source at top of each card — creates depth without noise */
+    /* Dot grid texture — sits at z-index 0, below all content */
+    .wf-item::after {
+      content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background-image:radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+      background-size:22px 22px;
+      border-radius:inherit;
+    }
+
+    /* Radial light-source at top of each card — above dots, below content */
     .wf-item::before {
       content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
       background:radial-gradient(ellipse 90% 55% at 65% -5%, rgba(255,255,255,.10) 0%, transparent 68%);
       border-radius:inherit;
     }
 
-    /* Per-card gradients — derived from each case study page's own colour palette */
+    /* Per-card gradients — jewel-tone approach: saturated dark hue → bright accent
+       Bases are richly coloured (not near-black) so they sit well on the cream bg */
 
-    /* Card 1 — Customer Onboarding (cs-onboarding.html)
-       CS palette: ink #1A1208 · accent #D94F1E (burnt orange) */
+    /* Card 1 — Customer Onboarding · burnt orange */
     .wf-item[data-card="1"] {
-      background:linear-gradient(145deg,#1A1208 0%,#5C1E06 48%,#D94F1E 100%);
-      --c-ov:#1A1208; --c-hi:#FF8B5C;
+      background:linear-gradient(145deg,#6B1F04 0%,#A83210 55%,#E8672A 100%);
+      --c-ov:#6B1F04; --c-hi:#FFAA80;
     }
-    /* Card 2 — Party Plan (case-study-partyplan.html)
-       CS palette: ink #1C0A3C · accent #7B35ED (vivid purple) */
+    /* Card 2 — Party Plan · vivid purple */
     .wf-item[data-card="2"] {
-      background:linear-gradient(145deg,#1C0A3C 0%,#3D1480 48%,#7B35ED 100%);
-      --c-ov:#1C0A3C; --c-hi:#C4A0FF;
+      background:linear-gradient(145deg,#2E0F6E 0%,#5A22BF 55%,#9B5EFF 100%);
+      --c-ov:#2E0F6E; --c-hi:#D4AAFF;
     }
-    /* Card 3 — CISO Dashboard (cs-ciso-dashboard.html)
-       CS palette: c-bg #0A0F1C · c-accent #14B8A6 (teal/cyan) */
+    /* Card 3 — CISO Dashboard · teal/cyan */
     .wf-item[data-card="3"] {
-      background:linear-gradient(145deg,#0A0F1C 0%,#062E2A 48%,#0D9488 100%);
-      --c-ov:#0A0F1C; --c-hi:#2DD4BF;
+      background:linear-gradient(145deg,#053D38 0%,#0A7268 55%,#1BBCAC 100%);
+      --c-ov:#053D38; --c-hi:#5EEADE;
     }
-    /* Card 4 — Design System (cs-design-system.html)
-       CS palette: ink #1A1208 · stat accent #818CF8 (indigo) */
+    /* Card 4 — Design System · indigo */
     .wf-item[data-card="4"] {
-      background:linear-gradient(145deg,#1A1208 0%,#261A55 48%,#6366F1 100%);
-      --c-ov:#1A1208; --c-hi:#818CF8;
+      background:linear-gradient(145deg,#1A1760 0%,#3633A8 55%,#7B78F5 100%);
+      --c-ov:#1A1760; --c-hi:#ADADFF;
     }
 
     /* ── Image zone — top ~66% of card ── */
     .wf-card-img {
+      position:relative; z-index:2;
       height:265px;
       padding:22px 22px 0;
       display:flex; align-items:flex-end; justify-content:center;
