@@ -1120,23 +1120,12 @@
     .gb-header { margin-bottom:40px; }
     .gb-title { font-family:var(--f-display); font-size:clamp(36px,4vw,56px); font-weight:300; letter-spacing:-.03em; color:var(--ink); line-height:1.1; margin-bottom:10px; }
     .gb-sub { font-size:14px; color:var(--muted); line-height:1.6; }
-    .gb-count { font-size:12px; color:rgba(26,18,8,.38); margin-top:6px; min-height:16px; }
-    /* Picker — always above canvas */
-    .gb-picker-row { display:flex; align-items:center; gap:16px; margin-bottom:18px; }
+    /* Stamp preview row — shows visitor's auto-assigned stamp + worldwide count */
+    .gb-picker-row { display:flex; align-items:center; gap:14px; margin-bottom:18px; flex-wrap:wrap; }
     .gb-picker-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
-    .gb-picker { display:flex; gap:10px; flex-wrap:wrap; }
-    .gb-pick-btn {
-      width:52px; height:52px; border-radius:50%;
-      border:2px solid transparent;
-      background:rgba(26,18,8,.06);
-      cursor:pointer; padding:11px;
-      color:var(--sc,#888);
-      transition:border-color .2s, transform .15s, box-shadow .2s, background .2s;
-      flex-shrink:0;
-    }
-    .gb-pick-btn svg { width:100%; height:100%; display:block; }
-    .gb-pick-btn:hover { border-color:var(--sc); transform:scale(1.1); background:rgba(26,18,8,.04); }
-    .gb-pick-btn.active { border-color:var(--sc); box-shadow:0 0 0 3px rgba(26,18,8,.09); transform:scale(1.06); background:rgba(26,18,8,.04); }
+    .gb-stamp-preview { width:72px; flex-shrink:0; border-radius:2px; overflow:hidden; filter:drop-shadow(0 2px 8px rgba(0,0,0,.22)); }
+    .gb-stamp-preview svg { width:100%; height:auto; display:block; }
+    .gb-total { font-size:12px; color:rgba(26,18,8,.38); margin-left:auto; white-space:nowrap; }
     /* Canvas — dark with dot grid, like the reference */
     .gb-canvas {
       width:100%; height:430px; position:relative; overflow:hidden;
@@ -1175,7 +1164,7 @@
     }
     .gb-toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
     @media (max-width:900px) { .guestbook { padding:80px 28px; } }
-    @media (max-width:600px) { .gb-canvas { height:320px; } .gb-stamp { width:100px; } .gb-pick-btn { width:44px; height:44px; } }
+    @media (max-width:600px) { .gb-canvas { height:320px; } .gb-stamp { width:90px; } .gb-stamp-preview { width:54px; } }
 
   </style>
 </head>
@@ -1981,13 +1970,13 @@
   <div class="gb-header">
     <p class="s-label">Guestbook</p>
     <h2 class="gb-title">Leave your mark.</h2>
-    <p class="gb-sub">Press anywhere on the canvas — your stamp stays here forever.</p>
-    <p class="gb-count" id="gbCount"></p>
+    <p class="gb-sub">Your stamp is auto-assigned from your location — click anywhere on the canvas to place it.</p>
   </div>
-  <!-- Stamp picker — always visible above canvas -->
+  <!-- Stamp preview row — auto-assigned based on visitor language/country -->
   <div class="gb-picker-row">
     <span class="gb-picker-label">Your stamp</span>
-    <div class="gb-picker" id="gbPicker"></div>
+    <div class="gb-stamp-preview" id="gbStampPreview"></div>
+    <span class="gb-total" id="gbCount"></span>
   </div>
   <!-- Canvas -->
   <div class="gb-canvas" id="gbCanvas">
@@ -2520,19 +2509,63 @@
   const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dWJlbmxjZGF5cHhkYndmemppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNzk2MTcsImV4cCI6MjA5NDY1NTYxN30.HORvx75jAm186bGWCE9xMFU7xmpgkN5htaJqRGXX060';
   const REST    = SB_URL + '/rest/v1/guestbook_stamps';
   const HDR     = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
-  const PER_PAGE = 20;
+  const PER_PAGE = 15;
 
-  /* ── 6 colours + greetings ── */
-  const STAMPS = [
-    { color:'#D4A017', greeting:'HELLO',    lang:'EN', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
-    { color:'#C0392B', greeting:'HOLA',     lang:'ES', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
-    { color:'#27AE60', greeting:'HEJ',      lang:'DA', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
-    { color:'#2980B9', greeting:'BONJOUR',  lang:'FR', fsize:14, ffam:"'Space Grotesk',Arial,sans-serif" },
-    { color:'#8E44AD', greeting:'नमस्ते',   lang:'HI', fsize:15, ffam:"system-ui,Arial,sans-serif"       },
-    { color:'#E67E22', greeting:'こんにちは', lang:'JA', fsize:10, ffam:"system-ui,Arial,sans-serif"       }
+  /* ── Language → greeting map (detected from navigator.language) ── */
+  const LANG_MAP = {
+    en: { greeting:'HELLO',     code:'EN', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    es: { greeting:'HOLA',      code:'ES', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    fr: { greeting:'BONJOUR',   code:'FR', fsize:14, ffam:"'Space Grotesk',Arial,sans-serif" },
+    de: { greeting:'HALLO',     code:'DE', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    da: { greeting:'HEJ',       code:'DA', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    sv: { greeting:'HEJ',       code:'SV', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    no: { greeting:'HEI',       code:'NO', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    nl: { greeting:'HALLO',     code:'NL', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    it: { greeting:'CIAO',      code:'IT', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    pt: { greeting:'OLÁ',       code:'PT', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    id: { greeting:'HALO',      code:'ID', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    tr: { greeting:'MERHABA',   code:'TR', fsize:11, ffam:"'Space Grotesk',Arial,sans-serif" },
+    pl: { greeting:'CZEŚĆ',     code:'PL', fsize:12, ffam:"'Space Grotesk',Arial,sans-serif" },
+    ja: { greeting:'こんにちは',  code:'JA', fsize:10, ffam:'system-ui,Arial,sans-serif' },
+    ko: { greeting:'안녕하세요',   code:'KO', fsize:10, ffam:'system-ui,Arial,sans-serif' },
+    zh: { greeting:'你好',       code:'ZH', fsize:16, ffam:'system-ui,Arial,sans-serif' },
+    hi: { greeting:'नमस्ते',     code:'HI', fsize:15, ffam:'system-ui,Arial,sans-serif' },
+    ar: { greeting:'مرحبا',     code:'AR', fsize:14, ffam:'system-ui,Arial,sans-serif' },
+    ru: { greeting:'ПРИВЕТ',    code:'RU', fsize:11, ffam:'system-ui,Arial,sans-serif' },
+    uk: { greeting:'ПРИВІТ',    code:'UK', fsize:11, ffam:'system-ui,Arial,sans-serif' },
+    th: { greeting:'สวัสดี',     code:'TH', fsize:13, ffam:'system-ui,Arial,sans-serif' },
+  };
+  const LANG_KEYS = Object.keys(LANG_MAP);
+  /* 12-colour palette — random per visit so two English visitors still differ */
+  const COLORS = ['#D4A017','#C0392B','#27AE60','#2980B9','#8E44AD','#E67E22','#16A085','#E91E8C','#1ABC9C','#F39C12','#3498DB','#E74C3C'];
+
+  /* Legacy stamps (stamp_type 0–5, stored before language detection) */
+  const LEGACY = [
+    { color:'#D4A017', greeting:'HELLO',    code:'EN', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#C0392B', greeting:'HOLA',     code:'ES', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#27AE60', greeting:'HEJ',      code:'DA', fsize:18, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#2980B9', greeting:'BONJOUR',  code:'FR', fsize:14, ffam:"'Space Grotesk',Arial,sans-serif" },
+    { color:'#8E44AD', greeting:'नमस्ते',   code:'HI', fsize:15, ffam:'system-ui,Arial,sans-serif' },
+    { color:'#E67E22', greeting:'こんにちは', code:'JA', fsize:10, ffam:'system-ui,Arial,sans-serif' },
   ];
 
-  /* ── Simplified world map (200×90 coordinate space) ── */
+  /* Encode: langIdx × 100 + colorIdx → stamp_type (≥100 = new system; <100 = legacy) */
+  function detectStamp() {
+    const raw  = (navigator.language || 'en').split('-')[0].toLowerCase();
+    const lang = raw in LANG_MAP ? raw : 'en';
+    const lIdx = LANG_KEYS.indexOf(lang);
+    const cIdx = Math.floor(Math.random() * COLORS.length);
+    return lIdx * 100 + cIdx;
+  }
+
+  function decodeStamp(type) {
+    if (type < 100) { const l = LEGACY[type] || LEGACY[0]; return l; }
+    const lang  = LANG_MAP[LANG_KEYS[Math.floor(type / 100)]] || LANG_MAP.en;
+    const color = COLORS[(type % 100) % COLORS.length];
+    return { ...lang, color };
+  }
+
+  /* ── World map polygons ── */
   const WORLD = `<g fill="rgba(0,0,0,0.48)">
     <polygon points="5,6 15,4 30,5 48,4 65,8 70,18 68,30 60,42 55,58 48,65 38,62 28,56 18,48 10,36 6,22"/>
     <polygon points="62,3 78,2 82,10 78,18 68,20 62,14"/>
@@ -2546,30 +2579,32 @@
     <polygon points="150,66 168,64 180,65 188,70 190,80 184,87 172,88 158,86 150,78 148,70"/>
   </g>`;
 
-  /* ── Format date: "29 AUG 2026" ── */
   function fmtDate(d) {
     const M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear();
   }
 
-  /* ── Build stamp SVG (rectangular, world map + greeting + date) ── */
   function buildSVG(type, dateStr) {
-    const s = STAMPS[type] || STAMPS[0];
+    const s = decodeStamp(type);
     return `<svg viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="130" fill="currentColor" rx="2"/>
+      <rect width="200" height="130" fill="${s.color}" rx="2"/>
       ${WORLD}
       <line x1="8" y1="93" x2="192" y2="93" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/>
       <text x="8" y="111" font-size="7.5" fill="rgba(0,0,0,0.65)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="0.6">${dateStr}</text>
       <text x="8" y="124" font-size="6" fill="rgba(0,0,0,0.42)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="1.2">YJ PORTFOLIO</text>
       <text x="194" y="113" text-anchor="end" font-size="${s.fsize}" font-weight="900" fill="rgba(0,0,0,0.88)" font-family="${s.ffam}">${s.greeting}</text>
-      <text x="194" y="126" text-anchor="end" font-size="7" fill="rgba(0,0,0,0.55)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="1">${s.lang}</text>
+      <text x="194" y="126" text-anchor="end" font-size="7" fill="rgba(0,0,0,0.55)" font-family="'Space Grotesk',Arial,sans-serif" letter-spacing="1">${s.code}</text>
     </svg>`;
   }
 
-  let currentPage = 1, totalPages = 1, pageStamps = [], selectedIdx = 0, placing = false;
+  let currentPage = 1, totalPages = 1, pageStamps = [], myStampType = 0, placing = false;
 
   async function sbGet(qs) {
     try { const r = await fetch(REST + qs, { headers: HDR }); return { ok: r.ok, data: await r.json(), headers: r.headers }; }
+    catch { return { ok: false, data: [], headers: null }; }
+  }
+  async function sbCount(qs) {
+    try { const r = await fetch(REST + qs, { headers: { ...HDR, Prefer:'count=exact' } }); return { ok: r.ok, data: await r.json(), headers: r.headers }; }
     catch { return { ok: false, data: [], headers: null }; }
   }
   async function sbPost(body) {
@@ -2586,12 +2621,11 @@
   }
 
   function renderStamp(s, animate) {
-    const def     = STAMPS[s.stamp_type] || STAMPS[0];
     const dateStr = s.created_at ? fmtDate(new Date(s.created_at)) : fmtDate(new Date());
-    const el      = document.createElement('div');
-    el.className  = 'gb-stamp';
-    el.style.cssText = `left:${s.x_pct}%;top:${s.y_pct}%;--sc:${def.color};transform:translate(-50%,-50%) rotate(${s.rotation}deg)${animate?' scale(1.6)':''};opacity:${animate?0:0.92};`;
-    el.innerHTML  = buildSVG(s.stamp_type, dateStr);
+    const el = document.createElement('div');
+    el.className = 'gb-stamp';
+    el.style.cssText = `left:${s.x_pct}%;top:${s.y_pct}%;transform:translate(-50%,-50%) rotate(${s.rotation}deg)${animate?' scale(1.6)':''};opacity:${animate?0:0.92};`;
+    el.innerHTML = buildSVG(s.stamp_type, dateStr);
     document.getElementById('gbCanvas').appendChild(el);
     if (animate) requestAnimationFrame(() => requestAnimationFrame(() => {
       el.style.transition = 'transform .4s cubic-bezier(.17,.67,.25,1.4), opacity .2s ease';
@@ -2602,7 +2636,7 @@
 
   async function loadPage(n) {
     document.getElementById('gbCanvas').querySelectorAll('.gb-stamp').forEach(e => e.remove());
-    const { ok, data } = await sbGet(`?page_number=eq.${n}&order=created_at.asc&select=*`);
+    const { ok, data } = await sbGet(`?page_number=eq.${n}&order=created_at.asc&select=*&limit=${PER_PAGE}`);
     pageStamps = ok && Array.isArray(data) ? data : [];
     pageStamps.forEach(s => renderStamp(s, false));
     const hint = document.getElementById('gbHint');
@@ -2614,7 +2648,7 @@
     const { ok, data } = await sbGet('?select=page_number&order=page_number.desc&limit=1');
     if (!ok || !data.length) return 1;
     const maxPg = data[0].page_number;
-    const { headers } = await sbGet(`?page_number=eq.${maxPg}&select=id`);
+    const { headers } = await sbCount(`?page_number=eq.${maxPg}&select=id`);
     const range = headers ? headers.get('Content-Range') : null;
     const count = range && range.includes('/') ? parseInt(range.split('/')[1]) : 0;
     if (count >= PER_PAGE) { totalPages = maxPg + 1; return maxPg + 1; }
@@ -2622,37 +2656,37 @@
   }
 
   async function refreshCount() {
-    const { headers } = await sbGet('?select=id&limit=1');
+    const { headers } = await sbCount('?select=id');
     const range = headers ? headers.get('Content-Range') : null;
     const n = range && range.includes('/') ? parseInt(range.split('/')[1]) : null;
     const el = document.getElementById('gbCount');
-    if (el && n !== null && n > 0) el.textContent = n.toLocaleString() + ' stamp' + (n !== 1 ? 's' : '') + ' and counting.';
+    if (el && n !== null && n > 0) el.textContent = n.toLocaleString() + ' stamp' + (n !== 1 ? 's' : '') + ' worldwide';
   }
 
   async function onCanvasClick(e) {
     if (placing) return;
     const canvas = document.getElementById('gbCanvas');
     const rect   = canvas.getBoundingClientRect();
-    // Safe zone: keep 140px stamp centred within canvas (pad ~10% on x, ~14% on y)
     const xp  = Math.max(10, Math.min(90, +((e.clientX - rect.left) / rect.width  * 100).toFixed(2)));
     const yp  = Math.max(14, Math.min(86, +((e.clientY - rect.top)  / rect.height * 100).toFixed(2)));
-    const rot = Math.round(Math.random() * 20 - 10); // -10° to +10°
+    const rot = Math.round(Math.random() * 20 - 10);
 
     if (pageStamps.length >= PER_PAGE) {
       currentPage++; totalPages = Math.max(totalPages, currentPage);
-      await loadPage(currentPage); toast('Page ' + currentPage + ' — stamp away!'); return;
+      await loadPage(currentPage); toast('New page — stamp away!'); return;
     }
 
     placing = true;
     const now  = new Date().toISOString();
-    const data = { page_number: currentPage, x_pct: xp, y_pct: yp, stamp_type: selectedIdx, rotation: rot, created_at: now };
+    const data = { page_number: currentPage, x_pct: xp, y_pct: yp, stamp_type: myStampType, rotation: rot, created_at: now };
     pageStamps.push(data);
     renderStamp(data, true);
     const hint = document.getElementById('gbHint');
     if (hint) hint.style.opacity = '0';
     const { page_number, x_pct, y_pct, stamp_type, rotation } = data;
     sbPost({ page_number, x_pct, y_pct, stamp_type, rotation }).then(ok => {
-      if (!ok) toast('Saved locally — sync may retry.'); refreshCount();
+      if (!ok) toast('Saved locally — sync may retry.');
+      refreshCount();
     });
     placing = false;
   }
@@ -2665,21 +2699,12 @@
   }
 
   (async function boot() {
-    const picker = document.getElementById('gbPicker'); if (!picker) return;
-    STAMPS.forEach((s, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'gb-pick-btn' + (i === 0 ? ' active' : '');
-      btn.style.setProperty('--sc', s.color);
-      btn.title = s.greeting;
-      // Picker shows greeting text on coloured circle
-      const disp = s.greeting.length > 6 ? s.lang : s.greeting;
-      btn.innerHTML = `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;color:rgba(0,0,0,.78);font-family:'Space Grotesk',Arial,sans-serif;line-height:1;">${disp}</span>`;
-      btn.addEventListener('click', () => {
-        picker.querySelectorAll('.gb-pick-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active'); selectedIdx = i;
-      });
-      picker.appendChild(btn);
-    });
+    // Auto-detect visitor's stamp from browser language
+    myStampType = detectStamp();
+    // Show mini preview of their stamp
+    const preview = document.getElementById('gbStampPreview');
+    if (preview) preview.innerHTML = buildSVG(myStampType, fmtDate(new Date()));
+
     const canvas = document.getElementById('gbCanvas');
     if (canvas) canvas.addEventListener('click', onCanvasClick);
     document.getElementById('gbPrev').addEventListener('click', async () => {
