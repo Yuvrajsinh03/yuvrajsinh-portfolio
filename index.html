@@ -2555,12 +2555,12 @@
     const lang = raw in LANG_MAP ? raw : 'en';
     const lIdx = LANG_KEYS.indexOf(lang);
     const cIdx = Math.floor(Math.random() * COLORS.length);
-    return lIdx * 100 + cIdx;
+    return (lIdx + 1) * 100 + cIdx;  // +1 so English (lIdx=0) gives 100–111, never 0–11 (legacy range)
   }
 
   function decodeStamp(type) {
     if (type < 100) { const l = LEGACY[type] || LEGACY[0]; return l; }
-    const lang  = LANG_MAP[LANG_KEYS[Math.floor(type / 100)]] || LANG_MAP.en;
+    const lang  = LANG_MAP[LANG_KEYS[Math.floor(type / 100) - 1]] || LANG_MAP.en;
     const color = COLORS[(type % 100) % COLORS.length];
     return { ...lang, color };
   }
