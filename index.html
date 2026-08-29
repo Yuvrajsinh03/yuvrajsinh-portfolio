@@ -532,6 +532,12 @@
       .hero-meta { flex-direction:column; gap:20px; align-items:center; }
       /* Preloader: allow wrap on mobile only */
       .pre-name { white-space:normal; text-align:center; width:88vw; font-size:clamp(32px,9vw,56px); }
+      /* Featured case study card — narrower on mobile */
+      .hero-preview { padding:8px 12px 8px 8px; gap:10px; max-width:calc(100vw - 56px); }
+      .hp-stat { display:none; }   /* drop stat column — main cause of overflow width */
+      .hp-name { white-space:normal; }
+      /* Scroll cue — hide on mobile to avoid overlap with card */
+      .hero-scroll-cue { display:none; }
     }
 
     /* ══════════════════════════════════════
@@ -1278,7 +1284,7 @@
         Fintech &amp; Regtech product designer — turning complex, <strong>high-stakes workflows</strong> into experiences that feel clear, fast, and trustworthy.
       </p>
       <div class="hero-meta">
-        <div><div class="hm-label">Focus</div><div class="hm-val">Enterprise Products</div></div>
+        <div><div class="hm-label">Focus</div><div class="hm-val">Design to Change</div></div>
         <div><div class="hm-label">Experience</div><div class="hm-val">7+ Years</div></div>
         <div class="hm-avail"><span class="avail-dot"></span><div class="hm-val">Open to Opportunities</div></div>
       </div>
