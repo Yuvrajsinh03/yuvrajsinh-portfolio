@@ -589,48 +589,35 @@
       text-decoration:none;
     }
     .wf-item:hover {
-      box-shadow:0 32px 80px rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.30);
-      transform:translateY(-2px);
+      box-shadow:0 24px 64px rgba(26,18,8,.14), 0 6px 18px rgba(26,18,8,.07);
+      transform:translateY(-3px);
     }
 
-    /* Dot grid texture — sits at z-index 0, below all content */
+    /* Dot grid texture — dark dots on light bg */
     .wf-item::after {
       content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
-      background-image:radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+      background-image:radial-gradient(rgba(26,18,8,.07) 1px, transparent 1px);
       background-size:22px 22px;
       border-radius:inherit;
     }
 
-    /* Radial light-source at top of each card — above dots, below content */
+    /* Soft top-centre vignette — adds gentle depth on light cards */
     .wf-item::before {
       content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
-      background:radial-gradient(ellipse 90% 55% at 65% -5%, rgba(255,255,255,.10) 0%, transparent 68%);
+      background:radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,.55) 0%, transparent 70%);
       border-radius:inherit;
     }
 
-    /* Per-card gradients — jewel-tone approach: saturated dark hue → bright accent
-       Bases are richly coloured (not near-black) so they sit well on the cream bg */
-
-    /* Card 1 — Customer Onboarding · burnt orange */
-    .wf-item[data-card="1"] {
-      background:linear-gradient(145deg,#6B1F04 0%,#A83210 55%,#E8672A 100%);
-      --c-ov:#6B1F04; --c-hi:#FFAA80;
+    /* All cards share the same warm cream-peach background (matches Card 1 / Onboarding feel).
+       --c-hi is the only per-card differentiator — it colours the category label. */
+    .wf-item {
+      background:linear-gradient(145deg,#FFF5F0 0%,#FFE4D0 100%);
+      --c-ov:#FFE4D0;
     }
-    /* Card 2 — Party Plan · vivid purple */
-    .wf-item[data-card="2"] {
-      background:linear-gradient(145deg,#2E0F6E 0%,#5A22BF 55%,#9B5EFF 100%);
-      --c-ov:#2E0F6E; --c-hi:#D4AAFF;
-    }
-    /* Card 3 — CISO Dashboard · teal/cyan */
-    .wf-item[data-card="3"] {
-      background:linear-gradient(145deg,#053D38 0%,#0A7268 55%,#1BBCAC 100%);
-      --c-ov:#053D38; --c-hi:#5EEADE;
-    }
-    /* Card 4 — Design System · indigo */
-    .wf-item[data-card="4"] {
-      background:linear-gradient(145deg,#1A1760 0%,#3633A8 55%,#7B78F5 100%);
-      --c-ov:#1A1760; --c-hi:#ADADFF;
-    }
+    .wf-item[data-card="1"] { --c-hi:#D94F1E; }  /* burnt orange   */
+    .wf-item[data-card="2"] { --c-hi:#7B35ED; }  /* vivid purple   */
+    .wf-item[data-card="3"] { --c-hi:#0D9488; }  /* teal           */
+    .wf-item[data-card="4"] { --c-hi:#6366F1; }  /* indigo         */
 
     /* ── Image zone — top ~66% of card ── */
     .wf-card-img {
@@ -643,7 +630,7 @@
       width:100%; height:100%;
       object-fit:cover; object-position:top center;
       border-radius:7px 7px 0 0;
-      box-shadow:0 14px 40px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.30);
+      box-shadow:0 10px 32px rgba(26,18,8,.18), 0 3px 8px rgba(26,18,8,.10);
       transition:transform .75s var(--ease);
       display:block;
     }
@@ -653,7 +640,7 @@
     .wf-card-img-frame {
       width:100%; height:100%;
       border-radius:7px 7px 0 0; overflow:hidden;
-      box-shadow:0 14px 40px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.28);
+      box-shadow:0 10px 32px rgba(26,18,8,.18), 0 3px 8px rgba(26,18,8,.10);
       transition:transform .75s var(--ease);
     }
     .wf-item:hover .wf-card-img-frame { transform:translateY(-5px); }
@@ -687,16 +674,16 @@
       letter-spacing:.02em; line-height:1.4;
     }
 
-    /* ── Dark-card text overrides (all .wf-item cards are dark) ── */
-    .wf-item .wf-card-cat   { color:var(--c-hi, rgba(255,255,255,.55)); }
-    .wf-item .wf-card-name  { color:rgba(255,255,255,.95); }
-    .wf-item .wf-card-desc  { color:rgba(255,255,255,.68); }
-    .wf-item .wf-cm-label   { color:rgba(255,255,255,.38); }
-    .wf-item .wf-cm-val     { color:rgba(255,255,255,.90); }
+    /* ── Light-card text — dark text, per-card accent for category label ── */
+    .wf-item .wf-card-cat   { color:var(--c-hi, var(--accent)); }
+    .wf-item .wf-card-name  { color:var(--ink); }
+    .wf-item .wf-card-desc  { color:var(--ink2); }
+    .wf-item .wf-cm-label   { color:var(--muted); }
+    .wf-item .wf-cm-val     { color:var(--ink); }
     .wf-item .wf-tag {
-      color:rgba(255,255,255,.78);
-      border-color:rgba(255,255,255,.16);
-      background:rgba(255,255,255,.08);
+      color:var(--ink2);
+      border-color:rgba(26,18,8,.14);
+      background:rgba(26,18,8,.04);
     }
 
     /* ── Hover overlay — slides up from card bottom, fixed card never moves ── */
@@ -724,10 +711,10 @@
     .wf-card-arrow {
       position:absolute; top:16px; right:16px; z-index:6;
       width:34px; height:34px; border-radius:50%;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(26,18,8,.10);
       display:flex; align-items:center; justify-content:center;
-      font-size:14px; color:rgba(255,255,255,.90);
+      font-size:14px; color:var(--ink);
       opacity:0; transform:scale(.7) rotate(-45deg);
       transition:opacity .3s, transform .3s var(--ease-out);
       backdrop-filter:blur(8px);
