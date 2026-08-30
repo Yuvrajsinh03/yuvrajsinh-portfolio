@@ -897,29 +897,91 @@
     /* ══════════════════════════════════════
        ABOUT
     ══════════════════════════════════════ */
-    #about { background:var(--bg2); }
+    #about { background:var(--ink); }
+    /* Dark section — override header chrome */
+    #about .section-hd { border-color:rgba(245,240,232,.08); }
+    #about .s-label { color:rgba(245,240,232,.38); }
+    #about .s-title { color:var(--bg); }
     .about-inner { display:grid; grid-template-columns:1fr 420px; gap:100px; align-items:start; }
-    .about-stmt { font-family:var(--f-display); font-size:clamp(20px,2.2vw,32px); font-weight:300; line-height:1.3; letter-spacing:-.02em; margin-bottom:28px; opacity:0; }
+    /* Left text — dark background treatment */
+    .about-stmt { font-family:var(--f-display); font-size:clamp(20px,2.2vw,32px); font-weight:300; line-height:1.3; letter-spacing:-.02em; margin-bottom:28px; opacity:0; color:var(--bg); }
     .about-stmt em { font-style:italic; color:var(--accent); }
-    .about-p { font-size:14px; line-height:1.8; color:var(--muted); margin-bottom:18px; opacity:0; }
-    .about-p strong { color:var(--ink); font-weight:500; }
-    .about-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:44px; padding-top:36px; border-top:1px solid var(--border); opacity:0; }
-    .tag { padding:8px 16px; border:1px solid var(--border); border-radius:100px; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); transition:border-color .2s, color .2s, transform .15s; }
+    .about-p { font-size:14px; line-height:1.8; color:rgba(245,240,232,.55); margin-bottom:18px; opacity:0; }
+    .about-p strong { color:var(--bg); font-weight:500; }
+    .about-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:44px; padding-top:36px; border-top:1px solid rgba(245,240,232,.1); opacity:0; }
+    .tag { padding:8px 16px; border:1px solid rgba(245,240,232,.16); border-radius:100px; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:rgba(245,240,232,.55); transition:border-color .2s, color .2s, transform .15s; }
     .tag:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
-    .about-right { opacity:0; }
-    .about-photo { position:relative; margin-bottom:3px; overflow:hidden; border-radius:4px; }
-    .about-photo img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:top; border-radius:4px; filter:contrast(1.04) saturate(.85); transition:transform .8s var(--ease-out), filter .4s; }
-    .about-photo:hover img { transform:scale(1.03); filter:contrast(1.02) saturate(.92); }
-    .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
-    .stat { padding:28px 24px; background:var(--bg); border-radius:4px; transition:background .3s; }
-    .stat:hover { background:var(--bg3); }
-    .stat-n { font-family:var(--f-display); font-size:52px; font-weight:300; line-height:1; letter-spacing:-.03em; margin-bottom:6px; }
-    .stat-l { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+    /* Line-reveal for about section header (same technique as hero headline) */
+    .ab-line { display:block; overflow:hidden; padding-bottom:.06em; }
+    .ab-line span { display:block; transform:translateY(108%); }
+
+    /* ─── Bento grid (right column) ─── */
+    .about-bento {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:2px;
+      border-radius:6px;
+      overflow:hidden;
+      background:rgba(245,240,232,.08); /* gap colour */
+    }
+    /* Shared cell base */
+    .ab-cell {
+      background:var(--ink);
+      transition:background .3s;
+    }
+    .ab-cell:hover { background:#22180a; }
+    /* Metric cells (top two, left column) */
+    .ab-metric {
+      padding:28px 26px 22px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      gap:8px; min-height:145px;
+    }
+    .ab-metric-n {
+      font-family:var(--f-display); font-size:clamp(44px,4vw,60px);
+      font-weight:300; line-height:1; letter-spacing:-.04em;
+      color:var(--bg);
+    }
+    .ab-metric-l {
+      font-size:9.5px; font-weight:600; letter-spacing:.14em;
+      text-transform:uppercase; color:rgba(245,240,232,.36);
+    }
+    /* Photo cell — right column, spans both metric rows */
+    .ab-photo {
+      grid-column:2; grid-row:1 / 3;
+      position:relative; overflow:hidden;
+    }
+    .ab-photo img {
+      width:100%; height:100%; display:block;
+      object-fit:cover; object-position:top center;
+      filter:contrast(1.06) saturate(.72);
+      transition:transform .9s var(--ease-out), filter .4s;
+    }
+    .ab-photo:hover img { transform:scale(1.04); filter:contrast(1.04) saturate(.88); }
+    /* Subtle warm gradient overlay on photo */
+    .ab-photo::after {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(to bottom, rgba(217,79,30,.06) 0%, rgba(26,18,8,.35) 100%);
+    }
+    /* Bottom stat cells (full width row) */
+    .ab-stat {
+      padding:24px 26px 22px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      gap:6px;
+    }
+    .ab-stat-n {
+      font-family:var(--f-display); font-size:clamp(38px,3.4vw,50px);
+      font-weight:300; line-height:1; letter-spacing:-.04em;
+      color:var(--bg);
+    }
+    .ab-stat-l {
+      font-size:9.5px; font-weight:600; letter-spacing:.14em;
+      text-transform:uppercase; color:rgba(245,240,232,.36);
+    }
 
     /* ══════════════════════════════════════
        PHILOSOPHY
     ══════════════════════════════════════ */
-    .philo { padding:160px 56px; text-align:center; border-top:1px solid var(--border); border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+    .philo { padding:160px 56px; text-align:center; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
     .philo-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 100%, rgba(217,79,30,.06) 0%, transparent 70%); pointer-events:none; }
     .philo-q { font-family:var(--f-display); font-size:clamp(24px,3.6vw,56px); font-weight:300; line-height:1.3; letter-spacing:-.03em; max-width:980px; margin:0 auto 36px; position:relative; z-index:1; }
     .philo-q em { font-style:italic; color:var(--accent); }
@@ -1082,7 +1144,12 @@
       .process-inner { grid-template-columns:1fr 1fr; }
       .about-inner { grid-template-columns:1fr; gap:60px; }
       .about-right { order:-1; }
-      .about-photo img { aspect-ratio:16/9; }
+      /* Bento on mobile — photo spans full width, stats in 2×2 below */
+      .ab-photo { grid-column:1 / -1; grid-row:1; min-height:220px; }
+      .ab-years  { grid-column:1; grid-row:2; }
+      .ab-prods  { grid-column:2; grid-row:2; }
+      .ab-domains  { grid-column:1; grid-row:3; }
+      .ab-startups { grid-column:2; grid-row:3; }
       .wg-item { width:340px; }
       .wrt-item.featured { grid-template-columns:1fr !important; }
       .wrt-item.featured .wrt-img { min-height:260px; }
@@ -1991,7 +2058,10 @@
 <!-- ════ ABOUT ════ -->
 <section class="section" id="about">
   <div class="section-hd">
-    <div><p class="s-label">The Person</p><h2 class="s-title">Read me</h2></div>
+    <div>
+      <p class="s-label"><span class="ab-line"><span>The Person</span></span></p>
+      <h2 class="s-title"><span class="ab-line"><span>Read me</span></span></h2>
+    </div>
   </div>
   <div class="about-inner">
     <div class="about-left">
@@ -2006,14 +2076,31 @@
       </div>
     </div>
     <div class="about-right">
-      <div class="about-photo">
-        <img src="https://raw.githubusercontent.com/Yuvrajsinh03/Media-Gallary/main/IMG_6686.jpg" alt="Yuvrajsinh Jadeja">
-      </div>
-      <div class="stats-grid">
-        <div class="stat"><div class="stat-n" data-target="7" data-suf="+">7+</div><div class="stat-l">Years Experience</div></div>
-        <div class="stat"><div class="stat-n" data-target="15" data-suf="">15+</div><div class="stat-l">Product Shipped</div></div>
-        <div class="stat"><div class="stat-n" data-target="6" data-suf="">6+</div><div class="stat-l">Domains Served</div></div>
-        <div class="stat"><div class="stat-n" data-target="5" data-suf="">5+</div><div class="stat-l">Startups Experience</div></div>
+      <div class="about-bento">
+        <!-- Metric — Years (col 1, row 1) -->
+        <div class="ab-cell ab-metric ab-years">
+          <div class="ab-metric-n" data-target="7" data-suf="+">7+</div>
+          <div class="ab-metric-l">Years Experience</div>
+        </div>
+        <!-- Photo — col 2, spans rows 1–2 -->
+        <div class="ab-cell ab-photo">
+          <img src="https://raw.githubusercontent.com/Yuvrajsinh03/Media-Gallary/main/IMG_6686.jpg" alt="Yuvrajsinh Jadeja">
+        </div>
+        <!-- Metric — Products (col 1, row 2) -->
+        <div class="ab-cell ab-metric ab-prods">
+          <div class="ab-metric-n" data-target="15" data-suf="+">15+</div>
+          <div class="ab-metric-l">Products Shipped</div>
+        </div>
+        <!-- Stat — Domains (col 1, row 3) -->
+        <div class="ab-cell ab-stat ab-domains">
+          <div class="ab-stat-n" data-target="6" data-suf="+">6+</div>
+          <div class="ab-stat-l">Domains Served</div>
+        </div>
+        <!-- Stat — Startups (col 2, row 3) -->
+        <div class="ab-cell ab-stat ab-startups">
+          <div class="ab-stat-n" data-target="5" data-suf="+">5+</div>
+          <div class="ab-stat-l">Startups</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2505,32 +2592,43 @@
   })();
 
   /* ─── ABOUT ─── */
-  ScrollTrigger.create({
-    trigger:'#about', start:'top 75%',
-    onEnter: () => {
-      gsap.to('.about-stmt',  { opacity:1, y:0, duration:0.9, ease:'expo.out' });
-      gsap.to('.about-p',     { opacity:1, y:0, duration:0.8, stagger:0.12, delay:0.2, ease:'expo.out' });
-      gsap.to('.about-tags',  { opacity:1, y:0, duration:0.7, delay:0.5, ease:'expo.out' });
-      gsap.to('.about-right', { opacity:1, y:0, duration:0.9, delay:0.1, ease:'expo.out' });
-    },
-    once:true
-  });
+  // Set initial states for all about section animated elements
+  gsap.set('#about .section-hd', { opacity:0, y:18 });
+  gsap.set('.ab-cell', { opacity:0, y:22 });
+  gsap.set('.about-stmt', { y:24 });
+  gsap.set('.about-p', { y:18 });
+  gsap.set('.about-tags', { y:16 });
+  gsap.set('.about-tags .tag', { opacity:0, scale:0.82 });
 
-  /* ─── STATS COUNT-UP ─── */
   ScrollTrigger.create({
-    trigger:'.stats-grid', start:'top 80%',
+    trigger:'#about', start:'top 74%',
     onEnter: () => {
-      document.querySelectorAll('.stat-n[data-target]').forEach(el => {
-        const target = parseInt(el.dataset.target, 10);
-        const suffix = el.dataset.suf || '';
-        let current = 0;
-        const iv = setInterval(() => {
-          current = Math.min(current + target/60, target);
-          const d = target < 10 ? String(Math.round(current)).padStart(2,'0') : Math.round(current);
-          el.textContent = d + suffix;
-          if (current >= target) clearInterval(iv);
-        }, 1800/60);
-      });
+      const tl = gsap.timeline({ defaults:{ ease:'expo.out' } });
+      tl
+        // section header fade + line reveal (same technique as hero headline)
+        .to('#about .section-hd', { opacity:1, y:0, duration:0.75 }, 0)
+        .to('#about .ab-line span', { y:'0%', duration:1.05, stagger:0.14 }, 0)
+        // bento cells cascade in (left-col cells first, then photo, then stats)
+        .to('.ab-cell', { opacity:1, y:0, duration:0.9, stagger:{ each:0.1, from:'start' } }, 0.18)
+        // left-column text content
+        .to('.about-stmt', { opacity:1, y:0, duration:1.0 }, 0.28)
+        .to('.about-p',    { opacity:1, y:0, duration:0.85, stagger:0.14 }, 0.46)
+        .to('.about-tags', { opacity:1, y:0, duration:0.75 }, 0.78)
+        .to('.about-tags .tag', { opacity:1, scale:1, duration:0.45, stagger:0.05, ease:'back.out(1.6)' }, 0.86)
+        // kick off count-up inside the same timeline
+        .call(() => {
+          document.querySelectorAll('.ab-metric-n[data-target], .ab-stat-n[data-target]').forEach(el => {
+            const target = parseInt(el.dataset.target, 10);
+            const suffix = el.dataset.suf || '';
+            let current = 0;
+            const iv = setInterval(() => {
+              current = Math.min(current + target / 60, target);
+              const d = target < 10 ? String(Math.round(current)).padStart(2,'0') : Math.round(current);
+              el.textContent = d + suffix;
+              if (current >= target) clearInterval(iv);
+            }, 1800 / 60);
+          });
+        }, null, 0.55);
     },
     once:true
   });
