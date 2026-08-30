@@ -610,8 +610,8 @@
 
     /* White → light grey gradient cards. --c-hi is the per-card accent for category labels. */
     .wf-item {
-      background:linear-gradient(145deg, #FFFFFF 0%, #E8E8E8 100%);
-      --c-ov:#E8E8E8;
+      background:#FFFFFF;
+      --c-ov:#F0F0F0;
     }
     .wf-item[data-card="1"] { --c-hi:#D94F1E; }  /* burnt orange   */
     .wf-item[data-card="2"] { --c-hi:#7B35ED; }  /* vivid purple   */
@@ -1165,6 +1165,128 @@
     @media (max-width:900px) { .guestbook { padding:80px 28px; } }
     @media (max-width:600px) { .gb-canvas { height:320px; } .gb-stamp { width:90px; } .gb-stamp-preview { width:54px; } }
 
+
+    /* ════ CHATBOT WIDGET ════ */
+    .cb-wrapper {
+      position:fixed; bottom:104px; right:28px; z-index:9000;
+      display:flex; flex-direction:column; align-items:flex-end; gap:12px;
+    }
+    .cb-toggle {
+      width:52px; height:52px; border-radius:50%;
+      background:var(--ink); border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--bg);
+      box-shadow:0 4px 20px rgba(26,18,8,.28), 0 1px 4px rgba(26,18,8,.14);
+      transition:transform .25s var(--ease), box-shadow .25s, background .2s;
+    }
+    .cb-toggle:hover { transform:scale(1.07); box-shadow:0 8px 30px rgba(26,18,8,.32); background:var(--accent); }
+    .cb-panel {
+      width:340px;
+      background:var(--bg);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:0 20px 64px rgba(26,18,8,.18), 0 4px 16px rgba(26,18,8,.08);
+      overflow:hidden;
+      transform-origin:bottom right;
+      animation:cbIn .28s var(--ease) both;
+    }
+    @keyframes cbIn {
+      from { opacity:0; transform:scale(.88) translateY(18px); }
+      to   { opacity:1; transform:scale(1)   translateY(0);    }
+    }
+    .cb-head {
+      display:flex; align-items:center; gap:12px;
+      padding:16px 18px;
+      background:var(--ink); color:var(--bg);
+    }
+    /* Doodle avatar in header */
+    .cb-av-doodle { width:44px; height:44px; flex-shrink:0; }
+    .cb-av-doodle svg { width:100%; height:100%; }
+    /* Toggle button doodle icon */
+    .cb-toggle-doodle { width:28px; height:28px; display:block; }
+    /* Stroke draw animation */
+    .cb-doodle [data-draw] {
+      stroke-dasharray:300;
+      stroke-dashoffset:300;
+      animation:none;
+    }
+    .cb-doodle.draw [data-draw] {
+      animation:cbStrokeDraw 0.55s ease forwards;
+      animation-delay:var(--d,0s);
+    }
+    @keyframes cbStrokeDraw { to { stroke-dashoffset:0; } }
+    .cb-head-name { font-size:14px; font-weight:600; line-height:1.2; }
+    .cb-head-role { font-size:11px; opacity:.45; margin-top:1px; }
+    .cb-messages {
+      height:270px; overflow-y:auto;
+      padding:16px 15px 8px;
+      display:flex; flex-direction:column; gap:9px;
+      scroll-behavior:smooth;
+    }
+    .cb-messages::-webkit-scrollbar { width:3px; }
+    .cb-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+    .cb-msg { max-width:88%; }
+    .cb-msg p { font-size:13px; line-height:1.65; margin:0; }
+    .cb-msg--bot {
+      background:var(--bg2); border-radius:14px 14px 14px 3px;
+      padding:10px 13px; align-self:flex-start; color:var(--ink);
+    }
+    .cb-msg--user {
+      background:var(--ink); border-radius:14px 14px 3px 14px;
+      padding:10px 13px; align-self:flex-end; color:var(--bg);
+    }
+    .cb-msg--typing {
+      background:var(--bg2); border-radius:14px 14px 14px 3px;
+      padding:11px 14px; align-self:flex-start;
+    }
+    .cb-dots { display:flex; gap:4px; align-items:center; height:14px; }
+    .cb-dots span {
+      width:5px; height:5px; border-radius:50%; background:var(--muted);
+      animation:cbDot 1.3s ease-in-out infinite;
+    }
+    .cb-dots span:nth-child(2) { animation-delay:.18s; }
+    .cb-dots span:nth-child(3) { animation-delay:.36s; }
+    @keyframes cbDot { 0%,80%,100%{transform:scale(.75);opacity:.35;} 40%{transform:scale(1.1);opacity:1;} }
+    .cb-chips {
+      display:flex; flex-wrap:wrap; gap:6px;
+      padding:6px 14px 10px; min-height:38px;
+    }
+    .cb-chip {
+      font-size:11.5px; font-weight:500;
+      border:1px solid var(--border); background:transparent;
+      border-radius:100px; padding:5px 12px;
+      cursor:pointer; color:var(--ink2);
+      transition:border-color .15s, color .15s, background .15s;
+      white-space:nowrap; line-height:1.3;
+    }
+    .cb-chip:hover { border-color:var(--accent); color:var(--accent); background:rgba(217,79,30,.04); }
+    .cb-input-row {
+      display:flex; align-items:center; gap:8px;
+      padding:11px 13px;
+      border-top:1px solid var(--border);
+    }
+    .cb-input {
+      flex:1; border:1px solid var(--border);
+      background:rgba(26,18,8,.03); border-radius:100px;
+      padding:8px 14px; font-size:13px;
+      color:var(--ink); font-family:var(--f-body);
+      outline:none; transition:border-color .15s;
+    }
+    .cb-input:focus { border-color:var(--accent); background:transparent; }
+    .cb-input::placeholder { color:var(--muted); }
+    .cb-send {
+      width:34px; height:34px; border-radius:50%;
+      background:var(--ink); border:none;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      color:var(--bg); flex-shrink:0;
+      transition:background .15s, transform .15s;
+    }
+    .cb-send:hover { background:var(--accent); transform:scale(1.06); }
+    @media (max-width:600px) {
+      .cb-wrapper { bottom:104px; right:16px; }
+      .cb-panel { width:calc(100vw - 32px); }
+      .cb-messages { height:220px; }
+    }
   </style>
 </head>
 <body>
@@ -2716,6 +2838,217 @@
     await loadPage(currentPage);
     refreshCount();
   })();
+})();
+</script>
+
+<!-- ════ CHATBOT WIDGET ════ -->
+<div class="cb-wrapper" id="cbWrapper">
+  <button class="cb-toggle" id="cbToggle" aria-label="Chat about Yuvraj">
+    <span id="cbIconOpen">
+      <svg class="cb-toggle-doodle" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 16 C9 7 15 2 23 4 C27 1 33 4 34 10 C36 8 38 14 35 17"/>
+        <ellipse cx="22" cy="20" rx="10" ry="11"/>
+        <path d="M17 18 Q19 15 21 18"/>
+        <path d="M23 18 Q25 15 27 18"/>
+        <path d="M17 24 Q22 29 27 24"/>
+        <path d="M29 27 L38 18"/>
+        <path d="M37 17 L43 10 L46 13 L40 20 Z"/>
+        <line x1="39" y1="7" x2="39" y2="4"/>
+        <line x1="37.5" y1="5.5" x2="40.5" y2="5.5"/>
+      </svg>
+    </span>
+    <span id="cbIconClose" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </span>
+  </button>
+  <div class="cb-panel" id="cbPanel" hidden>
+    <div class="cb-head">
+      <div class="cb-av-doodle">
+        <svg class="cb-doodle" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path data-draw d="M10 16 C9 7 15 2 23 4 C27 1 33 4 34 10 C36 8 38 14 35 17" style="--d:0s"/>
+          <path data-draw d="M15 3 C14 0 17 1 17 4" style="--d:.06s"/>
+          <path data-draw d="M29 2 C30 0 33 2 31 5" style="--d:.1s"/>
+          <ellipse data-draw cx="22" cy="20" rx="10" ry="11" style="--d:.18s"/>
+          <path data-draw d="M17 18 Q19 15 21 18" style="--d:.52s"/>
+          <path data-draw d="M23 18 Q25 15 27 18" style="--d:.58s"/>
+          <path data-draw d="M17 24 Q22 29 27 24" style="--d:.66s"/>
+          <path data-draw d="M29 27 L38 18" style="--d:.8s"/>
+          <path data-draw d="M37 17 L43 10 L46 13 L40 20 Z" style="--d:.94s"/>
+          <path data-draw d="M43 10 L45 6" style="--d:1.1s"/>
+          <line data-draw x1="39" y1="7" x2="39" y2="4" style="--d:1.2s"/>
+          <line data-draw x1="37.5" y1="5.5" x2="40.5" y2="5.5" style="--d:1.24s"/>
+          <path data-draw d="M5 40 L6 36 L7 40 L11 41 L7 42 L6 46 L5 42 L1 41 Z" style="--d:1.32s"/>
+          <circle data-draw cx="34" cy="12" r="1.5" style="--d:1.45s"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cb-head-name">Portfolio Assistant</div>
+        <div class="cb-head-role">Ask me anything ✦</div>
+      </div>
+    </div>
+    <div class="cb-messages" id="cbMessages">
+      <div class="cb-msg cb-msg--bot">
+        <p>Hey 👋 I'm your portfolio guide. Ask me about Yuvraj's work, process, or experience — or pick a question below.</p>
+      </div>
+    </div>
+    <div class="cb-chips" id="cbChips"></div>
+    <div class="cb-input-row">
+      <input class="cb-input" id="cbInput" type="text" placeholder="Ask something…" maxlength="200" autocomplete="off">
+      <button class="cb-send" id="cbSend" aria-label="Send">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════ CHATBOT ════
+(function initChatbot() {
+  const QA = [
+    {
+      keys:['who are you','what do you do','about','introduce','yourself','tell me'],
+      answer:`I'm Yuvrajsinh Jadeja — a product designer with **7+ years** making complex, high-stakes workflows feel clear, fast, and trustworthy.\n\nMy focus is **Fintech & Regtech**: products where bad UX doesn't just frustrate users, it costs them money or exposes them to risk.`
+    },
+    {
+      keys:['experience','worked','career','job','company','companies','history','background'],
+      answer:`**7+ years** of product design across three companies and six domains — from London fintech to enterprise security to early-stage startups.\n\n🔸 **ComplyStream** — Founding Product Designer at a London-based financial crime startup. Building AI-powered compliance workbooks from scratch.\n\n🔸 **Crest Data Systems** (2022–25) — Senior Product Designer on enterprise security platforms for ServiceNow, Netskope & LinkedIn.\n\n🔸 **o2h Technology** (2019–22) — 0→1 product design across startups — StampFree (£1.08m seed raised), Trovr, Pharrmenable.`
+    },
+    {
+      keys:['project','case study','portfolio','onboarding','party plan','design system','work','show me'],
+      answer:`A few highlights:\n\n🔹 **Customer Onboarding Flow** — Redesigned the most friction-heavy moment in financial products. Outcome: **↓41% errors**.\n\n🔹 **Party Plan** — End-to-end group travel marketplace across Web, iOS & Android. **1M+ users, 4.2★**.\n\n🔹 **Compliance Design System** — Scalable system built for regulated financial products.\n\nScroll up to see the full case studies ↑`
+    },
+    {
+      keys:['process','how do you work','approach','method','workflow','design process','how you'],
+      answer:`My process has four stages:\n\n**1. Research & Immersion** — Deep domain work before touching Figma. In regulated industries: reading compliance docs, not just interviews.\n\n**2. Systems Thinking** — Map the full problem space first.\n\n**3. Prototype & Test** — High-fidelity prototypes tested with real users — including compliance officers. Edge cases are first-class.\n\n**4. Ship & Iterate** — I stay in the product post-launch. Metrics, feedback loops, bias toward shipping.`
+    },
+    {
+      keys:['tool','figma','software','use','stack','tech','prototype'],
+      answer:`Great design isn't defined by the tools — the right tool shows up when the task calls for it.\n\n🎨 **Design** — Figma, Adobe Creative Cloud\n🤖 **AI Stack** — Claude, ChatGPT, MCPs\n🤝 **Collaboration** — Notion, Linear, JIRA, Confluence\n⚙️ **Dev** — Storybook, GitHub, Vercel\n🌐 **CMS** — Wix, Framer, Webflow`
+    },
+    {
+      keys:['fintech','regtech','compliance','regulation','kyc','financial','banking','crime'],
+      answer:`Fintech & Regtech is my deepest domain. I live at the intersection of **regulation and human behaviour**.\n\nThat means KYC flows that don't feel like interrogations, CISO dashboards that communicate risk without panic, and onboarding that earns trust in sixty seconds.\n\nCurrently at ComplyStream — exploring what happens when **AI meets compliance design**.`
+    },
+    {
+      keys:['available','hire','open to','looking','opportunity','freelance','contract','full time','new role'],
+      answer:`Currently **open to the right opportunities** — particularly roles where design has a seat at the table and the problem space is genuinely complex.\n\nMost energised by Fintech, Regtech, and AI-adjacent products.\n\n📧 jadejayuvrajsinh10@gmail.com`
+    },
+    {
+      keys:['contact','email','reach','connect','linkedin','social','message','get in touch'],
+      answer:`Best ways to reach Yuvraj:\n\n📧 **jadejayuvrajsinh10@gmail.com**\n🔗 LinkedIn — search Yuvrajsinh Jadeja\n\nTypically responds within 24–48 hours.`
+    },
+    {
+      keys:['location','where','based','ahmedabad','london','india','uk','remote'],
+      answer:`Based in **Ahmedabad, India**, working remotely with ComplyStream's London team.\n\nOpen to remote-first roles globally.`
+    },
+    {
+      keys:['skill','specialise','specialize','expert','strong','good at','strength'],
+      answer:`Core strengths:\n\n• Product Design (0→1 and scaled)\n• UX Research & Testing\n• Design Systems\n• Fintech / Regtech domain depth\n• Brand Identity & Motion Design\n• High-fidelity Prototyping\n• Design advocacy in eng-heavy teams`
+    },
+    {
+      keys:['domain','domains','industry','industries','sector','sectors','space','spaces'],
+      answer:`Yuvraj has designed across **6+ domains**:\n\n🏦 **Fintech & Regtech** — KYC flows, compliance workbooks, financial crime\n🔒 **Cybersecurity** — CISO dashboards, enterprise security platforms\n✈️ **Travel** — Group travel marketplace (1M+ users, 4.2★)\n💊 **Healthcare & Pharma** — Early-stage health-tech products\n🏗️ **B2B SaaS** — Enterprise platforms and design systems at scale\n🚀 **0→1 Startups** — MVPs across verticals, from seed to Series A`
+    }
+  ];
+
+  const CHIPS_INIT     = ['What do you do?', 'Experience', 'Recent projects', 'Design process'];
+  const CHIPS_FOLLOWUP = ['Available to hire?', 'Tools you use?', 'Domains'];
+
+  const panel     = document.getElementById('cbPanel');
+  const toggle    = document.getElementById('cbToggle');
+  const iconOpen  = document.getElementById('cbIconOpen');
+  const iconClose = document.getElementById('cbIconClose');
+  const messages  = document.getElementById('cbMessages');
+  const chipsEl   = document.getElementById('cbChips');
+  const input     = document.getElementById('cbInput');
+  const sendBtn   = document.getElementById('cbSend');
+
+  let isOpen = false, turns = 0;
+
+  function openChat() {
+    isOpen = true;
+    panel.hidden = false;
+    iconOpen.hidden = true;
+    iconClose.hidden = false;
+    // Re-trigger doodle draw animation every time panel opens
+    const hd = document.querySelector('.cb-doodle');
+    if (hd) { hd.classList.remove('draw'); void hd.getBoundingClientRect(); hd.classList.add('draw'); }
+    renderChips(CHIPS_INIT);
+    setTimeout(() => input.focus(), 160);
+  }
+  function closeChat() {
+    isOpen = false;
+    panel.hidden = true;
+    iconOpen.hidden = false;
+    iconClose.hidden = true;
+  }
+  toggle.addEventListener('click', () => isOpen ? closeChat() : openChat());
+
+  function scrollBottom() {
+    requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
+  }
+
+  function addMsg(text, role) {
+    const div = document.createElement('div');
+    div.className = 'cb-msg cb-msg--' + role;
+    const html = text
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    div.innerHTML = '<p>' + html + '</p>';
+    messages.appendChild(div);
+    scrollBottom();
+    return div;
+  }
+
+  function addTyping() {
+    const div = document.createElement('div');
+    div.className = 'cb-msg cb-msg--typing';
+    div.innerHTML = '<div class="cb-dots"><span></span><span></span><span></span></div>';
+    messages.appendChild(div);
+    scrollBottom();
+    return div;
+  }
+
+  function findAnswer(q) {
+    const low = q.toLowerCase();
+    for (const qa of QA) {
+      if (qa.keys.some(k => low.includes(k))) return qa.answer;
+    }
+    return `I'm not sure about that one — try asking about Yuvraj's experience, projects, process, or how to get in touch. 🙂`;
+  }
+
+  function respond(question) {
+    addMsg(question, 'user');
+    renderChips([]);
+    const typing = addTyping();
+    setTimeout(() => {
+      typing.remove();
+      addMsg(findAnswer(question), 'bot');
+      turns++;
+      renderChips(turns >= 2 ? CHIPS_FOLLOWUP : CHIPS_INIT);
+    }, 480 + Math.random() * 320);
+  }
+
+  function renderChips(chips) {
+    chipsEl.innerHTML = '';
+    chips.forEach(label => {
+      const btn = document.createElement('button');
+      btn.className = 'cb-chip';
+      btn.textContent = label;
+      btn.addEventListener('click', () => respond(label));
+      chipsEl.appendChild(btn);
+    });
+  }
+
+  function handleSend() {
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    respond(q);
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
 })();
 </script>
 </body>
