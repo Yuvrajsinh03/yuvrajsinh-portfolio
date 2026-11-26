@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,6 +47,8 @@
   #means { margin: 14px 0 0; text-wrap: pretty; }
   #rules { margin: 6px 0 0; line-height: 1.6; }
   #error { margin: 12px 0 0; padding-left: 10px; border-left: 1px solid var(--ink); }
+  .controls, #means, #rules, #name { display: none !important; }
+  body { padding: 12px 8px 8px; }
 </style>
 </head>
 <body>
@@ -58,7 +60,7 @@
   </div>
   <div class="controls">
     <label class="label" for="intensity">intensity</label>
-    <input id="intensity" type="range" min="0" max="1" step="0.01" value="0.5">
+    <input id="intensity" type="range" min="0" max="1" step="0.01" value="0.85">
     <output id="value" for="intensity"></output>
     <span class="label">theme</span>
     <button id="theme" type="button" aria-label="Switch between the light and the dark theme"></button>
@@ -976,7 +978,7 @@ function mount({ stage, svg, read }, value) {
   bag.add(B.unregister);
 
   let act = -1;
-  const caption = (a) => (a < 0 ? "7 tools · no context" : NAMES[a]);
+  const caption = (a) => (a < 0 ? "7 independant tools · no context" : NAMES[a]);
 
   function nearest(sx) {
     let best = -1, bd = Infinity;
