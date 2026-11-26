@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Onboarding Flow — Yuvrajsinh Jadeja</title>
-  <meta name="description" content="Redesigning the compliance review interface for a regtech platform — reducing analyst errors by 41%.">
+  <meta name="description" content="Redesigning the compliance review experience for a regtech platform — from eight disconnected tools to one workbook where agents run and analysts decide.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -159,9 +159,12 @@
 
     /* OUTCOMES */
     .outcomes-row{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
-    .outcome-card{padding:40px 32px;background:rgba(245,240,232,.07);border-radius:4px;text-align:center;}
-    .outcome-n{font-family:var(--f-display);font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1;letter-spacing:-.04em;color:var(--accent);margin-bottom:10px;}
-    .outcome-l{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,232,.4);}
+    .outcome-card-v2{padding:40px 32px;background:rgba(245,240,232,.07);border-radius:4px;}
+    .outcome-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+    .outcome-before{font-family:var(--f-display);font-size:18px;font-weight:300;color:rgba(245,240,232,.3);text-decoration:line-through;margin-bottom:6px;}
+    .outcome-arrow{font-size:16px;color:var(--accent);margin-bottom:6px;}
+    .outcome-after{font-family:var(--f-display);font-size:clamp(22px,2.8vw,34px);font-weight:500;line-height:1.15;letter-spacing:-.02em;color:var(--bg);margin-bottom:14px;}
+    .outcome-desc{font-size:13px;color:rgba(245,240,232,.45);line-height:1.6;}
 
     /* REFLECTION */
     .refl-list{display:flex;flex-direction:column;margin-top:48px;}
@@ -264,7 +267,7 @@
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
-  <div class="hero-eyebrow" id="h-eye">Compliance UX &nbsp;·&nbsp; Regtech</div>
+  <div class="hero-eyebrow" id="h-eye">Compliance UX &nbsp;·&nbsp; Agentic Regtech</div>
   <h1 class="hero-h1" id="h-title">
     Customer<br>
     <em>Onboarding</em><br>
@@ -272,13 +275,13 @@
   </h1>
   <div class="hero-meta-grid" id="h-meta">
     <div class="hm"><div class="hm-l">My Role</div><div class="hm-v">Founding Product Designer</div></div>
-    <div class="hm"><div class="hm-l">Duration</div><div class="hm-v">2025–Present</div></div>
+    <div class="hm"><div class="hm-l">Duration</div><div class="hm-v">Dec 2025 – May 2026</div></div>
     <div class="hm"><div class="hm-l">Platform</div><div class="hm-v">B2B SaaS</div></div>
     <div class="hm"><div class="hm-l">Team</div><div class="hm-v">1 Designer · 3 Eng · 1 PM</div></div>
     <div class="hm"><div class="hm-l">Tools</div><div class="hm-v">Figma · Miro</div></div>
   </div>
   <div class="hero-cover" id="h-cover">
-   <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/1.png?raw=true" alt="Triage View">
+   <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/1.png?raw=true" alt="Analyst workbook — customer summary with risk-tiered case queue">
   </div>
 </section>
 
@@ -287,13 +290,13 @@
   <div class="two-col two-col-3-2">
     <div>
       <p class="s-label">The Brief</p>
-      <h2 class="s-h2">The compliance review interface was breaking the people meant to use it.</h2>
+      <h2 class="s-h2">Eight tools. No shared context. Analysts were spending more time chasing evidence than making decisions.</h2>
       <div class="divider"></div>
-      <p class="s-body">A regtech startup had built a <strong>customer onboarding platform</strong> used by KYC/AML compliance teams at financial institutions. The platform handled the full onboarding submission pipeline — document intake, risk scoring, analyst review, and approval or rejection.</p>
+      <p class="s-body">A regtech startup was closing the gap between <strong>detecting financial crime and resolving it</strong>. The detection side had grown smarter — but the operational side hadn't. Eight disconnected tools, no shared context. Every investigation started from scratch.</p>
       <br>
-      <p class="s-body">The product worked. But the experience of using it daily was exhausting analysts. <strong>Error rates were rising. Review throughput was falling.</strong> And the compliance managers knew an audit was coming.</p>
+      <p class="s-body">Every morning, analysts opened multiple tabs — the platform, a sanctions list, a risk policy doc, a team chat, a spreadsheet. Alerts landed with no context. RFIs were managed through email chains. <strong>The tools had been built for the audit, not for the person doing the work.</strong></p>
       <br>
-      <p class="s-body">I was brought in to <strong>redesign the core review interface</strong> — the part analysts spend 6–8 hours inside every day.</p>
+      <p class="s-body">Each client's regulatory policy defined a different set of compliance jobs — from document collection and validation to entity screening, UBO verification and risk analysis — all done by hand, across separate systems. I was brought in to <strong>redesign the core review experience</strong> — the part analysts spend 6–8 hours inside every day — as a single workbook where AI agents run the compliance jobs and the analyst reviews, annotates and decides.</p>
     </div>
     <div>
       <div class="signals-card">
@@ -321,7 +324,7 @@
 <section class="s s-alt" id="discovery" data-cs-section="01 · Discovery">
   <p class="s-label">01 · Discovery</p>
   <h2 class="s-h2" style="max-width:700px;">I spent two weeks not designing anything. Just watching.</h2>
-  <p class="s-body">Before touching Figma, I needed to understand the actual work — what decisions analysts make, in what order, with what information, and where they fail. Desk research on KYC regulation was table stakes. The real insight came from sitting next to analysts while they worked.</p>
+  <p class="s-body">Before touching Figma, I needed to understand the actual work — what decisions analysts make, in what order, with what information, and where they fail. Just as important: which parts were judgement, and which were simply labour an agent could take on. The first day told me a lot: alerts landed with no context, RFIs were managed through email chains, and analysts were spending more time chasing context than resolving cases. Desk research on KYC regulation was table stakes. The real insight came from sitting next to analysts while they worked.</p>
   <div class="methods-grid">
     <div class="method-card">
       <div class="method-num">01</div>
@@ -350,41 +353,41 @@
 <section class="s" id="synthesis" data-cs-section="02 · Synthesis">
   <p class="s-label">02 · Synthesis</p>
   <h2 class="s-h2">Five things that changed everything.</h2>
-  <p class="s-body">The research produced 60+ observations. After affinity mapping and two rounds of synthesis, these five insights kept surfacing — and each one had direct design consequences.</p>
+  <p class="s-body">The research produced 60+ observations. After affinity mapping and two rounds of synthesis, one pattern kept emerging: <strong>every tool in the ecosystem had been built for the regulator — nothing was built for the analyst doing the daily work.</strong> These five insights made that concrete, and each had direct consequences for how analysts and agents should share the work.</p>
   <div class="insights-list">
     <div class="insight">
       <div class="insight-n">01</div>
       <div>
-        <div class="insight-title">The queue is the wrong unit of organisation.</div>
-        <div class="insight-body">Analysts received cases in chronological order — first in, first reviewed. But risk doesn't respect chronology. A low-risk case filed an hour ago shouldn't be reviewed before a high-risk case filed yesterday. The queue created a false sense of urgency around the wrong cases.</div>
+        <div class="insight-title">Every investigation started from scratch.</div>
+        <div class="insight-body">Eight disconnected tools. No shared context between them. An analyst opening a new case had to rebuild the picture every time — pulling sanctions data from one tool, identity documents from another, risk policies from a third. The gap between detecting a risk and resolving it was where all the cost lived.</div>
       </div>
     </div>
     <div class="insight">
       <div class="insight-n">02</div>
       <div>
-        <div class="insight-title">The most dangerous moment is when you think you're done.</div>
-        <div class="insight-body">Analysts made most errors not when confused, but when confident. After reviewing 40 cases, pattern recognition kicks in — and anomalies get glossed over. There was no mechanism in the UI to slow down decision-making when data was incomplete or contradictory.</div>
+        <div class="insight-title">The tools were built for the regulator, not the analyst.</div>
+        <div class="insight-body">Every compliance product in the ecosystem was designed to satisfy audit requirements — checkbox fields, mandatory form submissions, structured exports. None of it was built for the person doing the daily work. Analysts were spending more time feeding the system than resolving cases.</div>
       </div>
     </div>
     <div class="insight">
       <div class="insight-n">03</div>
       <div>
-        <div class="insight-title">Context about the customer was being stored in people's heads.</div>
-        <div class="insight-body">If an analyst had reviewed the same customer's earlier application, that knowledge lived in their memory — not the system. Analysts were using personal spreadsheets to track "known names." This was both an efficiency problem and a compliance risk.</div>
+        <div class="insight-title">Each client's compliance process was different.</div>
+        <div class="insight-body">Onboarding steps varied by client. Risk scoring fundamentals differed based on each organisation's CDD and EDD methods. A one-size-fits-all workflow couldn't serve three clients, let alone thirty. The jobs the system needed to run had to come from each client's own regulatory policy document.</div>
       </div>
     </div>
     <div class="insight">
       <div class="insight-n">04</div>
       <div>
         <div class="insight-title">The audit trail was retrospective, not concurrent.</div>
-        <div class="insight-body">Analysts completed a review, then logged their reasoning separately. This meant reasoning was reconstructed post-hoc, not captured in the moment. The audit trail was technically present but evidentially weak — a problem auditors had flagged.</div>
+        <div class="insight-body">Analysts completed a review, then logged their reasoning separately. Reasoning was reconstructed post-hoc, not captured in the moment. The audit trail was technically present but evidentially weak — a quarterly scramble to prove decisions had been made properly. Auditors had flagged this repeatedly.</div>
       </div>
     </div>
     <div class="insight">
       <div class="insight-n">05</div>
       <div>
-        <div class="insight-title">Tool-switching was the biggest invisible cost.</div>
-        <div class="insight-body">Analysts averaged 4.2 browser tabs open simultaneously — the platform, a sanctions list tool, a risk policy doc, a team chat, and often a spreadsheet. Each switch was a cognitive reset. Integrating these touchpoints wasn't feasible, but reducing the need to leave was.</div>
+        <div class="insight-title">Automation without transparency would make it worse.</div>
+        <div class="insight-body">The instinct was to automate everything. But after 40 cases, pattern recognition kicks in and anomalies get glossed over. Add an AI agent that looks reliable, and the risk grows: the more the agent handles, the less the analyst questions. Any automation had to keep the human visibly in the loop — not just in control, but able to see exactly what the agent did and why.</div>
       </div>
     </div>
   </div>
@@ -393,7 +396,7 @@
 <!-- ═══════════════ PULL QUOTE ═══════════════ -->
 <div class="pullquote">
   <blockquote>
-    "After 50 cases you stop seeing the customer. You start seeing a <em>pattern</em>. The UI was making that worse."
+    "After 50 cases you stop seeing the customer. You start seeing a <em>pattern</em>. The tool was making that worse."
   </blockquote>
   <cite>— KYC Analyst, observed during shadowing session</cite>
 </div>
@@ -406,74 +409,60 @@
   <div class="hmw-list">
     <div class="hmw">
       <span class="hmw-q">HMW</span>
-      <span class="hmw-text">surface the highest-risk cases before an analyst even starts their day — without adding a separate triage step?</span>
+      <span class="hmw-text">give analysts a clear view of what needs their attention the moment they start their day — without opening eight different tools?</span>
     </div>
     <div class="hmw">
       <span class="hmw-q">HMW</span>
-      <span class="hmw-text">create natural friction at the moment of decision — not as obstruction, but as a signal that more attention is needed?</span>
+      <span class="hmw-text">close the gap between detecting a risk and resolving it — in one workspace instead of across fragmented systems?</span>
     </div>
     <div class="hmw">
       <span class="hmw-q">HMW</span>
-      <span class="hmw-text">make the customer's full history visible at the point of review without adding a navigation step?</span>
+      <span class="hmw-text">let each client's compliance policy define the jobs — so the system adapts to the regulation, not the other way around?</span>
     </div>
     <div class="hmw">
       <span class="hmw-q">HMW</span>
-      <span class="hmw-text">capture the analyst's reasoning during the review — not after — so the audit trail is a byproduct of good workflow, not an additional task?</span>
+      <span class="hmw-text">make the audit trail a byproduct of good workflow — evidence by default, not an additional task the analyst writes after the fact?</span>
     </div>
     <div class="hmw">
       <span class="hmw-q">HMW</span>
-      <span class="hmw-text">reduce context switching without requiring costly third-party integrations?</span>
+      <span class="hmw-text">let AI agents handle the repetitive compliance jobs while the analyst always sees what the agent did — and stays in control of the decision?</span>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ IDEATION ═══════════════ -->
+<!-- ═══════════════ IDEATION (collapsed to transition) ═══════════════ -->
 <section class="s" id="ideation" data-cs-section="04 · Ideation">
-  <p class="s-label">04 · Ideation</p>
-  <h2 class="s-h2">Five concepts explored. <em>Three</em> found a home in the product.</h2>
-  <div class="two-col">
-    <div>
-      <p class="s-body">Each HMW statement became a focused ideation anchor — one concept per opportunity space, specific enough to test in a day. The constraint was intentional: <strong>every concept had to fit the analyst's existing mental model</strong>, not ask them to build a new one.</p>
-      <br>
-      <p class="s-body">I tested lo-fi prototypes with 4 analysts across 45-minute sessions — watching for hesitation as much as listening for feedback. Two concepts revealed friction in the wrong places and were set aside early. Three held up and became the foundation of the redesign.</p>
-      <div class="divider" style="margin-top:32px;"></div>
-      <div class="ideation-list">
-        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Gamification layer — added cognitive load in a domain that demands gravity, not points</span></div>
-        <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Mandatory pause-and-confirm dialogs — analysts dismissed them without reading in every session</span></div>
-        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Risk-tiered queue with visual weight differentiation</strong></span></div>
-        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Persistent context panel (always-on, never a modal)</strong></span></div>
-        <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Inline decision annotation (reasoning captured mid-flow)</strong></span></div>
-      </div>
-    </div>
-    <div>
-      <figure style="margin:0;">
-        <img src="/ideation-sketches.svg" alt="Concept sketch — user journey flow map from sign-up to approval with sticky-note annotations on drop-off risks" style="width:100%;border-radius:4px;display:block;border:1px solid rgba(26,18,8,.08);">
-        <figcaption style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:10px 4px 0;font-family:var(--f-body);">Concept sketches — user journey flow with pain-point mapping</figcaption>
-      </figure>
-    </div>
+  <p class="s-label">04 · From opportunity to structure</p>
+  <p class="s-body" style="max-width:640px;">Each HMW became a focused ideation anchor. I tested lo-fi prototypes with 4 analysts across 45-minute sessions — watching for hesitation as much as feedback. Two concepts were set aside early. Three became the foundation of the redesign.</p>
+  <div class="ideation-list" style="margin-top:28px;">
+    <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Separate dashboards per compliance stage — fragmented the analyst's view further</span></div>
+    <div class="ideo-row"><span class="ideo-x">×</span> <span class="ideo-pass">Fully autonomous agent decisions — removed analyst oversight and broke the trust model</span></div>
+    <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Policy-driven job generation (workbook adapts to each client's regulatory requirements)</strong></span></div>
+    <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Unified context graph (all entities, signals and history linked in one workspace)</strong></span></div>
+    <div class="ideo-row"><span class="ideo-check">✓</span> <span class="ideo-pass"><strong>Inline decision annotation with agent transparency (every agent action visible, reasoning captured mid-flow)</strong></span></div>
   </div>
 </section>
 
 <!-- ═══════════════ PROCESS FLOW ═══════════════ -->
 <section class="s s-alt" id="design-flow" data-cs-section="04b · Design Flow">
   <p class="s-label">04b · Design Flow</p>
-  <h2 class="s-h2">The redesigned analyst workflow.</h2>
+  <h2 class="s-h2">The redesigned workflow: agents run, analysts decide.</h2>
   <p class="s-body" style="max-width:600px;">The new workflow reduced the number of decision points per case from 7 to 4, without removing any compliance-required checks. Fewer steps, same regulatory rigour.</p>
   <div class="process-flow">
     <div class="pf-step">
       <div class="pf-n">01</div>
-      <div class="pf-title">Triage View</div>
-      <div class="pf-desc">Cases sorted by risk tier automatically. High-risk cases surfaced at the top. Analysts start the day with clarity, not chronology.</div>
+      <div class="pf-title">Day View</div>
+      <div class="pf-desc">Analysts start their day with a clear view of what jobs need attention — cases surfaced by risk tier, high-risk first. No more opening eight tabs to figure out where to begin.</div>
     </div>
     <div class="pf-step">
       <div class="pf-n">02</div>
-      <div class="pf-title">Case Open</div>
-      <div class="pf-desc">Split-pane layout: documents left, decision tools right. Customer history always visible. Zero navigation needed.</div>
+      <div class="pf-title">Agents Run</div>
+      <div class="pf-desc">Each client's policy document generates the jobs — e.g. Document Collection &amp; Validation, Director &amp; UBO Verification, Entity Screening, Risk Analysis. AI agents run each job with full transparency: live status, every action logged. Decisions always stay with the analyst.</div>
     </div>
     <div class="pf-step">
       <div class="pf-n">03</div>
       <div class="pf-title">Review + Annotate</div>
-      <div class="pf-desc">Inline annotation tied to each document section. Reasoning captured as the analyst reviews — not after. Completeness indicator live.</div>
+      <div class="pf-desc">Agent findings sit next to the evidence. Inline annotation tied to each section; reasoning captured as the analyst reviews — not after. Completeness indicator live.</div>
     </div>
     <div class="pf-step">
       <div class="pf-n">04</div>
@@ -492,49 +481,49 @@
     <div class="decision">
       <div class="dec-l">
         <div class="dec-num">Decision 01</div>
-        <div class="dec-q">Risk tiers, not priority scores</div>
+        <div class="dec-q">One workspace, not eight tools</div>
         <div class="dec-label">The tension</div>
-        <div class="dec-why">Engineering wanted a single numerical risk score (0–100). Compliance managers wanted tiered categories. I sided with compliance — <strong>numbers create false precision in a domain where context matters</strong>. A case that scores 72 is not inherently safer than one that scores 74.</div>
+        <div class="dec-why">The existing workflow spread compliance work across eight disconnected tools — each built for a different stage. Integrating them into a single view was technically possible but risked information overload. <strong>The question wasn't whether to unify — it was how much to show at once.</strong></div>
       </div>
       <div class="dec-r">
         <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
-        <div class="dec-why">Tiers (High / Medium / Low / Pending) created clear mental buckets for analysts. They could make a quick judgement about how much attention to bring to a case before opening it. The numerical score remained accessible, but it wasn't the primary signal.</div>
+        <div class="dec-why">The workbook became the single workspace — all entities, signals and history linked in one context graph. But instead of showing everything at once, each job surfaces its own findings progressively. The analyst sees what matters for the job in front of them, with the full picture one click deeper.</div>
       </div>
     </div>
     <div class="decision">
       <div class="dec-l">
         <div class="dec-num">Decision 02</div>
-        <div class="dec-q">Persistent sidebar vs. expandable panel</div>
+        <div class="dec-q">Policy-driven jobs, not a fixed workflow</div>
         <div class="dec-label">The tension</div>
-        <div class="dec-why">Early testing showed analysts wanted customer history available but not always visible. An expandable panel felt right. But testing with real cases revealed: <strong>analysts who had to open the panel, didn't</strong>. Out of sight meant out of mind.</div>
+        <div class="dec-why">Engineering wanted a standard set of steps every case would follow. But each client's regulatory policy defined different CDD and EDD methods — different onboarding steps, different risk scoring fundamentals. <strong>A one-size-fits-all workflow couldn't serve three clients, let alone thirty.</strong></div>
       </div>
       <div class="dec-r">
         <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
-        <div class="dec-why">I kept the sidebar persistent but collapsible to a thin rail. The rail showed just the customer's risk history as coloured dots — enough context to prompt expansion when needed, without eating screen real estate when it wasn't.</div>
+        <div class="dec-why">The workbook generates its jobs from each client's policy document. The number and type of jobs vary — Document Collection, UBO Verification, Entity Screening, Risk Analysis are examples, not a fixed list. This made the system adaptable without requiring a redesign for every new client.</div>
       </div>
     </div>
     <div class="decision">
       <div class="dec-l">
         <div class="dec-num">Decision 03</div>
-        <div class="dec-q">Soft warning on incomplete decisions</div>
+        <div class="dec-q">Agents run, analysts decide</div>
         <div class="dec-label">The tension</div>
-        <div class="dec-why">There was pressure to block decision submission if the completeness score was below 80%. Compliance managers liked the idea. Analysts hated it. <strong>Hard blocks breed workarounds</strong> — analysts would start marking fields arbitrarily just to unlock the button.</div>
+        <div class="dec-why">There was pressure to let agents make decisions autonomously — flag, clear, escalate — to maximise throughput. But the more reliable the agent looks, the less the analyst questions it. <strong>Full autonomy would have removed the human judgement that makes compliance decisions defensible.</strong></div>
       </div>
       <div class="dec-r">
         <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
-        <div class="dec-why">Instead: a soft warning that names exactly which data points are incomplete, with a prompt to add a justification note. The decision can still be submitted — but the act of writing the justification makes the incompleteness explicit in the audit trail.</div>
+        <div class="dec-why">Agents run the jobs — collecting documents, verifying identities, screening entities — but every decision stays with the analyst. The agent's work is fully transparent: live status, every action logged, findings presented alongside evidence. The analyst can stop an agent, add their own notes, and always sees what was automated versus what requires their judgement.</div>
       </div>
     </div>
     <div class="decision">
       <div class="dec-l">
         <div class="dec-num">Decision 04</div>
-        <div class="dec-q">Audit trail as workflow, not task</div>
+        <div class="dec-q">Evidence by default, not quarterly scramble</div>
         <div class="dec-label">The tension</div>
-        <div class="dec-why">The existing system required analysts to write a review summary after each case. It was done badly or not at all. I wanted to eliminate this step — but compliance managers couldn't operate without the audit log. <strong>The audit trail had to exist. It just couldn't feel like admin.</strong></div>
+        <div class="dec-why">The existing system required analysts to write a review summary after each case. It was done badly or not at all — and come audit season, teams scrambled to reconstruct evidence. <strong>The audit trail had to exist. It just couldn't feel like admin.</strong></div>
       </div>
       <div class="dec-r">
         <div class="dec-label" style="margin-bottom:8px;">Why it mattered</div>
-        <div class="dec-why">Every annotation made during review — each flag, each comment, each reason code — was automatically compiled into the audit log. By the time the analyst submitted, the trail was already written. The summary existed; the analyst just didn't have to write it.</div>
+        <div class="dec-why">Every annotation made during review — each flag, each comment, each reason code — and each action an agent took is automatically compiled into the audit log. A clear line between what the agent did and what the human decided. By the time the analyst submits, the trail is already written. Evidence by default, not evidence by effort.</div>
       </div>
     </div>
   </div>
@@ -544,10 +533,10 @@
 <section class="s s-alt" id="the-design" data-cs-section="06 · The Design">
   <p class="s-label">06 · The Design</p>
   <h2 class="s-h2">What shipped.</h2>
-  <p class="s-body">The redesigned platform shipped in phases — the triage view and split-pane layout first, followed by the context sidebar and decision annotation in the second release.</p>
+  <p class="s-body">The redesigned platform shipped in phases — the triage view and split-pane layout first, followed by the context sidebar and decision annotation in the second release. Throughout, the agents' work is visible rather than hidden: the analyst always knows what is running, what it found and what it still needs.</p>
   <div class="screens-grid">
     <div class="screen-item">
-      <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/1.png?raw=true" alt="Triage View">
+      <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/1.png?raw=true" alt="Overview — customer summary and risk-tiered queue">
       <div class="screen-cap">
         <div class="screen-cap-title">Overview — Customer Summary</div>
         <div class="screen-cap-desc">Risk-tiered case queue. Colour, typography weight, and positioning all signal priority. No numerical scores visible at the list level.</div>
@@ -555,28 +544,28 @@
     </div>
     <div class="screen-item">
       <div class="screen-placeholder">
-        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Triage View">
+        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/2.png?raw=true" alt="Agent running state">
       </div>
       <div class="screen-cap">
         <div class="screen-cap-title">Agent - Running State</div>
-        <div class="screen-cap-desc">AI agent is collecting documents with preloaded configurations</div>
+        <div class="screen-cap-desc">The AI agent is collecting documents with preloaded configurations. Status stays visible while the analyst works on other parts of the case.</div>
       </div>
     </div>
     <div class="screen-item">
       <div class="screen-placeholder">
-        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/3.png?raw=true" alt="Triage View">
+        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/3.png?raw=true" alt="Screening results">
       </div>
       <div class="screen-cap">
         <div class="screen-cap-title">Screening Results</div>
-        <div class="screen-cap-desc">Results summary captured from third party tools</div>
+        <div class="screen-cap-desc">Results from third-party screening tools are pulled into the workbook and summarised in one place — no separate tab to open.</div>
       </div>
     </div>
     <div class="screen-item">
       <div class="screen-placeholder">
-        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/Workbook_flow.gif?raw=true" alt="Triage View">
+        <img src="https://github.com/Yuvrajsinh03/Media-Gallary/blob/main/Workbook_flow.gif?raw=true" alt="Workbook prototype walkthrough">
       </div>
       <div class="screen-cap">
-        <div class="screen-cap-title">Prototype walkthrough</div>
+        <div class="screen-cap-title">Workbook walkthrough</div>
         <div class="screen-cap-desc">Inline annotations captured mid-review. Completeness indicator visible before submission. Soft warning triggers if reasoning is absent.</div>
       </div>
     </div>
@@ -586,22 +575,32 @@
 <!-- ═══════════════ OUTCOMES ═══════════════ -->
 <section class="s s-dark" id="outcomes" data-cs-section="07 · Outcomes">
   <p class="s-label s-label-inv">07 · Outcomes</p>
-  <h2 class="s-h2 s-h2-inv" style="max-width:680px;">Three months after launch — the numbers that came back.</h2>
+  <h2 class="s-h2 s-h2-inv" style="max-width:680px;">Faster. Unified. <em>Always audit-ready.</em></h2>
+  <p class="s-body s-body-inv" style="margin-bottom:48px;">Three outcomes every FinCrime team needs. Measured results from day one.</p>
   <div class="outcomes-row">
-    <div class="outcome-card">
-      <div class="outcome-n">↓ 41%</div>
-      <div class="outcome-l">Review errors</div>
+    <div class="outcome-card-v2">
+      <div class="outcome-tag">Faster Decisions</div>
+      <div class="outcome-before">Days per case</div>
+      <div class="outcome-arrow">↓</div>
+      <div class="outcome-after">Minutes per case</div>
+      <div class="outcome-desc">Agents handle the routine. Analysts handle the exceptions.</div>
     </div>
-    <div class="outcome-card">
-      <div class="outcome-n">+34%</div>
-      <div class="outcome-l">Daily case throughput</div>
+    <div class="outcome-card-v2">
+      <div class="outcome-tag">Unified Context</div>
+      <div class="outcome-before">Tools in silos</div>
+      <div class="outcome-arrow">↓</div>
+      <div class="outcome-after">One context graph</div>
+      <div class="outcome-desc">All entities and signals linked across the system.</div>
     </div>
-    <div class="outcome-card">
-      <div class="outcome-n">100%</div>
-      <div class="outcome-l">Audit trail completeness</div>
+    <div class="outcome-card-v2">
+      <div class="outcome-tag">Always Audit-Ready</div>
+      <div class="outcome-before">Quarterly scramble</div>
+      <div class="outcome-arrow">↓</div>
+      <div class="outcome-after">Evidence by default</div>
+      <div class="outcome-desc">Continuous trail. Every decision documented automatically.</div>
     </div>
   </div>
-  <p class="s-body s-body-inv" style="margin-top:48px;"><strong>The audit passed.</strong> The compliance manager called it "the first time we felt confident walking into an audit instead of nervous."</p>
+  <p class="s-body s-body-inv" style="margin-top:48px;">The compliance manager called it <strong>"the first time we walked into an audit feeling confident instead of nervous."</strong></p>
 </section>
 
 <!-- ═══════════════ REFLECTION ═══════════════ -->
@@ -611,7 +610,7 @@
   <div class="refl-list">
     <div class="refl">
       <div class="refl-label">What worked</div>
-      <div class="refl-text">The decision to frame the audit trail as a workflow output rather than a task was the single most impactful design move on the project. It took the longest to convince stakeholders but had the most measurable effect. <strong>When friction reduction and compliance rigour pointed in the same direction, that's the right design.</strong></div>
+      <div class="refl-text">The decision to frame the audit trail as a workflow output rather than a task was the single most impactful design move on the project. It closed the gap between detection and resolution — the operational gap the whole platform was built to eliminate. <strong>Automate the labour, never the accountability.</strong> That principle shaped every agent-human boundary in the product.</div>
     </div>
     <div class="refl">
       <div class="refl-label">What I'd do differently</div>
@@ -623,7 +622,7 @@
     </div>
     <div class="refl">
       <div class="refl-label">Domain lesson</div>
-      <div class="refl-text">In regulated industries, <strong>design is evidence</strong>. The choices you make in the interface become part of the compliance record. This changes how you think about defaults, warnings, confirmations. Every "is this really necessary?" question has a different answer when the answer could end up in a regulator's report.</div>
+      <div class="refl-text">In regulated industries, <strong>design is evidence</strong>. Every default, every warning, every confirmation becomes part of the compliance record. The existing tools had been built for the auditor reviewing afterwards — not for the analyst doing the work. When an AI agent contributes to a decision, the interface has to make clear what the agent did and what a person decided. That distinction is not a feature — it's the entire trust model.</div>
     </div>
   </div>
 </section>
@@ -728,9 +727,9 @@ gsap.utils.toArray('.screens-grid').forEach(grid => {
   });
 });
 
-/* ── OUTCOME COUNTER ANIMATION ── */
+/* ── OUTCOME CARDS ANIMATION ── */
 gsap.utils.toArray('.outcomes-row').forEach(row => {
-  gsap.from(row.querySelectorAll('.outcome-card'), {
+  gsap.from(row.querySelectorAll('.outcome-card-v2'), {
     y: 40, opacity: 0, scale: .96, duration: .9, stagger: .12, ease: 'expo.out',
     scrollTrigger: { trigger: row, start: 'top 80%' }
   });
